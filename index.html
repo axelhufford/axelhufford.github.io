@@ -117,6 +117,11 @@
     }
     .sprocket-top { top: 3px; }
     .sprocket-bot { bottom: 3px; }
+
+    /* 4th Quarter card */
+    .logo-4q { margin-bottom: 14px; }
+    .project-4q:hover { border-color: #f97316; }
+    .project-link-4q { color: #f97316; }
   </style>
 </head>
 <body>
@@ -134,11 +139,20 @@
       <span class="project-link">movirank.com &rarr;</span>
     </a>
 
-    <a href="https://4th-quarter-sooty.vercel.app" class="project" style="margin-top: 16px;">
-      <div style="font-size: 2.4rem; margin-bottom: 10px;">🏀</div>
+    <a href="https://4th-quarter-sooty.vercel.app" class="project project-4q" style="margin-top: 16px;">
+      <div class="logo-4q">
+        <svg width="48" height="48" viewBox="0 0 200 200" aria-label="4th Quarter">
+          <path d="M 100 100 L 100 55 A 45 45 0 0 1 145 100 Z" fill="#18181b" />
+          <path d="M 100 100 L 100 145 A 45 45 0 0 1 55 100 Z" fill="#18181b" />
+          <path d="M 100 100 L 55 100 A 45 45 0 0 1 100 55 Z" fill="#18181b" />
+          <path d="M 100 100 L 175 100 A 75 75 0 0 1 100 175 Z" fill="#f97316" />
+          <circle cx="100" cy="100" r="60" fill="none" stroke="#f97316" stroke-width="30" />
+          <line x1="132" y1="132" x2="180" y2="180" stroke="#f97316" stroke-width="28" stroke-linecap="round" />
+        </svg>
+      </div>
       <div class="project-name">4th Quarter</div>
-      <p class="project-desc">Never miss the clutch moments. Get notified when the 4th quarter starts for your NBA team.</p>
-      <span class="project-link">4th-quarter-sooty.vercel.app &rarr;</span>
+      <p class="project-desc">Skip the first three. Catch the fourth. Get notified when your NBA team's game hits the final quarter.</p>
+      <span class="project-link project-link-4q">4th-quarter-sooty.vercel.app &rarr;</span>
     </a>
   </div>
 </body>
