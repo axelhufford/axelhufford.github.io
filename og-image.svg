@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="bloomMovi" cx="15%" cy="25%" r="55%">
+      <stop offset="0%" stop-color="#ff4d4d" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#ff4d4d" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bloomQ4" cx="85%" cy="80%" r="55%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#c7c6bd"/>
+    </linearGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f0efe8" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#f0efe8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#f0efe8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0a0a0c"/>
+  <rect width="1200" height="630" fill="url(#bloomMovi)"/>
+  <rect width="1200" height="630" fill="url(#bloomQ4)"/>
+  <line x1="450" y1="260" x2="750" y2="260" stroke="url(#rule)" stroke-width="1"/>
+  <text x="600" y="345"
+        font-family="'Outfit','Helvetica Neue',Arial,sans-serif"
+        font-size="132" font-weight="800" letter-spacing="-3"
+        fill="url(#ink)" text-anchor="middle">Axel Hufford</text>
+  <text x="600" y="420"
+        font-family="'Outfit','Helvetica Neue',Arial,sans-serif"
+        font-size="26" font-weight="500" letter-spacing="6"
+        fill="#6e6e7a" text-anchor="middle">LITIGATION  ·  MOVI  ·  4TH QUARTER</text>
+</svg>
