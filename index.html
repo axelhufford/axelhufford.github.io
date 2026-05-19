@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axel Hufford</title>
-  <meta name="description" content="Axel Hufford — litigation associate and builder of small things like Movi and 4th Quarter." />
+  <meta name="description" content="Axel Hufford — litigation associate and builder of small things like Movi, 4th Quarter, and The Proportional House." />
   <meta name="theme-color" content="#0a0a0c" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Axel Hufford" />
-  <meta property="og:description" content="Litigation associate and builder of small things like Movi and 4th Quarter." />
+  <meta property="og:description" content="Litigation associate and builder of small things like Movi, 4th Quarter, and The Proportional House." />
   <meta property="og:url" content="https://axelhufford.com/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://axelhufford.com/og-image.png" />
@@ -47,6 +47,7 @@
       --muted: #6e6e7a;
       --movi: #ff4d4d;
       --q4: #f97316;
+      --ph: #7c8ec8;
       --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
@@ -194,8 +195,17 @@
         0 1px 0 rgba(0, 0, 0, 0.4),
         0 24px 60px -20px rgba(249, 115, 22, 0.35);
     }
+    .project-ph:hover,
+    .project-ph:focus-visible {
+      border-color: rgba(124, 142, 200, 0.55);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 1px 0 rgba(0, 0, 0, 0.4),
+        0 24px 60px -20px rgba(124, 142, 200, 0.35);
+    }
     .project-movi:focus-visible { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 2px rgba(255, 77, 77, 0.5), 0 24px 60px -20px rgba(255, 77, 77, 0.35); }
     .project-4q:focus-visible { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 2px rgba(249, 115, 22, 0.5), 0 24px 60px -20px rgba(249, 115, 22, 0.35); }
+    .project-ph:focus-visible { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 2px rgba(124, 142, 200, 0.5), 0 24px 60px -20px rgba(124, 142, 200, 0.35); }
 
     .project-name {
       font-family: 'Outfit', sans-serif;
@@ -300,6 +310,34 @@
     }
     .project-link-4q { color: var(--q4); }
 
+    /* Proportional House */
+    .logo-ph {
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+    .ph-bar {
+      transform-origin: bottom center;
+      fill: #8a92a8;
+      transition: fill 480ms var(--ease);
+    }
+    .project-ph:hover .ph-bar,
+    .project-ph:focus-visible .ph-bar {
+      animation: ph-rise 600ms cubic-bezier(0.34, 1.3, 0.5, 1) both;
+    }
+    .project-ph:hover .ph-bar-1, .project-ph:focus-visible .ph-bar-1 { fill: #c46060; animation-delay: 0.00s; transition-delay: 0.00s; }
+    .project-ph:hover .ph-bar-2, .project-ph:focus-visible .ph-bar-2 { fill: #b25e7e; animation-delay: 0.05s; transition-delay: 0.05s; }
+    .project-ph:hover .ph-bar-3, .project-ph:focus-visible .ph-bar-3 { fill: #9d62a0; animation-delay: 0.10s; transition-delay: 0.10s; }
+    .project-ph:hover .ph-bar-4, .project-ph:focus-visible .ph-bar-4 { fill: #8966b2; animation-delay: 0.15s; transition-delay: 0.15s; }
+    .project-ph:hover .ph-bar-5, .project-ph:focus-visible .ph-bar-5 { fill: #786bbb; animation-delay: 0.20s; transition-delay: 0.20s; }
+    .project-ph:hover .ph-bar-6, .project-ph:focus-visible .ph-bar-6 { fill: #6373bb; animation-delay: 0.25s; transition-delay: 0.25s; }
+    .project-ph:hover .ph-bar-7, .project-ph:focus-visible .ph-bar-7 { fill: #547bb8; animation-delay: 0.30s; transition-delay: 0.30s; }
+    .project-ph:hover .ph-bar-8, .project-ph:focus-visible .ph-bar-8 { fill: #4683b2; animation-delay: 0.35s; transition-delay: 0.35s; }
+    @keyframes ph-rise {
+      0%   { transform: scaleY(0.2); }
+      100% { transform: scaleY(1); }
+    }
+    .project-link-ph { color: var(--ph); }
+
     /* Module 4: entrance stagger */
     .reveal {
       opacity: 0;
@@ -311,6 +349,7 @@
     .reveal-3 { animation-delay: 220ms; }
     .reveal-4 { animation-delay: 300ms; }
     .reveal-5 { animation-delay: 380ms; }
+    .reveal-6 { animation-delay: 460ms; }
     @keyframes reveal {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -364,8 +403,9 @@
         transform: none;
       }
       .project, .logo-frame, .logo-frame .frame-num, .logo-frame .sprocket,
-      .logo-4q .tick, .project-link .arrow, .social-link {
+      .logo-4q .tick, .ph-bar, .project-link .arrow, .social-link {
         transition: none;
+        animation: none;
       }
     }
   </style>
@@ -409,7 +449,32 @@
       <span class="project-link project-link-4q">4th-quarter-sooty.vercel.app <span class="arrow">&rarr;</span></span>
     </a>
 
-    <div class="social reveal reveal-5" aria-label="Social links">
+    <a href="https://the-proportional-house.pages.dev" class="project project-ph reveal reveal-5">
+      <div class="logo-ph">
+        <svg width="56" height="56" viewBox="0 0 64 64" aria-label="The Proportional House">
+          <path d="M 32,4 L 33.1,11 L 30.9,11 Z" fill="#8a92a8"/>
+          <rect x="29" y="11" width="6" height="3" fill="#8a92a8"/>
+          <rect x="27" y="14" width="10" height="4" fill="#8a92a8"/>
+          <path d="M 16,46 C 16,30 23,21 32,21 C 41,21 48,30 48,46 Z" fill="#8a92a8"/>
+          <rect x="13" y="46" width="38" height="2" fill="#8a92a8"/>
+          <rect x="10" y="48" width="44" height="3" fill="#8a92a8"/>
+          <rect class="ph-bar ph-bar-1" x="11" y="57" width="3" height="4"/>
+          <rect class="ph-bar ph-bar-2" x="16" y="56" width="3" height="5"/>
+          <rect class="ph-bar ph-bar-3" x="21" y="55" width="3" height="6"/>
+          <rect class="ph-bar ph-bar-4" x="26" y="54" width="3" height="7"/>
+          <rect class="ph-bar ph-bar-5" x="31" y="53" width="3" height="8"/>
+          <rect class="ph-bar ph-bar-6" x="36" y="52" width="3" height="9"/>
+          <rect class="ph-bar ph-bar-7" x="41" y="51" width="3" height="10"/>
+          <rect class="ph-bar ph-bar-8" x="46" y="51" width="3" height="10"/>
+          <rect x="6" y="61" width="52" height="2" fill="#8a92a8"/>
+        </svg>
+      </div>
+      <div class="project-name">The Proportional House</div>
+      <p class="project-desc">Mapping the U.S. House under proportional representation. Explore how the chamber would change if seats matched the popular vote.</p>
+      <span class="project-link project-link-ph">the-proportional-house.pages.dev <span class="arrow">&rarr;</span></span>
+    </a>
+
+    <div class="social reveal reveal-6" aria-label="Social links">
       <a class="social-link" href="https://instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="5"/>
