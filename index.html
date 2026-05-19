@@ -59,7 +59,7 @@
       color: var(--ink);
       min-height: 100vh;
       display: flex;
-      align-items: center;
+      align-items: safe center;
       justify-content: center;
       position: relative;
       overflow-x: hidden;
@@ -300,13 +300,19 @@
       display: inline-block;
       transform-origin: center;
     }
-    .logo-4q .tick {
+    .logo-4q .quarter {
       transform-origin: 100px 100px;
-      transition: transform 360ms var(--ease);
+      transform: rotate(0deg);
     }
-    .project-4q:hover .logo-4q .tick,
-    .project-4q:focus-visible .logo-4q .tick {
-      transform: rotate(6deg);
+    .project-4q:hover .logo-4q .quarter,
+    .project-4q:focus-visible .logo-4q .quarter {
+      animation: fourQ-cycle 2400ms step-end infinite;
+    }
+    @keyframes fourQ-cycle {
+      0%   { transform: rotate(180deg); }  /* Q1 — top-left */
+      25%  { transform: rotate(270deg); }  /* Q2 — top-right */
+      50%  { transform: rotate(90deg); }   /* Q3 — bottom-left */
+      75%  { transform: rotate(0deg); }    /* Q4 — bottom-right */
     }
     .project-link-4q { color: var(--q4); }
 
@@ -403,7 +409,7 @@
         transform: none;
       }
       .project, .logo-frame, .logo-frame .frame-num, .logo-frame .sprocket,
-      .logo-4q .tick, .ph-bar, .project-link .arrow, .social-link {
+      .logo-4q .quarter, .ph-bar, .project-link .arrow, .social-link {
         transition: none;
         animation: none;
       }
@@ -437,11 +443,12 @@
       <div class="logo-4q">
         <svg width="48" height="48" viewBox="0 0 200 200" aria-label="4th Quarter">
           <path d="M 100 100 L 100 55 A 45 45 0 0 1 145 100 Z" fill="#18181b" />
+          <path d="M 100 100 L 145 100 A 45 45 0 0 1 100 145 Z" fill="#18181b" />
           <path d="M 100 100 L 100 145 A 45 45 0 0 1 55 100 Z" fill="#18181b" />
           <path d="M 100 100 L 55 100 A 45 45 0 0 1 100 55 Z" fill="#18181b" />
-          <path d="M 100 100 L 175 100 A 75 75 0 0 1 100 175 Z" fill="#f97316" />
           <circle cx="100" cy="100" r="60" fill="none" stroke="#f97316" stroke-width="30" />
-          <line class="tick" x1="132" y1="132" x2="180" y2="180" stroke="#f97316" stroke-width="28" stroke-linecap="round" />
+          <path class="quarter" d="M 100 100 L 175 100 A 75 75 0 0 1 100 175 Z" fill="#f97316" />
+          <line x1="132" y1="132" x2="180" y2="180" stroke="#f97316" stroke-width="28" stroke-linecap="round" />
         </svg>
       </div>
       <div class="project-name">4th Quarter</div>
