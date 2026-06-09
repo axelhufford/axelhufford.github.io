@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axel Hufford</title>
-  <meta name="description" content="Axel Hufford — litigation associate and builder of small things like The Proportional House, Movi, and 4th Quarter." />
+  <meta name="description" content="Axel Hufford—litigation associate and builder of small things like The Proportional House, Movi, and 4th Quarter." />
   <meta name="theme-color" content="#FAF7F0" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Axel Hufford" />
@@ -94,7 +94,7 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
     }
-    .masthead h1 { color: var(--ink); }
+    .masthead h1 { color: var(--ink); font-size: 0.92rem; }
     .masthead p { color: var(--muted); }
 
     .row {
@@ -318,6 +318,26 @@
       .row-domain { grid-column: 2; grid-row: 2; justify-self: start; }
     }
 
+    @media (min-width: 601px) {
+      .page { max-width: 880px; }
+      .row {
+        grid-template-columns: 104px auto minmax(0, 1fr) auto;
+        gap: 0 22px;
+        padding: 30px 22px;
+        margin: 0 -22px;
+      }
+      .row-name { font-size: clamp(1.9rem, 3.6vw, 2.9rem); }
+      .row-desc { font-size: 0.95rem; }
+      .row-num, .row-domain { font-size: 0.76rem; }
+      .masthead h1 { font-size: 1.05rem; }
+      .logo-ph svg { width: 62px; height: 62px; }
+      .logo-4q svg { width: 56px; height: 56px; }
+      .logo-frame { width: 26px; height: 33px; }
+      .frame-num { font-size: 13px; }
+      .sprocket { width: 7px; }
+      .footer { font-size: 0.75rem; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation: none !important;
@@ -331,7 +351,7 @@
   <main class="page">
     <header class="masthead reveal reveal-1">
       <h1>Axel Hufford</h1>
-      <p>Projects — 3</p>
+      <p>Projects</p>
     </header>
 
     <nav aria-label="Projects">
@@ -358,7 +378,7 @@
         <span class="row-num" aria-hidden="true">01</span>
         <span class="row-main">
           <span class="row-name">The Proportional House</span>
-          <span class="row-desc">Mapping the U.S. House under proportional representation — how the chamber would change if seats matched the popular vote.</span>
+          <span class="row-desc">Mapping the U.S. House under proportional representation—how the chamber would change if seats matched the popular vote.</span>
         </span>
         <span class="row-domain">proportionalhouse.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
