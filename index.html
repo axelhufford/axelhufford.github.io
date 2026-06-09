@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axel Hufford</title>
   <meta name="description" content="Axel Hufford — litigation associate and builder of small things like The Proportional House, Movi, and 4th Quarter." />
-  <meta name="theme-color" content="#0a0a0c" />
+  <meta name="theme-color" content="#FAF7F0" />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Axel Hufford" />
   <meta property="og:title" content="Axel Hufford" />
   <meta property="og:description" content="Litigation associate and builder of small things like The Proportional House, Movi, and 4th Quarter." />
   <meta property="og:url" content="https://axelhufford.com/" />
@@ -20,9 +21,10 @@
   <link rel="canonical" href="https://axelhufford.com/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%23ff4d4d'/%3E%3Cg transform='translate(8,14)'%3E%3Crect x='0' y='0' width='9' height='11' rx='1' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='1.5'/%3E%3Crect x='11.5' y='-1' width='10' height='12' rx='1' fill='none' stroke='white' stroke-width='1.5'/%3E%3Crect x='23' y='0' width='9' height='11' rx='1' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='1.5'/%3E%3C/g%3E%3C/svg%3E" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%231C1A15'/%3E%3Ctext x='22' y='34' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23FAF7F0'%3EA%3C/text%3E%3Ccircle cx='35' cy='31' r='3.2' fill='%23C73B3B'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -42,474 +44,378 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0a0c;
-      --ink: #f0efe8;
-      --muted: #6e6e7a;
-      --movi: #ff4d4d;
-      --q4: #f97316;
-      --ph: #7c8ec8;
+      --paper: #FAF7F0;
+      --ink: #1C1A15;
+      --rule: #E4E0D3;
+      --muted: #6F6A5C;
+      --faint: #98927F;
+      --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+      --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    html, body { height: 100%; }
+    html { color-scheme: light; background: var(--paper); }
 
     body {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
+      font-family: var(--sans);
+      background: var(--paper);
       color: var(--ink);
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
-      align-items: safe center;
-      justify-content: center;
-      position: relative;
-      overflow-x: hidden;
+      flex-direction: column;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
-      font-feature-settings: "ss01", "cv11";
     }
 
-    /* Module 1: ambient depth — brand-tinted blooms + grain + vignette */
-    .ambient {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .bloom {
-      position: absolute;
-      width: 60vmax;
-      height: 60vmax;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.55;
-      will-change: transform;
-    }
-    .bloom-movi {
-      top: -22vmax;
-      left: -18vmax;
-      background: radial-gradient(circle, rgba(255, 77, 77, 0.22) 0%, rgba(255, 77, 77, 0) 60%);
-    }
-    .bloom-q4 {
-      bottom: -24vmax;
-      right: -20vmax;
-      background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, rgba(249, 115, 22, 0) 60%);
-    }
-    .vignette {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%),
-        linear-gradient(to bottom, rgba(10, 10, 12, 0.4) 0%, transparent 20%, transparent 80%, rgba(10, 10, 12, 0.6) 100%);
-    }
-    .grain {
-      position: absolute;
-      inset: -50%;
-      opacity: 0.035;
-      mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    }
+    ::selection { background: var(--ink); color: var(--paper); }
 
-    .container {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 40px 24px;
-      max-width: 480px;
+    .page {
       width: 100%;
+      max-width: 720px;
+      margin: auto;
+      padding: 56px 28px;
     }
 
-    /* Module 2: typography */
-    h1 {
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(2.4rem, 6vw, 3.2rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.05;
-      margin-bottom: 22px;
-      background: linear-gradient(180deg, #ffffff 0%, #c7c6bd 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .masthead {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding-bottom: 22px;
     }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
+    .masthead h1,
+    .masthead p {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      margin-bottom: 36px;
     }
-    .eyebrow::before,
-    .eyebrow::after {
-      content: "";
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(240, 239, 232, 0.18), transparent);
-    }
+    .masthead h1 { color: var(--ink); }
+    .masthead p { color: var(--muted); }
 
-    /* Module 3: surface quality */
-    .project {
-      position: relative;
-      background: linear-gradient(180deg, #14141a 0%, #0f0f14 100%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 18px;
-      padding: 32px 24px;
+    .row {
+      display: grid;
+      grid-template-columns: 84px auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0 18px;
+      padding: 24px 18px;
+      margin: 0 -18px;
       text-decoration: none;
-      display: block;
       color: inherit;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.04),
-        0 1px 0 rgba(0, 0, 0, 0.4),
-        0 20px 40px -24px rgba(0, 0, 0, 0.6);
-      transition: border-color 260ms var(--ease),
-                  transform 260ms var(--ease),
-                  box-shadow 260ms var(--ease);
+      border-bottom: 1px solid var(--rule);
+      transition: background-color 220ms var(--ease);
     }
-    .project + .project { margin-top: 16px; }
-    .project:hover {
-      transform: translateY(-4px);
-    }
-    .project:focus-visible {
-      outline: none;
-      transform: translateY(-4px);
-    }
-    .project-movi:hover,
-    .project-movi:focus-visible {
-      border-color: rgba(255, 77, 77, 0.55);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 1px 0 rgba(0, 0, 0, 0.4),
-        0 24px 60px -20px rgba(255, 77, 77, 0.35);
-    }
-    .project-4q:hover,
-    .project-4q:focus-visible {
-      border-color: rgba(249, 115, 22, 0.55);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 1px 0 rgba(0, 0, 0, 0.4),
-        0 24px 60px -20px rgba(249, 115, 22, 0.35);
-    }
-    .project-ph:hover,
-    .project-ph:focus-visible {
-      border-color: rgba(124, 142, 200, 0.55);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 1px 0 rgba(0, 0, 0, 0.4),
-        0 24px 60px -20px rgba(124, 142, 200, 0.35);
-    }
-    .project-movi:focus-visible { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 2px rgba(255, 77, 77, 0.5), 0 24px 60px -20px rgba(255, 77, 77, 0.35); }
-    .project-4q:focus-visible { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 2px rgba(249, 115, 22, 0.5), 0 24px 60px -20px rgba(249, 115, 22, 0.35); }
-    .project-ph:focus-visible { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 2px rgba(124, 142, 200, 0.5), 0 24px 60px -20px rgba(124, 142, 200, 0.35); }
+    .row:first-child { border-top: 1px solid var(--rule); }
 
-    .project-name {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
+    .row-ph   { --accent: #4A5E8F; --tint: rgba(124, 142, 200, 0.10); }
+    .row-movi { --accent: #C73B3B; --tint: rgba(255, 77, 77, 0.07); }
+    .row-4q   { --accent: #B45309; --tint: rgba(249, 115, 22, 0.08); }
+
+    .row-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .row-num {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--faint);
+    }
+    .row-name {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(1.7rem, 4.5vw, 2.3rem);
+      line-height: 1.08;
       letter-spacing: -0.01em;
-      color: var(--ink);
-      margin-bottom: 6px;
+      transition: color 220ms var(--ease);
     }
-    .project-desc {
+    .row-desc {
+      display: block;
+      font-size: 0.88rem;
+      line-height: 1.55;
       color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.6;
-      margin-bottom: 18px;
+      margin-top: 7px;
     }
-    .project-link {
+    .row-domain {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      color: var(--movi);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
+      justify-self: end;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      color: var(--muted);
+      transition: color 220ms var(--ease);
     }
-    .project-link .arrow {
+    .arrow {
       display: inline-block;
-      transition: transform 260ms var(--ease);
-    }
-    .project:hover .arrow,
-    .project:focus-visible .arrow {
-      transform: translateX(3px);
+      transition: transform 220ms var(--ease);
     }
 
-    /* Movi logo */
-    .logo-strip {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      margin-bottom: 14px;
-    }
+    /* Movi film strip */
+    .logo-strip { display: flex; align-items: center; }
     .logo-frame {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      width: 34px;
-      height: 42px;
-      border: 2px solid rgba(255,255,255,0.13);
-      background: rgba(255,255,255,0.025);
+      width: 22px;
+      height: 28px;
+      border: 1.5px solid rgba(28, 26, 21, 0.22);
+      background: rgba(28, 26, 21, 0.02);
       transition: border-color 480ms var(--ease),
                   background-color 480ms var(--ease),
                   transform 480ms var(--ease),
                   box-shadow 480ms var(--ease);
     }
     .logo-frame.active {
-      border-color: var(--movi);
-      background: rgba(255, 77, 77, 0.07);
-      transform: scale(1.1);
+      border-color: #C73B3B;
+      background: rgba(199, 59, 59, 0.07);
+      transform: scale(1.12);
       z-index: 2;
-      box-shadow: 0 0 20px rgba(255, 77, 77, 0.25);
+      box-shadow: 0 0 14px rgba(199, 59, 59, 0.2);
     }
-    .logo-frame .frame-num {
-      font-family: 'Outfit', sans-serif;
-      font-weight: 800;
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.16);
+    .frame-num {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 11px;
+      color: rgba(28, 26, 21, 0.32);
       transition: color 480ms var(--ease);
     }
-    .logo-frame.active .frame-num {
-      color: var(--movi);
-    }
-    .logo-frame .sprocket {
+    .logo-frame.active .frame-num { color: #C73B3B; }
+    .sprocket {
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      width: 9px;
-      height: 3px;
+      width: 6px;
+      height: 2px;
       border-radius: 1px;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(28, 26, 21, 0.16);
       transition: background-color 480ms var(--ease);
     }
-    .logo-frame.active .sprocket {
-      background: rgba(255, 77, 77, 0.28);
-    }
-    .sprocket-top { top: 3px; }
-    .sprocket-bot { bottom: 3px; }
+    .logo-frame.active .sprocket { background: rgba(199, 59, 59, 0.35); }
+    .sprocket-top { top: 2px; }
+    .sprocket-bot { bottom: 2px; }
 
-    /* 4th Quarter */
-    .logo-4q {
-      margin-bottom: 14px;
-      display: inline-block;
-      transform-origin: center;
-    }
-    .logo-4q .quarter {
-      transform-origin: 100px 100px;
-      transform: rotate(0deg);
-    }
-    .project-4q:hover .logo-4q .quarter,
-    .project-4q:focus-visible .logo-4q .quarter {
-      animation: fourQ-cycle 2400ms step-end infinite;
-    }
-    @keyframes fourQ-cycle {
-      0%   { transform: rotate(180deg); }  /* Q1 — top-left */
-      25%  { transform: rotate(270deg); }  /* Q2 — top-right */
-      50%  { transform: rotate(90deg); }   /* Q3 — bottom-left */
-      75%  { transform: rotate(0deg); }    /* Q4 — bottom-right */
-    }
-    .project-link-4q { color: var(--q4); }
-
-    /* Proportional House */
-    .logo-ph {
-      margin-bottom: 14px;
-      display: inline-block;
-    }
+    /* The Proportional House */
+    .logo-ph svg { width: 52px; height: 52px; display: block; }
     .ph-bar {
-      transform-origin: bottom center;
-      fill: #8a92a8;
+      fill: #5C6880;
+      transform-box: fill-box;
+      transform-origin: bottom;
       transition: fill 480ms var(--ease);
     }
-    .project-ph:hover .ph-bar,
-    .project-ph:focus-visible .ph-bar {
-      animation: ph-rise 600ms cubic-bezier(0.34, 1.3, 0.5, 1) both;
-    }
-    .project-ph:hover .ph-bar-1, .project-ph:focus-visible .ph-bar-1 { fill: #c46060; animation-delay: 0.00s; transition-delay: 0.00s; }
-    .project-ph:hover .ph-bar-2, .project-ph:focus-visible .ph-bar-2 { fill: #b25e7e; animation-delay: 0.05s; transition-delay: 0.05s; }
-    .project-ph:hover .ph-bar-3, .project-ph:focus-visible .ph-bar-3 { fill: #9d62a0; animation-delay: 0.10s; transition-delay: 0.10s; }
-    .project-ph:hover .ph-bar-4, .project-ph:focus-visible .ph-bar-4 { fill: #8966b2; animation-delay: 0.15s; transition-delay: 0.15s; }
-    .project-ph:hover .ph-bar-5, .project-ph:focus-visible .ph-bar-5 { fill: #786bbb; animation-delay: 0.20s; transition-delay: 0.20s; }
-    .project-ph:hover .ph-bar-6, .project-ph:focus-visible .ph-bar-6 { fill: #6373bb; animation-delay: 0.25s; transition-delay: 0.25s; }
-    .project-ph:hover .ph-bar-7, .project-ph:focus-visible .ph-bar-7 { fill: #547bb8; animation-delay: 0.30s; transition-delay: 0.30s; }
-    .project-ph:hover .ph-bar-8, .project-ph:focus-visible .ph-bar-8 { fill: #4683b2; animation-delay: 0.35s; transition-delay: 0.35s; }
     @keyframes ph-rise {
       0%   { transform: scaleY(0.2); }
       100% { transform: scaleY(1); }
     }
-    .project-link-ph { color: var(--ph); }
 
-    /* Module 4: entrance stagger */
+    /* 4th Quarter */
+    .logo-4q svg { width: 46px; height: 46px; display: block; }
+    .quarter { transform-origin: 100px 100px; }
+    @keyframes fourQ-cycle {
+      0%   { transform: rotate(180deg); }
+      25%  { transform: rotate(270deg); }
+      50%  { transform: rotate(90deg); }
+      75%  { transform: rotate(0deg); }
+    }
+
+    @media (hover: hover) {
+      .row:hover { background: var(--tint); }
+      .row:hover .row-name { color: var(--accent); font-style: italic; }
+      .row:hover .row-domain { color: var(--accent); }
+      .row:hover .arrow { transform: translateX(4px); }
+      .row-ph:hover .ph-bar { animation: ph-rise 600ms cubic-bezier(0.34, 1.3, 0.5, 1) both; }
+      .row-ph:hover .ph-bar-1 { fill: #c46060; animation-delay: 0.00s; transition-delay: 0.00s; }
+      .row-ph:hover .ph-bar-2 { fill: #b25e7e; animation-delay: 0.05s; transition-delay: 0.05s; }
+      .row-ph:hover .ph-bar-3 { fill: #9d62a0; animation-delay: 0.10s; transition-delay: 0.10s; }
+      .row-ph:hover .ph-bar-4 { fill: #8966b2; animation-delay: 0.15s; transition-delay: 0.15s; }
+      .row-ph:hover .ph-bar-5 { fill: #786bbb; animation-delay: 0.20s; transition-delay: 0.20s; }
+      .row-ph:hover .ph-bar-6 { fill: #6373bb; animation-delay: 0.25s; transition-delay: 0.25s; }
+      .row-ph:hover .ph-bar-7 { fill: #547bb8; animation-delay: 0.30s; transition-delay: 0.30s; }
+      .row-ph:hover .ph-bar-8 { fill: #4683b2; animation-delay: 0.35s; transition-delay: 0.35s; }
+      .row-4q:hover .quarter { animation: fourQ-cycle 2400ms step-end infinite; }
+      .footer a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+    }
+
+    .row:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      background: var(--tint);
+    }
+    .row:focus-visible .row-name { color: var(--accent); font-style: italic; }
+    .row:focus-visible .row-domain { color: var(--accent); }
+    .row:focus-visible .arrow { transform: translateX(4px); }
+    .row-ph:focus-visible .ph-bar { animation: ph-rise 600ms cubic-bezier(0.34, 1.3, 0.5, 1) both; }
+    .row-ph:focus-visible .ph-bar-1 { fill: #c46060; animation-delay: 0.00s; transition-delay: 0.00s; }
+    .row-ph:focus-visible .ph-bar-2 { fill: #b25e7e; animation-delay: 0.05s; transition-delay: 0.05s; }
+    .row-ph:focus-visible .ph-bar-3 { fill: #9d62a0; animation-delay: 0.10s; transition-delay: 0.10s; }
+    .row-ph:focus-visible .ph-bar-4 { fill: #8966b2; animation-delay: 0.15s; transition-delay: 0.15s; }
+    .row-ph:focus-visible .ph-bar-5 { fill: #786bbb; animation-delay: 0.20s; transition-delay: 0.20s; }
+    .row-ph:focus-visible .ph-bar-6 { fill: #6373bb; animation-delay: 0.25s; transition-delay: 0.25s; }
+    .row-ph:focus-visible .ph-bar-7 { fill: #547bb8; animation-delay: 0.30s; transition-delay: 0.30s; }
+    .row-ph:focus-visible .ph-bar-8 { fill: #4683b2; animation-delay: 0.35s; transition-delay: 0.35s; }
+    .row-4q:focus-visible .quarter { animation: fourQ-cycle 2400ms step-end infinite; }
+
+    /* entrance stagger */
     .reveal {
       opacity: 0;
-      transform: translateY(8px);
-      animation: reveal 560ms var(--ease) forwards;
+      transform: translateY(10px);
+      animation: reveal 600ms var(--ease) forwards;
     }
     .reveal-1 { animation-delay: 60ms; }
-    .reveal-2 { animation-delay: 140ms; }
-    .reveal-3 { animation-delay: 220ms; }
-    .reveal-4 { animation-delay: 300ms; }
-    .reveal-5 { animation-delay: 380ms; }
-    .reveal-6 { animation-delay: 460ms; }
+    .reveal-2 { animation-delay: 130ms; }
+    .reveal-3 { animation-delay: 200ms; }
+    .reveal-4 { animation-delay: 270ms; }
+    .reveal-5 { animation-delay: 340ms; }
     @keyframes reveal {
-      to { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; transform: none; }
     }
 
-    /* Module 5: social links */
-    .social {
-      margin-top: 40px;
+    .footer {
       display: flex;
-      justify-content: center;
-      gap: 14px;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      padding-top: 26px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--faint);
     }
-    .social-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: linear-gradient(180deg, #14141a 0%, #0f0f14 100%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    .footer-links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .footer a {
       color: var(--muted);
       text-decoration: none;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.04),
-        0 1px 0 rgba(0, 0, 0, 0.4);
-      transition: color 260ms var(--ease),
-                  border-color 260ms var(--ease),
-                  transform 260ms var(--ease),
-                  box-shadow 260ms var(--ease);
+      transition: color 180ms var(--ease);
     }
-    .social-link:hover,
-    .social-link:focus-visible {
-      outline: none;
+    .footer a:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
       color: var(--ink);
-      border-color: rgba(255, 255, 255, 0.18);
-      transform: translateY(-2px);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 12px 28px -14px rgba(0, 0, 0, 0.6);
     }
-    .social-link svg {
-      width: 18px;
-      height: 18px;
-      display: block;
+
+    @media (max-width: 600px) {
+      .page { padding: 44px 20px; }
+      .row {
+        grid-template-columns: 72px minmax(0, 1fr);
+        row-gap: 10px;
+        padding: 20px 12px;
+        margin: 0 -12px;
+      }
+      .row-num { display: none; }
+      .row-logo { grid-row: 1 / 3; align-self: center; }
+      .row-main { grid-column: 2; }
+      .row-domain { grid-column: 2; grid-row: 2; justify-self: start; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .reveal, .reveal-1, .reveal-2, .reveal-3, .reveal-4, .reveal-5 {
-        animation: none;
-        opacity: 1;
-        transform: none;
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
       }
-      .project, .logo-frame, .logo-frame .frame-num, .logo-frame .sprocket,
-      .logo-4q .quarter, .ph-bar, .project-link .arrow, .social-link {
-        transition: none;
-        animation: none;
-      }
+      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
-  <div class="ambient" aria-hidden="true">
-    <div class="bloom bloom-movi"></div>
-    <div class="bloom bloom-q4"></div>
-    <div class="grain"></div>
-    <div class="vignette"></div>
-  </div>
+  <main class="page">
+    <header class="masthead reveal reveal-1">
+      <h1>Axel Hufford</h1>
+      <p>Projects — 3</p>
+    </header>
 
-  <div class="container">
-    <h1 class="reveal reveal-1">Axel Hufford</h1>
-    <p class="eyebrow reveal reveal-2">Projects</p>
-
-    <a href="https://proportionalhouse.org" class="project project-ph reveal reveal-3">
-      <div class="logo-ph">
-        <svg width="56" height="56" viewBox="0 0 64 64" aria-label="The Proportional House">
-          <path d="M 32,4 L 33.1,11 L 30.9,11 Z" fill="#8a92a8"/>
-          <rect x="29" y="11" width="6" height="3" fill="#8a92a8"/>
-          <rect x="27" y="14" width="10" height="4" fill="#8a92a8"/>
-          <path d="M 16,46 C 16,30 23,21 32,21 C 41,21 48,30 48,46 Z" fill="#8a92a8"/>
-          <rect x="13" y="46" width="38" height="2" fill="#8a92a8"/>
-          <rect x="10" y="48" width="44" height="3" fill="#8a92a8"/>
-          <rect class="ph-bar ph-bar-1" x="11" y="57" width="3" height="4"/>
-          <rect class="ph-bar ph-bar-2" x="16" y="56" width="3" height="5"/>
-          <rect class="ph-bar ph-bar-3" x="21" y="55" width="3" height="6"/>
-          <rect class="ph-bar ph-bar-4" x="26" y="54" width="3" height="7"/>
-          <rect class="ph-bar ph-bar-5" x="31" y="53" width="3" height="8"/>
-          <rect class="ph-bar ph-bar-6" x="36" y="52" width="3" height="9"/>
-          <rect class="ph-bar ph-bar-7" x="41" y="51" width="3" height="10"/>
-          <rect class="ph-bar ph-bar-8" x="46" y="51" width="3" height="10"/>
-          <rect x="6" y="61" width="52" height="2" fill="#8a92a8"/>
-        </svg>
-      </div>
-      <div class="project-name">The Proportional House</div>
-      <p class="project-desc">Mapping the U.S. House under proportional representation. Explore how the chamber would change if seats matched the popular vote.</p>
-      <span class="project-link project-link-ph">proportionalhouse.org <span class="arrow">&rarr;</span></span>
-    </a>
-
-    <a href="https://movirank.com" class="project project-movi reveal reveal-4">
-      <div class="logo-strip" data-movi-strip>
-        <div class="logo-frame" data-frame="0"><span class="sprocket sprocket-top"></span><span class="frame-num">3</span><span class="sprocket sprocket-bot"></span></div>
-        <div class="logo-frame active" data-frame="1"><span class="sprocket sprocket-top"></span><span class="frame-num">1</span><span class="sprocket sprocket-bot"></span></div>
-        <div class="logo-frame" data-frame="2"><span class="sprocket sprocket-top"></span><span class="frame-num">2</span><span class="sprocket sprocket-bot"></span></div>
-      </div>
-      <div class="project-name">Movi</div>
-      <p class="project-desc">Every movie ranked, one matchup at a time. Compare, rank, and discover films with friends.</p>
-      <span class="project-link">movirank.com <span class="arrow">&rarr;</span></span>
-    </a>
-
-    <a href="https://4th-quarter-sooty.vercel.app" class="project project-4q reveal reveal-5">
-      <div class="logo-4q">
-        <svg width="48" height="48" viewBox="0 0 200 200" aria-label="4th Quarter">
-          <path d="M 100 100 L 100 55 A 45 45 0 0 1 145 100 Z" fill="#18181b" />
-          <path d="M 100 100 L 145 100 A 45 45 0 0 1 100 145 Z" fill="#18181b" />
-          <path d="M 100 100 L 100 145 A 45 45 0 0 1 55 100 Z" fill="#18181b" />
-          <path d="M 100 100 L 55 100 A 45 45 0 0 1 100 55 Z" fill="#18181b" />
-          <circle cx="100" cy="100" r="60" fill="none" stroke="#f97316" stroke-width="30" />
-          <path class="quarter" d="M 100 100 L 175 100 A 75 75 0 0 1 100 175 Z" fill="#f97316" />
-          <line x1="132" y1="132" x2="180" y2="180" stroke="#f97316" stroke-width="28" stroke-linecap="round" />
-        </svg>
-      </div>
-      <div class="project-name">4th Quarter</div>
-      <p class="project-desc">Skip the first three. Catch the fourth. Get notified when your NBA team's game hits the final quarter.</p>
-      <span class="project-link project-link-4q">4th-quarter-sooty.vercel.app <span class="arrow">&rarr;</span></span>
-    </a>
-
-    <div class="social reveal reveal-6" aria-label="Social links">
-      <a class="social-link" href="https://instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="5"/>
-          <circle cx="12" cy="12" r="4"/>
-          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-        </svg>
+    <nav aria-label="Projects">
+      <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer" class="row row-ph reveal reveal-2">
+        <span class="row-logo logo-ph" aria-hidden="true">
+          <svg viewBox="0 0 64 64" focusable="false">
+            <path d="M 32,4 L 33.1,11 L 30.9,11 Z" fill="#5C6880"/>
+            <rect x="29" y="11" width="6" height="3" fill="#5C6880"/>
+            <rect x="27" y="14" width="10" height="4" fill="#5C6880"/>
+            <path d="M 16,46 C 16,30 23,21 32,21 C 41,21 48,30 48,46 Z" fill="#5C6880"/>
+            <rect x="13" y="46" width="38" height="2" fill="#5C6880"/>
+            <rect x="10" y="48" width="44" height="3" fill="#5C6880"/>
+            <rect class="ph-bar ph-bar-1" x="11" y="57" width="3" height="4"/>
+            <rect class="ph-bar ph-bar-2" x="16" y="56" width="3" height="5"/>
+            <rect class="ph-bar ph-bar-3" x="21" y="55" width="3" height="6"/>
+            <rect class="ph-bar ph-bar-4" x="26" y="54" width="3" height="7"/>
+            <rect class="ph-bar ph-bar-5" x="31" y="53" width="3" height="8"/>
+            <rect class="ph-bar ph-bar-6" x="36" y="52" width="3" height="9"/>
+            <rect class="ph-bar ph-bar-7" x="41" y="51" width="3" height="10"/>
+            <rect class="ph-bar ph-bar-8" x="46" y="51" width="3" height="10"/>
+            <rect x="6" y="61" width="52" height="2" fill="#5C6880"/>
+          </svg>
+        </span>
+        <span class="row-num" aria-hidden="true">01</span>
+        <span class="row-main">
+          <span class="row-name">The Proportional House</span>
+          <span class="row-desc">Mapping the U.S. House under proportional representation — how the chamber would change if seats matched the popular vote.</span>
+        </span>
+        <span class="row-domain">proportionalhouse.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
-      <a class="social-link" href="https://twitter.com/AxelHufford" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
+
+      <a href="https://movirank.com" target="_blank" rel="noopener noreferrer" class="row row-movi reveal reveal-3">
+        <span class="row-logo" aria-hidden="true">
+          <span class="logo-strip" data-movi-strip>
+            <span class="logo-frame" data-frame="0"><span class="sprocket sprocket-top"></span><span class="frame-num">3</span><span class="sprocket sprocket-bot"></span></span>
+            <span class="logo-frame active" data-frame="1"><span class="sprocket sprocket-top"></span><span class="frame-num">1</span><span class="sprocket sprocket-bot"></span></span>
+            <span class="logo-frame" data-frame="2"><span class="sprocket sprocket-top"></span><span class="frame-num">2</span><span class="sprocket sprocket-bot"></span></span>
+          </span>
+        </span>
+        <span class="row-num" aria-hidden="true">02</span>
+        <span class="row-main">
+          <span class="row-name">Movi</span>
+          <span class="row-desc">Every movie ranked, one matchup at a time. Compare, rank, and discover films with friends.</span>
+        </span>
+        <span class="row-domain">movirank.com <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
-      <a class="social-link" href="https://www.linkedin.com/in/axelhufford/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.852 3.37-1.852 3.601 0 4.268 2.37 4.268 5.455v6.288zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-        </svg>
+
+      <a href="https://4th-quarter-sooty.vercel.app" target="_blank" rel="noopener noreferrer" class="row row-4q reveal reveal-4">
+        <span class="row-logo logo-4q" aria-hidden="true">
+          <svg viewBox="0 0 200 200" focusable="false">
+            <circle cx="100" cy="100" r="60" fill="none" stroke="#f97316" stroke-width="30" />
+            <path class="quarter" d="M 100 100 L 175 100 A 75 75 0 0 1 100 175 Z" fill="#f97316" />
+            <line x1="132" y1="132" x2="180" y2="180" stroke="#f97316" stroke-width="28" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="row-num" aria-hidden="true">03</span>
+        <span class="row-main">
+          <span class="row-name">4th Quarter</span>
+          <span class="row-desc">Skip the first three. Catch the fourth. Get notified when your NBA team's game hits the final quarter.</span>
+        </span>
+        <span class="row-domain">open 4th quarter <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
-      <a class="social-link" href="mailto:axel.hufford@gmail.com" aria-label="Email">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="3" y="5" width="18" height="14" rx="2"/>
-          <path d="M3 7l9 6 9-6"/>
-        </svg>
-      </a>
-    </div>
-  </div>
+    </nav>
+
+    <footer class="footer reveal reveal-5">
+      <span>&copy; 2026</span>
+      <span class="footer-links">
+        <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <span aria-hidden="true">&middot;</span>
+        <a href="https://x.com/AxelHufford" target="_blank" rel="noopener noreferrer">X</a>
+        <span aria-hidden="true">&middot;</span>
+        <a href="https://www.linkedin.com/in/axelhufford/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <span aria-hidden="true">&middot;</span>
+        <a href="mailto:axel.hufford@gmail.com">Email</a>
+      </span>
+    </footer>
+  </main>
 
   <script>
     (function () {
+      if (document.fonts && document.fonts.load) {
+        document.fonts.load("italic 1em 'Instrument Serif'");
+      }
+
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) return;
 
