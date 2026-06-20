@@ -50,6 +50,8 @@
       --muted: #6F6A5C;
       --faint: #A6A192;
       --green: #00693E;
+      --dem: #2f6fd0;
+      --rep: #C73B3B;
       --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
       --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
       --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -278,6 +280,7 @@
     .reveal-3 { animation-delay: 200ms; }
     .reveal-4 { animation-delay: 270ms; }
     .reveal-5 { animation-delay: 340ms; }
+    .reveal-6 { animation-delay: 410ms; }
     @keyframes reveal {
       to { opacity: 1; transform: none; }
     }
@@ -307,6 +310,120 @@
       color: var(--ink);
     }
 
+    /* Live projection module */
+    .ph-live {
+      margin: 6px 0 2px;
+      padding: 20px 20px 22px;
+      background: rgba(124, 142, 200, 0.06);
+      border: 1px solid var(--rule);
+      border-left: 2px solid #4A5E8F;
+      border-radius: 3px;
+    }
+    .ph-live-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-bottom: 16px;
+    }
+    .ph-live-title {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .ph-live-meta {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.04em;
+      color: var(--faint);
+    }
+    .ph-live-meta a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 180ms var(--ease);
+    }
+    .ph-live-meta a:hover { color: #4A5E8F; }
+    .ph-live-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      gap: 22px;
+      align-items: center;
+    }
+    .ph-map-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+    }
+    .usmap { width: 100%; max-width: 300px; height: auto; display: block; }
+    .usmap text {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      font-weight: 600;
+      text-anchor: middle;
+      letter-spacing: 0.01em;
+      pointer-events: none;
+    }
+    @keyframes tile-in { from { opacity: 0; } to { opacity: 1; } }
+    .usmap .tile { animation: tile-in 460ms var(--ease) both; }
+    .map-legend {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .map-legend .scale {
+      width: 84px;
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--rep), #E2E0D7, var(--dem));
+    }
+    .bars { display: grid; gap: 15px; }
+    .bar-cap {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 4px;
+    }
+    .bar-val { font-size: 1.02rem; line-height: 1.2; margin-bottom: 7px; }
+    .bar-val .d { color: var(--dem); font-weight: 600; }
+    .bar-val .r { color: var(--rep); font-weight: 600; }
+    .bar-val .pct { color: var(--muted); font-size: 0.86em; }
+    .bar-val .mid { color: var(--faint); margin: 0 2px; }
+    .bar-track {
+      display: flex;
+      height: 9px;
+      border-radius: 5px;
+      overflow: hidden;
+      background: var(--rule);
+      transform-origin: left center;
+      animation: bar-grow 720ms cubic-bezier(0.34, 1.1, 0.5, 1) both;
+    }
+    .bars .bar-group:nth-child(2) .bar-track { animation-delay: 90ms; }
+    .bar-track .bar-d { background: var(--dem); }
+    .bar-track .bar-r { background: var(--rep); }
+    @keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .ph-diff {
+      margin-top: 16px;
+      padding-top: 13px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    .ph-diff .d { color: var(--dem); font-weight: 600; }
+    .ph-diff .r { color: var(--rep); font-weight: 600; }
+
     @media (max-width: 600px) {
       .page { padding: 44px 20px; }
       .row {
@@ -319,6 +436,9 @@
       .row-logo { grid-row: 1 / 3; align-self: center; }
       .row-main { grid-column: 2; }
       .row-domain { grid-column: 2; grid-row: 2; justify-self: start; }
+      .ph-live { padding: 18px 16px 20px; }
+      .ph-live-body { grid-template-columns: 1fr; gap: 18px; }
+      .usmap { max-width: 260px; }
     }
 
     @media (min-width: 601px) {
@@ -339,6 +459,9 @@
       .frame-num { font-size: 13px; }
       .sprocket { width: 7px; }
       .footer { font-size: 0.75rem; }
+      .ph-live { padding: 22px 24px 24px; }
+      .usmap { max-width: 320px; }
+      .bar-val { font-size: 1.12rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -386,7 +509,33 @@
         <span class="row-domain">proportionalhouse.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <a href="https://movirank.com" target="_blank" rel="noopener noreferrer" class="row row-movi reveal reveal-3">
+      <section class="ph-live reveal reveal-3" aria-labelledby="ph-live-title">
+        <div class="ph-live-head">
+          <span class="ph-live-title" id="ph-live-title">U.S. House if seats matched the vote</span>
+          <span class="ph-live-meta"><span data-updated>snapshot</span> &middot; <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer">full model &rarr;</a></span>
+        </div>
+        <div class="ph-live-body">
+          <div class="ph-map-wrap">
+            <svg class="usmap" viewBox="0 0 275 200" role="img" aria-label="Map of U.S. states shaded by their projected House delegation under proportional representation, from red (more Republican) to blue (more Democratic)."></svg>
+            <div class="map-legend" aria-hidden="true"><span>More R</span><span class="scale"></span><span>More D</span></div>
+          </div>
+          <div class="bars">
+            <div class="bar-group">
+              <div class="bar-cap">Projected under PR</div>
+              <div class="bar-val" data-val="proj"><b class="d">D 231</b> <span class="pct">(53%)</span> <span class="mid">&middot;</span> <b class="r">R 204</b> <span class="pct">(47%)</span></div>
+              <div class="bar-track"><span class="bar-d" data-w="proj-d" style="width:53%"></span><span class="bar-r" data-w="proj-r" style="width:47%"></span></div>
+            </div>
+            <div class="bar-group">
+              <div class="bar-cap">Actual House today</div>
+              <div class="bar-val" data-val="act"><b class="d">D 215</b> <span class="pct">(49%)</span> <span class="mid">&middot;</span> <b class="r">R 220</b> <span class="pct">(51%)</span></div>
+              <div class="bar-track"><span class="bar-d" data-w="act-d" style="width:49%"></span><span class="bar-r" data-w="act-r" style="width:51%"></span></div>
+            </div>
+            <div class="ph-diff" data-diff>Difference under PR: <b class="d">+16 D</b> / <b class="r">&minus;16 R</b></div>
+          </div>
+        </div>
+      </section>
+
+      <a href="https://movirank.com" target="_blank" rel="noopener noreferrer" class="row row-movi reveal reveal-4">
         <span class="row-logo" aria-hidden="true">
           <span class="logo-strip" data-movi-strip>
             <span class="logo-frame" data-frame="0"><span class="sprocket sprocket-top"></span><span class="frame-num">3</span><span class="sprocket sprocket-bot"></span></span>
@@ -402,7 +551,7 @@
         <span class="row-domain">movirank.com <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <a href="https://4th-quarter-sooty.vercel.app" target="_blank" rel="noopener noreferrer" class="row row-4q reveal reveal-4">
+      <a href="https://4th-quarter-sooty.vercel.app" target="_blank" rel="noopener noreferrer" class="row row-4q reveal reveal-5">
         <span class="row-logo logo-4q" aria-hidden="true">
           <svg viewBox="0 0 200 200" focusable="false">
             <circle cx="100" cy="100" r="60" fill="none" stroke="#f97316" stroke-width="30" />
@@ -419,7 +568,7 @@
       </a>
     </nav>
 
-    <footer class="footer reveal reveal-5">
+    <footer class="footer reveal reveal-6">
       <span>&copy; 2026</span>
       <span class="footer-links">
         <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -473,6 +622,133 @@
       });
 
       start();
+    })();
+  </script>
+
+  <script>
+    // Live Proportional House projection. Renders a baked snapshot immediately,
+    // then upgrades from proportionalhouse.org/projection.json if reachable.
+    (function () {
+      var NS = 'http://www.w3.org/2000/svg';
+
+      // Standard 50-state tile-grid layout: [row, col]. DC omitted (no House seat).
+      var COORDS = {
+        AK:[0,0], ME:[0,10],
+        VT:[1,9], NH:[1,10],
+        WA:[2,0], ID:[2,1], MT:[2,2], ND:[2,3], MN:[2,4], WI:[2,5], MI:[2,7], NY:[2,8], MA:[2,9], RI:[2,10],
+        OR:[3,0], NV:[3,1], WY:[3,2], SD:[3,3], IA:[3,4], IL:[3,5], IN:[3,6], OH:[3,7], PA:[3,8], NJ:[3,9], CT:[3,10],
+        CA:[4,0], UT:[4,1], CO:[4,2], NE:[4,3], MO:[4,4], KY:[4,5], WV:[4,6], VA:[4,7], MD:[4,8], DE:[4,9],
+        AZ:[5,1], NM:[5,2], KS:[5,3], AR:[5,4], TN:[5,5], NC:[5,6], SC:[5,7],
+        OK:[6,3], LA:[6,4], MS:[6,5], AL:[6,6], GA:[6,7],
+        HI:[7,0], TX:[7,3], FL:[7,8]
+      };
+      var PITCH = 25, SIZE = 22, RAD = 3;
+
+      // Fallback snapshot (illustrative). D+R per state = that state's seats; D total 231, R 204.
+      var SNAP = {
+        updated: null,
+        projected: { D: 231, R: 204 },
+        actual: { D: 215, R: 220 },
+        states: [
+          ['CA',32,20],['NY',16,10],['TX',16,22],['FL',13,15],['PA',10,7],['IL',10,7],['OH',7,8],['GA',8,6],['NC',8,6],['MI',8,5],
+          ['NJ',7,5],['VA',6,5],['WA',6,4],['AZ',5,4],['IN',4,5],['MA',6,3],['TN',4,5],['MD',5,3],['MN',5,3],['MO',3,5],
+          ['WI',5,3],['CO',4,4],['AL',3,4],['SC',3,4],['KY',2,4],['LA',2,4],['OR',3,3],['CT',3,2],['OK',2,3],['AR',1,3],
+          ['IA',2,2],['KS',2,2],['MS',2,2],['NV',3,1],['NM',2,1],['NE',1,2],['HI',1,1],['ID',1,1],['ME',1,1],['MT',1,1],
+          ['NH',2,0],['RI',1,1],['WV',1,1],['AK',0,1],['DE',1,0],['ND',0,1],['SD',0,1],['VT',1,0],['WY',0,1],['UT',2,2]
+        ]
+      };
+
+      function toObj(s){ return Array.isArray(s) ? { code:s[0], D:+s[1], R:+s[2] } : { code:(s.code||'').toUpperCase(), D:+s.D, R:+s.R }; }
+      function rgb(c){ return 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')'; }
+      function lerp(a, b, t){ return Math.round(a + (b - a) * t); }
+
+      // Diverging red -> warm neutral -> blue on the D share of a state's seats.
+      function colorArr(t){
+        var rep = [199,59,59], mid = [226,224,215], dem = [47,111,208], u;
+        if (t < 0.5) { u = t / 0.5; return [lerp(rep[0],mid[0],u), lerp(rep[1],mid[1],u), lerp(rep[2],mid[2],u)]; }
+        u = (t - 0.5) / 0.5; return [lerp(mid[0],dem[0],u), lerp(mid[1],dem[1],u), lerp(mid[2],dem[2],u)];
+      }
+      function textColor(c){ return (0.299*c[0] + 0.587*c[1] + 0.114*c[2]) > 150 ? '#1C1A15' : '#F5F4EF'; }
+
+      function relTime(iso){
+        if (!iso) return 'snapshot';
+        var d = new Date(iso); if (isNaN(d.getTime())) return 'snapshot';
+        var s = (Date.now() - d.getTime()) / 1000;
+        if (s < 90) return 'updated just now';
+        if (s < 3600) return 'updated ' + Math.round(s / 60) + 'm ago';
+        if (s < 86400) return 'updated ' + Math.round(s / 3600) + 'h ago';
+        return 'updated ' + Math.round(s / 86400) + 'd ago';
+      }
+
+      function setBar(key, D, R){
+        var total = D + R || 1, dp = Math.round(D / total * 100), rp = 100 - dp;
+        var val = document.querySelector('[data-val="' + key + '"]');
+        if (val) val.innerHTML = '<b class="d">D ' + D + '</b> <span class="pct">(' + dp + '%)</span> <span class="mid">·</span> <b class="r">R ' + R + '</b> <span class="pct">(' + rp + '%)</span>';
+        var d = document.querySelector('[data-w="' + key + '-d"]'); if (d) d.style.width = dp + '%';
+        var r = document.querySelector('[data-w="' + key + '-r"]'); if (r) r.style.width = rp + '%';
+      }
+
+      function renderMap(states){
+        var svg = document.querySelector('.usmap'); if (!svg) return;
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        var by = {}; states.forEach(function (s) { by[s.code] = s; });
+        var i = 0;
+        Object.keys(COORDS).forEach(function (code) {
+          var pos = COORDS[code], s = by[code];
+          var x = pos[1] * PITCH, y = pos[0] * PITCH;
+          var D = s ? s.D : 0, R = s ? s.R : 0, tot = D + R;
+          var col = tot ? colorArr(D / tot) : null;
+          var g = document.createElementNS(NS, 'g');
+          g.setAttribute('class', 'tile');
+          g.style.animationDelay = (i * 9) + 'ms';
+          var title = document.createElementNS(NS, 'title');
+          title.textContent = code + ' — D ' + D + ' · R ' + R;
+          var rect = document.createElementNS(NS, 'rect');
+          rect.setAttribute('x', x); rect.setAttribute('y', y);
+          rect.setAttribute('width', SIZE); rect.setAttribute('height', SIZE);
+          rect.setAttribute('rx', RAD);
+          rect.setAttribute('fill', col ? rgb(col) : '#E2E0D7');
+          var label = document.createElementNS(NS, 'text');
+          label.setAttribute('x', x + SIZE / 2); label.setAttribute('y', y + SIZE / 2 + 2.6);
+          label.setAttribute('fill', col ? textColor(col) : '#6F6A5C');
+          label.textContent = code;
+          g.appendChild(title); g.appendChild(rect); g.appendChild(label);
+          svg.appendChild(g);
+          i++;
+        });
+      }
+
+      function render(data){
+        setBar('proj', data.projected.D, data.projected.R);
+        setBar('act', data.actual.D, data.actual.R);
+        var diff = data.projected.D - data.actual.D;
+        var de = document.querySelector('[data-diff]');
+        if (de) {
+          var dTxt = (diff >= 0 ? '+' : '−') + Math.abs(diff) + ' D';
+          var rTxt = (diff >= 0 ? '−' : '+') + Math.abs(diff) + ' R';
+          de.innerHTML = 'Difference under PR: <b class="d">' + dTxt + '</b> / <b class="r">' + rTxt + '</b>';
+        }
+        var up = document.querySelector('[data-updated]');
+        if (up) up.textContent = relTime(data.updated);
+        renderMap(data.states.map(toObj));
+      }
+
+      function load(){
+        if (!window.fetch || !window.AbortController) return;
+        var ctrl = new AbortController();
+        var to = setTimeout(function () { ctrl.abort(); }, 6000);
+        fetch('https://proportionalhouse.org/projection.json', { cache: 'no-store', signal: ctrl.signal })
+          .then(function (r) { clearTimeout(to); if (!r.ok) throw 0; return r.text(); })
+          .then(function (txt) {
+            var d; try { d = JSON.parse(txt); } catch (e) { throw 0; } // SPA HTML fallback won't parse
+            if (!d || !d.projected || !d.actual || !Array.isArray(d.states)) throw 0;
+            render(d);
+          })
+          .catch(function () { clearTimeout(to); }); // keep baked snapshot already on screen
+      }
+
+      render(SNAP);
+      load();
     })();
   </script>
 </body>
