@@ -281,6 +281,7 @@
     .reveal-4 { animation-delay: 270ms; }
     .reveal-5 { animation-delay: 340ms; }
     .reveal-6 { animation-delay: 410ms; }
+    .reveal-7 { animation-delay: 480ms; }
     @keyframes reveal {
       to { opacity: 1; transform: none; }
     }
@@ -424,6 +425,129 @@
     .ph-diff .d { color: var(--dem); font-weight: 600; }
     .ph-diff .r { color: var(--rep); font-weight: 600; }
 
+    /* Movi top-5 module */
+    .movi-live {
+      margin: 6px 0 2px;
+      padding: 20px 20px 22px;
+      background: rgba(199, 59, 59, 0.05);
+      border: 1px solid var(--rule);
+      border-left: 2px solid #C73B3B;
+      border-radius: 3px;
+    }
+    .movi-live-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-bottom: 18px;
+    }
+    .movi-live-title {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .movi-live-meta {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.04em;
+      color: var(--faint);
+    }
+    .movi-live-meta a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 180ms var(--ease);
+    }
+    .movi-live-meta a:hover { color: #C73B3B; }
+    .movi-group + .movi-group { margin-top: 20px; }
+    .movi-group-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .movi-group-label svg { width: 14px; height: 14px; flex: none; color: #C73B3B; }
+    .movi-group-meta {
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--faint);
+    }
+    .movi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 11px;
+    }
+    .movi-card { min-width: 0; }
+    .movi-poster {
+      position: relative;
+      aspect-ratio: 2 / 3;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      background: #E9E7DF;
+      transition: transform 220ms var(--ease), box-shadow 220ms var(--ease);
+    }
+    .movi-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .movi-poster .movi-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+      font-family: var(--serif);
+      font-size: 0.82rem;
+      line-height: 1.15;
+      text-align: center;
+      color: var(--muted);
+    }
+    .movi-rank {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      z-index: 2;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: #C73B3B;
+      color: #F5F4EF;
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .movi-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      line-height: 1.2;
+      margin-top: 6px;
+    }
+    .movi-year {
+      font-size: 0.66rem;
+      color: var(--faint);
+      margin-top: 1px;
+    }
+    @media (hover: hover) {
+      .movi-card:hover .movi-poster {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(28, 26, 21, 0.14);
+      }
+    }
+
     @media (max-width: 600px) {
       .page { padding: 44px 20px; }
       .row {
@@ -439,6 +563,11 @@
       .ph-live { padding: 18px 16px 20px; }
       .ph-live-body { grid-template-columns: 1fr; gap: 18px; }
       .usmap { max-width: 260px; }
+      .movi-live { padding: 18px 16px 20px; }
+      .movi-grid { gap: 7px; }
+      .movi-title { font-size: 0.66rem; }
+      .movi-year { font-size: 0.6rem; }
+      .movi-rank { width: 16px; height: 16px; font-size: 0.58rem; top: 4px; left: 4px; }
     }
 
     @media (min-width: 601px) {
@@ -551,7 +680,40 @@
         <span class="row-domain">movirank.com <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <a href="https://4th-quarter-sooty.vercel.app" target="_blank" rel="noopener noreferrer" class="row row-4q reveal reveal-5">
+      <section class="movi-live reveal reveal-5" aria-labelledby="movi-live-title">
+        <div class="movi-live-head">
+          <span class="movi-live-title" id="movi-live-title">My all-time top 5</span>
+          <span class="movi-live-meta"><a href="https://movirank.com" target="_blank" rel="noopener noreferrer">ranked on movirank.com &rarr;</a></span>
+        </div>
+        <div class="movi-group">
+          <div class="movi-group-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>
+            Films <span class="movi-group-meta" data-movi-films-meta>top 5 of 440</span>
+          </div>
+          <div class="movi-grid" data-movi-films>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">1</span><img src="https://image.tmdb.org/t/p/w342/xVSvIwRNzwXSs0CLefiiG6A96m4.jpg" alt="Being John Malkovich" loading="lazy"></div><div class="movi-title">Being John Malkovich</div><div class="movi-year">1999</div></div>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">2</span><img src="https://image.tmdb.org/t/p/w342/fKTPH2WvH8nHTXeBYBVhawtRqtR.jpg" alt="Memento" loading="lazy"></div><div class="movi-title">Memento</div><div class="movi-year">2000</div></div>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">3</span><img src="https://image.tmdb.org/t/p/w342/7GsM4mtM0worCtIVeiQt28HieeN.jpg" alt="Jojo Rabbit" loading="lazy"></div><div class="movi-title">Jojo Rabbit</div><div class="movi-year">2019</div></div>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">4</span><img src="https://image.tmdb.org/t/p/w342/prq0j1S0K07UjwLZLF6oMGflRUI.jpg" alt="Fantastic Planet" loading="lazy"></div><div class="movi-title">Fantastic Planet</div><div class="movi-year">1973</div></div>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">5</span><img src="https://image.tmdb.org/t/p/w342/qtO57obCJuUBS0en3HLgFgZ19Xk.jpg" alt="Margin Call" loading="lazy"></div><div class="movi-title">Margin Call</div><div class="movi-year">2011</div></div>
+          </div>
+        </div>
+        <div class="movi-group">
+          <div class="movi-group-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M7 3l5 4 5-4"/></svg>
+            Shows <span class="movi-group-meta" data-movi-shows-meta>top 5 of 80</span>
+          </div>
+          <div class="movi-grid" data-movi-shows>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">1</span><img src="https://image.tmdb.org/t/p/w342/z0XiwdrCQ9yVIr4O0pxzaAYRxdW.jpg" alt="Succession" loading="lazy"></div><div class="movi-title">Succession</div><div class="movi-year">2018</div></div>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">2</span><img src="https://image.tmdb.org/t/p/w342/xWlhMOzRxUpu4uzkWcDQOaESCE.jpg" alt="Station Eleven" loading="lazy"></div><div class="movi-title">Station Eleven</div><div class="movi-year">2021</div></div>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">3</span><img src="https://image.tmdb.org/t/p/w342/1usR1nanbDvnc0LJlWd5TOylT9M.jpg" alt="Survivor" loading="lazy"></div><div class="movi-title">Survivor</div><div class="movi-year">2000</div></div>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">4</span><img src="https://image.tmdb.org/t/p/w342/mIevNYxovnH4sR22qkUmAgS5vdv.jpg" alt="The Rehearsal" loading="lazy"></div><div class="movi-title">The Rehearsal</div><div class="movi-year">2022</div></div>
+            <div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">5</span><img src="https://image.tmdb.org/t/p/w342/hMbVY6f4zfUcX0xf2jo3xZFdrMp.jpg" alt="American Vandal" loading="lazy"></div><div class="movi-title">American Vandal</div><div class="movi-year">2017</div></div>
+          </div>
+        </div>
+      </section>
+
+      <a href="https://4th-quarter-sooty.vercel.app" target="_blank" rel="noopener noreferrer" class="row row-4q reveal reveal-6">
         <span class="row-logo logo-4q" aria-hidden="true">
           <svg viewBox="0 0 200 200" focusable="false">
             <circle cx="100" cy="100" r="60" fill="none" stroke="#f97316" stroke-width="30" />
@@ -568,7 +730,7 @@
       </a>
     </nav>
 
-    <footer class="footer reveal reveal-6">
+    <footer class="footer reveal reveal-7">
       <span>&copy; 2026</span>
       <span class="footer-links">
         <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -761,6 +923,95 @@
       }
 
       render(SNAP);
+      load();
+    })();
+  </script>
+
+  <script>
+    // Movi top-5. Renders a baked snapshot immediately, then refreshes from
+    // Axel's public Movi profile (Firestore REST) if reachable. Array order = rank.
+    (function () {
+      var IMG = 'https://image.tmdb.org/t/p/w342';
+      var PROFILE = 'https://firestore.googleapis.com/v1/projects/movi-3c57a/databases/(default)' +
+        '/documents/profiles/lF7taXh4NETa3h2UPZI6SGnWWcj2?mask.fieldPaths=movies&mask.fieldPaths=tvShows';
+
+      // Baked fallback, shown if the fetch below fails or before it returns.
+      var SNAP = {
+        films: [
+          { title: 'Being John Malkovich', year: '1999', poster: '/xVSvIwRNzwXSs0CLefiiG6A96m4.jpg' },
+          { title: 'Memento', year: '2000', poster: '/fKTPH2WvH8nHTXeBYBVhawtRqtR.jpg' },
+          { title: 'Jojo Rabbit', year: '2019', poster: '/7GsM4mtM0worCtIVeiQt28HieeN.jpg' },
+          { title: 'Fantastic Planet', year: '1973', poster: '/prq0j1S0K07UjwLZLF6oMGflRUI.jpg' },
+          { title: 'Margin Call', year: '2011', poster: '/qtO57obCJuUBS0en3HLgFgZ19Xk.jpg' }
+        ],
+        shows: [
+          { title: 'Succession', year: '2018', poster: '/z0XiwdrCQ9yVIr4O0pxzaAYRxdW.jpg' },
+          { title: 'Station Eleven', year: '2021', poster: '/xWlhMOzRxUpu4uzkWcDQOaESCE.jpg' },
+          { title: 'Survivor', year: '2000', poster: '/1usR1nanbDvnc0LJlWd5TOylT9M.jpg' },
+          { title: 'The Rehearsal', year: '2022', poster: '/mIevNYxovnH4sR22qkUmAgS5vdv.jpg' },
+          { title: 'American Vandal', year: '2017', poster: '/hMbVY6f4zfUcX0xf2jo3xZFdrMp.jpg' }
+        ]
+      };
+
+      function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+
+      function card(item, rank){
+        var media = item.poster
+          ? '<img src="' + IMG + esc(item.poster) + '" alt="' + esc(item.title) + '" loading="lazy">'
+          : '<span class="movi-fallback">' + esc(item.title) + '</span>';
+        var year = item.year ? '<div class="movi-year">' + esc(item.year) + '</div>' : '';
+        return '<div class="movi-card"><div class="movi-poster"><span class="movi-rank" aria-hidden="true">' +
+          rank + '</span>' + media + '</div><div class="movi-title">' + esc(item.title) + '</div>' + year + '</div>';
+      }
+
+      function fill(sel, list){
+        var grid = document.querySelector(sel); if (!grid) return;
+        grid.innerHTML = list.map(function (it, i) { return card(it, i + 1); }).join('');
+      }
+
+      function render(films, shows){
+        fill('[data-movi-films]', films);
+        fill('[data-movi-shows]', shows);
+      }
+
+      function setMeta(sel, total){
+        var el = document.querySelector(sel);
+        if (el && total) el.textContent = 'top 5 of ' + total;
+      }
+
+      // Unwrap one Firestore-REST values array into [{title, year, poster}, ...].
+      function parseList(field){
+        var vals = field && field.arrayValue && field.arrayValue.values;
+        if (!Array.isArray(vals)) return null;
+        return vals.map(function (v) {
+          var f = (v.mapValue && v.mapValue.fields) || {};
+          return {
+            title: f.title && f.title.stringValue,
+            year: f.year && f.year.stringValue,
+            poster: f.poster && f.poster.stringValue
+          };
+        });
+      }
+
+      function load(){
+        if (!window.fetch || !window.AbortController) return;
+        var ctrl = new AbortController();
+        var to = setTimeout(function () { ctrl.abort(); }, 6000);
+        fetch(PROFILE, { cache: 'no-store', signal: ctrl.signal })
+          .then(function (r) { clearTimeout(to); if (!r.ok) throw 0; return r.json(); })
+          .then(function (d) {
+            var fields = d && d.fields; if (!fields) throw 0;
+            var films = parseList(fields.movies), shows = parseList(fields.tvShows);
+            if (!films && !shows) throw 0;
+            if (films) { setMeta('[data-movi-films-meta]', films.length); films = films.slice(0, 5); }
+            if (shows) { setMeta('[data-movi-shows-meta]', shows.length); shows = shows.slice(0, 5); }
+            render(films || SNAP.films, shows || SNAP.shows);
+          })
+          .catch(function () { clearTimeout(to); }); // keep baked snapshot already on screen
+      }
+
+      render(SNAP.films, SNAP.shows);
       load();
     })();
   </script>
