@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axel Hufford</title>
-  <meta name="description" content="Axel Hufford—litigation associate and builder of small things like The Proportional House, Movi, and 4th Quarter." />
+  <meta name="description" content="Axel Hufford — lawyer and builder of small things." />
   <meta name="theme-color" content="#F5F4EF" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Axel Hufford" />
   <meta property="og:title" content="Axel Hufford" />
-  <meta property="og:description" content="Litigation associate and builder of small things like The Proportional House, Movi, and 4th Quarter." />
+  <meta property="og:description" content="Lawyer and builder of small things." />
   <meta property="og:url" content="https://axelhufford.com/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://axelhufford.com/og-image.png" />
@@ -22,8 +22,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%231C1A15'/%3E%3Ctext x='22' y='34' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23FAF7F0'%3EA%3C/text%3E%3Ccircle cx='35' cy='31' r='3.2' fill='%232F9E6E'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <script type="application/ld+json">
   {
@@ -31,6 +32,7 @@
     "@type": "Person",
     "name": "Axel Hufford",
     "url": "https://axelhufford.com",
+    "image": "https://axelhufford.com/apple-touch-icon.png",
     "jobTitle": "Litigation Associate",
     "worksFor": { "@type": "Organization", "name": "Jenner & Block" },
     "sameAs": [
@@ -84,23 +86,56 @@
     }
 
     .masthead {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 16px;
-      padding-bottom: 22px;
+      padding: 14px 0 0;
     }
-    .masthead h1,
-    .masthead p {
+    .masthead h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(3rem, 9vw, 4.6rem);
+      line-height: 1.04;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .masthead .dot { color: var(--green); }
+    .masthead-bio {
+      font-family: var(--serif);
+      font-size: clamp(1.15rem, 2.8vw, 1.4rem);
+      line-height: 1.5;
+      color: var(--muted);
+      margin-top: 20px;
+      max-width: 44ch;
+    }
+    .masthead-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .masthead-links a {
       font-family: var(--mono);
-      font-size: 0.78rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 9px 16px;
+      transition: color 220ms var(--ease), border-color 220ms var(--ease);
+    }
+    .masthead-links a:hover,
+    .masthead-links a:focus-visible {
+      color: var(--green);
+      border-color: var(--green);
+    }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
       font-weight: 500;
       letter-spacing: 0.18em;
       text-transform: uppercase;
+      color: var(--muted);
+      padding: 56px 0 16px;
     }
-    .masthead h1 { color: var(--ink); font-size: 0.92rem; }
-    .masthead .dot { color: var(--green); }
-    .masthead p { color: var(--muted); }
 
     .row {
       display: grid;
@@ -142,8 +177,9 @@
     }
     .row-desc {
       display: block;
-      font-size: 0.88rem;
-      line-height: 1.55;
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      line-height: 1.5;
       color: var(--muted);
       margin-top: 7px;
     }
@@ -638,9 +674,12 @@
         margin: 0 -22px;
       }
       .row-name { font-size: clamp(1.9rem, 3.6vw, 2.9rem); }
-      .row-desc { font-size: 0.95rem; }
+      .row-desc { font-size: 1rem; }
       .row-num, .row-domain { font-size: 0.76rem; }
-      .masthead h1 { font-size: 1.05rem; }
+      .masthead h1 { font-size: clamp(2.5rem, 11vw, 3.2rem); }
+      .masthead-bio { font-size: 1.1rem; }
+      .masthead-links a { padding: 8px 13px; }
+      .section-label { padding-top: 44px; }
       .logo-ph svg { width: 62px; height: 62px; }
       .logo-4q svg { width: 56px; height: 56px; }
       .logo-frame { width: 26px; height: 33px; }
@@ -665,8 +704,16 @@
   <main class="page">
     <header class="masthead reveal reveal-1">
       <h1>Axel Hufford<span class="dot">.</span></h1>
-      <p>Projects</p>
+      <p class="masthead-bio">Lawyer and builder of small things.</p>
+      <div class="masthead-links">
+        <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://x.com/AxelHufford" target="_blank" rel="noopener noreferrer">X</a>
+        <a href="https://www.linkedin.com/in/axelhufford/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:axel.hufford@gmail.com">Email</a>
+      </div>
     </header>
+
+    <p class="section-label reveal reveal-2" aria-hidden="true">Projects &mdash; Selected Work</p>
 
     <nav aria-label="Projects">
       <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer" class="row row-ph reveal reveal-2">
