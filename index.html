@@ -80,18 +80,18 @@
 
     .page {
       width: 100%;
-      max-width: 720px;
+      max-width: 960px;
       margin: auto;
-      padding: 56px 28px;
+      padding: 42px 32px 56px;
     }
 
     .masthead {
-      padding: 14px 0 0;
+      padding: 8px 0 0;
     }
     .masthead h1 {
       font-family: var(--serif);
       font-weight: 400;
-      font-size: clamp(3rem, 9vw, 4.6rem);
+      font-size: clamp(3rem, 8.5vw, 5rem);
       line-height: 1.04;
       letter-spacing: -0.01em;
       color: var(--ink);
@@ -102,14 +102,14 @@
       font-size: clamp(1.15rem, 2.8vw, 1.4rem);
       line-height: 1.5;
       color: var(--muted);
-      margin-top: 20px;
+      margin-top: 14px;
       max-width: 44ch;
     }
     .masthead-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 28px;
+      margin-top: 22px;
     }
     .masthead-links a {
       font-family: var(--mono);
@@ -134,7 +134,7 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--muted);
-      padding: 56px 0 16px;
+      padding: 38px 0 14px;
     }
 
     .row {
@@ -666,7 +666,6 @@
     }
 
     @media (min-width: 601px) {
-      .page { max-width: 880px; }
       .row {
         grid-template-columns: 104px auto minmax(0, 1fr) auto;
         gap: 0 22px;
@@ -676,10 +675,6 @@
       .row-name { font-size: clamp(1.9rem, 3.6vw, 2.9rem); }
       .row-desc { font-size: 1rem; }
       .row-num, .row-domain { font-size: 0.76rem; }
-      .masthead h1 { font-size: clamp(2.5rem, 11vw, 3.2rem); }
-      .masthead-bio { font-size: 1.1rem; }
-      .masthead-links a { padding: 8px 13px; }
-      .section-label { padding-top: 44px; }
       .logo-ph svg { width: 62px; height: 62px; }
       .logo-4q svg { width: 56px; height: 56px; }
       .logo-frame { width: 26px; height: 33px; }
