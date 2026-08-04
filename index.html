@@ -461,6 +461,15 @@
     }
     .ph-diff .d { color: var(--dem); font-weight: 600; }
     .ph-diff .r { color: var(--rep); font-weight: 600; }
+    .ph-today {
+      margin-top: 5px;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.03em;
+      color: var(--faint);
+    }
+    .ph-today .d { color: var(--dem); }
+    .ph-today .r { color: var(--rep); }
 
     /* Movi top-5 module */
     .movi-live {
@@ -752,15 +761,16 @@
           <div class="bars">
             <div class="bar-group">
               <div class="bar-cap">Projected under PR</div>
-              <div class="bar-val" data-val="proj"><b class="d">D 231</b> <span class="pct">(53%)</span> <span class="mid">&middot;</span> <b class="r">R 204</b> <span class="pct">(47%)</span></div>
+              <div class="bar-val" data-val="proj"><b class="d">D 232</b> <span class="pct">(53%)</span> <span class="mid">&middot;</span> <b class="r">R 203</b> <span class="pct">(47%)</span></div>
               <div class="bar-track"><span class="bar-d" data-w="proj-d" style="width:53%"></span><span class="bar-r" data-w="proj-r" style="width:47%"></span></div>
             </div>
             <div class="bar-group">
-              <div class="bar-cap">Actual House today</div>
+              <div class="bar-cap">House as elected (2024)</div>
               <div class="bar-val" data-val="act"><b class="d">D 215</b> <span class="pct">(49%)</span> <span class="mid">&middot;</span> <b class="r">R 220</b> <span class="pct">(51%)</span></div>
               <div class="bar-track"><span class="bar-d" data-w="act-d" style="width:49%"></span><span class="bar-r" data-w="act-r" style="width:51%"></span></div>
+              <div class="ph-today" data-today hidden></div>
             </div>
-            <div class="ph-diff" data-diff>Difference under PR: <b class="d">+16 D</b> / <b class="r">&minus;16 R</b></div>
+            <div class="ph-diff" data-diff>Difference under PR: <b class="d">+17 D</b> / <b class="r">&minus;17 R</b></div>
           </div>
         </div>
       </section>
@@ -962,17 +972,20 @@
       };
       var PITCH = 25, SIZE = 22, RAD = 3;
 
-      // Fallback snapshot of the live API (states = projected seats under PR; D 231 / R 204).
+      // Fallback snapshot of the live API (states = projected seats under PR; D 232 / R 203).
       // Shown only if the fetch below fails; refreshed from the API when reachable.
+      // `current` stays null on purpose — a baked chamber count would go stale
+      // silently, so the "Today" line simply stays hidden without live data.
       var SNAP = {
         updated: null,
-        projected: { D: 231, R: 204 },
+        projected: { D: 232, R: 203 },
         actual: { D: 215, R: 220 },
+        current: null,
         states: [
           ['AK',1,0],['AL',2,5],['AR',1,3],['AZ',5,4],['CA',35,17],['CO',5,3],['CT',3,2],['DE',1,0],['FL',14,14],['GA',7,7],
           ['HI',2,0],['IA',2,2],['ID',1,1],['IL',10,7],['IN',4,5],['KS',2,2],['KY',2,4],['LA',2,4],['MA',9,0],['MD',5,3],
           ['ME',1,1],['MI',7,6],['MN',4,4],['MO',3,5],['MS',1,3],['MT',1,1],['NC',6,8],['ND',0,1],['NE',1,2],['NH',1,1],
-          ['NJ',7,5],['NM',2,1],['NV',2,2],['NY',17,9],['OH',7,8],['OK',2,3],['OR',3,3],['PA',9,8],['RI',1,1],['SC',3,4],
+          ['NJ',7,5],['NM',2,1],['NV',2,2],['NY',18,8],['OH',7,8],['OK',2,3],['OR',3,3],['PA',9,8],['RI',1,1],['SC',3,4],
           ['SD',0,1],['TN',3,6],['TX',18,20],['UT',1,3],['VA',6,5],['VT',1,0],['WA',6,4],['WI',4,4],['WV',1,1],['WY',0,1]
         ]
       };
@@ -999,12 +1012,30 @@
         return 'updated ' + Math.round(s / 86400) + 'd ago';
       }
 
-      function setBar(key, D, R){
-        var total = D + R || 1, dp = Math.round(D / total * 100), rp = 100 - dp;
+      // `seats` is the chamber size when the API reports one, so any seats held by
+      // neither party leave the track's neutral background showing through.
+      function setBar(key, D, R, seats){
+        var total = seats || D + R || 1;
+        var dp = Math.round(D / total * 100), rp = Math.round(R / total * 100);
         var val = document.querySelector('[data-val="' + key + '"]');
         if (val) val.innerHTML = '<b class="d">D ' + D + '</b> <span class="pct">(' + dp + '%)</span> <span class="mid">·</span> <b class="r">R ' + R + '</b> <span class="pct">(' + rp + '%)</span>';
         var d = document.querySelector('[data-w="' + key + '-d"]'); if (d) d.style.width = dp + '%';
         var r = document.querySelector('[data-w="' + key + '-r"]'); if (r) r.style.width = rp + '%';
+      }
+
+      // Today's chamber, from the API's current_composition. Wording matches the
+      // note under the same stat on proportionalhouse.org.
+      function setToday(c){
+        var el = document.querySelector('[data-today]'); if (!el) return;
+        if (!c) { el.hidden = true; return; }
+        var D = Number(c.d_seats), R = Number(c.r_seats);
+        if (!isFinite(D) || !isFinite(R)) { el.hidden = true; return; }
+        var other = Number(c.other_seats) || 0, vac = Number(c.vacant) || 0;
+        var html = 'Today: <b class="d">D ' + (D | 0) + '</b> · <b class="r">R ' + (R | 0) + '</b>';
+        if (other > 0) html += ' · ' + (other | 0) + ' other';
+        if (vac > 0) html += ' · ' + (vac | 0) + ' vacant';
+        el.innerHTML = html;
+        el.hidden = false;
       }
 
       function renderMap(states){
@@ -1038,8 +1069,9 @@
       }
 
       function render(data){
-        setBar('proj', data.projected.D, data.projected.R);
-        setBar('act', data.actual.D, data.actual.R);
+        setBar('proj', data.projected.D, data.projected.R, data.seats);
+        setBar('act', data.actual.D, data.actual.R, data.seats);
+        setToday(data.current);
         var diff = data.projected.D - data.actual.D;
         var de = document.querySelector('[data-diff]');
         if (de) {
@@ -1058,8 +1090,10 @@
       function fromV1(d){
         return {
           updated: d.generated_at,
+          seats: Number(d.national.total_seats) || 0,
           projected: { D: d.national.projected.D, R: d.national.projected.R },
           actual: { D: d.national.actual.D, R: d.national.actual.R },
+          current: d.current_composition || null,
           states: d.states.map(function (s) { return { code: s.code, D: s.projected.D, R: s.projected.R }; })
         };
       }
