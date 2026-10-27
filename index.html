@@ -320,6 +320,7 @@
     .reveal-6 { animation-delay: 410ms; }
     .reveal-7 { animation-delay: 480ms; }
     .reveal-8 { animation-delay: 550ms; }
+    .reveal-9 { animation-delay: 620ms; }
     @keyframes reveal {
       to { opacity: 1; transform: none; }
     }
@@ -647,8 +648,71 @@
       }
     }
 
+    /* Selected briefs */
+    .brief {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0 22px;
+      padding: 22px 18px;
+      margin: 0 -18px;
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 1px solid var(--rule);
+      transition: background-color 220ms var(--ease);
+    }
+    .brief:first-child { border-top: 1px solid var(--rule); }
+    .brief-meta {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .brief-case {
+      display: block;
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.35rem, 3vw, 1.7rem);
+      line-height: 1.15;
+      letter-spacing: -0.005em;
+      margin-top: 8px;
+      transition: color 220ms var(--ease);
+    }
+    .brief-title {
+      display: block;
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    @media (hover: hover) {
+      .brief:hover { background: rgba(0, 105, 62, 0.05); }
+      .brief:hover .brief-case { color: var(--green); }
+      .brief:hover .row-domain { color: var(--green); }
+      .brief:hover .arrow { transform: translateX(4px); }
+    }
+    .brief:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
+      background: rgba(0, 105, 62, 0.05);
+    }
+    .brief:focus-visible .brief-case { color: var(--green); }
+    .brief:focus-visible .row-domain { color: var(--green); }
+    .brief:focus-visible .arrow { transform: translateX(4px); }
+
     @media (max-width: 600px) {
       .page { padding: 44px 20px; }
+      .brief {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 10px;
+        padding: 20px 12px;
+        margin: 0 -12px;
+      }
+      .brief .row-domain { grid-column: 1; grid-row: 2; justify-self: start; }
       .row {
         grid-template-columns: 72px minmax(0, 1fr);
         row-gap: 10px;
@@ -897,7 +961,28 @@
       </section>
     </nav>
 
-    <footer class="footer reveal reveal-8">
+    <p class="section-label reveal reveal-8" aria-hidden="true">Legal Writing &mdash; Selected Briefs</p>
+
+    <section class="briefs" aria-label="Selected briefs">
+      <a href="https://www.citizensforethics.org/wp-content/uploads/2026/10/20261020131921054_25-1017-bsac-Electronic-Privacy-Information-Center.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-8">
+        <span class="brief-main">
+          <span class="brief-meta">Supreme Court &middot; No. 25-1017 &middot; Oct. 2026</span>
+          <span class="brief-case">Republican National Committee v. Mi Familia Vota</span>
+          <span class="brief-title">Brief of the Electronic Privacy Information Center as Amicus Curiae in Support of Respondents</span>
+        </span>
+        <span class="row-domain">PDF <span class="arrow" aria-hidden="true">&rarr;</span></span>
+      </a>
+      <a href="https://www.supremecourt.gov/DocketPDF/26/26A305/423270/20260908102857397_26A305%20bsac%20Bipartisan%20Current%20and%20Former%20Members%20of%20Congress.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-9">
+        <span class="brief-main">
+          <span class="brief-meta">Supreme Court &middot; No. 26A305 &middot; Sept. 2026</span>
+          <span class="brief-case">United States Postal Service v. California</span>
+          <span class="brief-title">Brief of Bipartisan Current and Former Members of Congress as Amici Curiae in Support of Respondents</span>
+        </span>
+        <span class="row-domain">PDF <span class="arrow" aria-hidden="true">&rarr;</span></span>
+      </a>
+    </section>
+
+    <footer class="footer reveal reveal-9">
       <span>&copy; 2026</span>
       <span class="footer-links">
         <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
