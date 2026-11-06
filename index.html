@@ -450,7 +450,9 @@
     }
     .bars .bar-group:nth-child(2) .bar-track { animation-delay: 90ms; }
     .bar-track .bar-d { background: var(--dem); }
-    .bar-track .bar-r { background: var(--rep); }
+    /* Pushed right so any seats held by neither party (uncalled, other) show as
+       a neutral gap in the middle, as on election-night seat bars. */
+    .bar-track .bar-r { background: var(--rep); margin-left: auto; }
     @keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
     .ph-diff {
       margin-top: 16px;
@@ -461,6 +463,7 @@
       letter-spacing: 0.04em;
       color: var(--muted);
     }
+    .ph-diff b, .bar-val b { white-space: nowrap; }
     .ph-diff .d { color: var(--dem); font-weight: 600; }
     .ph-diff .r { color: var(--rep); font-weight: 600; }
     .ph-today {
@@ -816,26 +819,26 @@
       <section class="ph-live reveal reveal-3" aria-labelledby="ph-live-title">
         <div class="ph-live-head">
           <span class="ph-live-title" id="ph-live-title">U.S. House if seats matched the vote</span>
-          <span class="ph-live-meta"><span data-updated>snapshot</span> &middot; <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer">full model &rarr;</a></span>
+          <span class="ph-live-meta"><span data-updated>2026 results &middot; provisional</span> &middot; <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer" data-ph-link>full results &rarr;</a></span>
         </div>
         <div class="ph-live-body">
           <div class="ph-map-wrap">
-            <svg class="usmap" viewBox="0 0 275 200" role="img" aria-label="Map of U.S. states shaded by their projected House delegation under proportional representation, from red (more Republican) to blue (more Democratic)."></svg>
+            <svg class="usmap" viewBox="0 0 275 200" role="img" aria-label="Map of U.S. states shaded by their House delegation under proportional representation of the 2026 votes counted so far, from red (more Republican) to blue (more Democratic). Gray states have no votes counted yet."></svg>
             <div class="map-legend" aria-hidden="true"><span>More R</span><span class="scale"></span><span>More D</span></div>
           </div>
           <div class="bars">
             <div class="bar-group">
-              <div class="bar-cap">Projected under PR</div>
-              <div class="bar-val" data-val="proj"><b class="d">D 232</b> <span class="pct">(53%)</span> <span class="mid">&middot;</span> <b class="r">R 203</b> <span class="pct">(47%)</span></div>
-              <div class="bar-track"><span class="bar-d" data-w="proj-d" style="width:53%"></span><span class="bar-r" data-w="proj-r" style="width:47%"></span></div>
+              <div class="bar-cap" data-cap="proj">Under PR &middot; 2026 votes counted</div>
+              <div class="bar-val" data-val="proj"><b class="d">D 249</b> <span class="pct">(57%)</span> <span class="mid">&middot;</span> <b class="r">R 186</b> <span class="pct">(43%)</span></div>
+              <div class="bar-track"><span class="bar-d" data-w="proj-d" style="width:57.24%"></span><span class="bar-r" data-w="proj-r" style="width:42.76%"></span></div>
             </div>
             <div class="bar-group">
-              <div class="bar-cap">House as elected (2024)</div>
-              <div class="bar-val" data-val="act"><b class="d">D 215</b> <span class="pct">(49%)</span> <span class="mid">&middot;</span> <b class="r">R 220</b> <span class="pct">(51%)</span></div>
-              <div class="bar-track"><span class="bar-d" data-w="act-d" style="width:49%"></span><span class="bar-r" data-w="act-r" style="width:51%"></span></div>
+              <div class="bar-cap" data-cap="act">As elected so far (2026)</div>
+              <div class="bar-val" data-val="act"><b class="d">D 249</b> <span class="pct">(57%)</span> <span class="mid">&middot;</span> <b class="r">R 156</b> <span class="pct">(36%)</span> <span class="mid">&middot;</span> <span class="pct">30 uncalled</span></div>
+              <div class="bar-track"><span class="bar-d" data-w="act-d" style="width:57.24%"></span><span class="bar-r" data-w="act-r" style="width:35.86%"></span></div>
               <div class="ph-today" data-today hidden></div>
             </div>
-            <div class="ph-diff" data-diff>Difference under PR: <b class="d">+17 D</b> / <b class="r">&minus;17 R</b></div>
+            <div class="ph-diff" data-diff>30 races not yet called &middot; final projection was <b class="d">D 240</b> &middot; <b class="r">R 195</b></div>
           </div>
         </div>
       </section>
@@ -1040,10 +1043,18 @@
   </script>
 
   <script>
-    // Live Proportional House projection. Renders a baked snapshot immediately,
-    // then upgrades from proportionalhouse.org/api/v1/projection.json if reachable.
+    // Live Proportional House widget. Renders a baked snapshot immediately, then
+    // upgrades from proportionalhouse.org once reachable. It follows the site's
+    // election lifecycle (the v1 API's `phase`):
+    //   projection — the daily poll-based projection (/api/v1/projection.json)
+    //   final      — counting has begun but no results yet: the frozen final
+    //                pre-election projection, labeled as such
+    //   results    — once votes are counted: PR of the counted vote vs. the
+    //                House as elected so far (/data/results_<cycle>.json, the
+    //                same file the site's homepage reads)
     (function () {
       var NS = 'http://www.w3.org/2000/svg';
+      var BASE = 'https://proportionalhouse.org';
 
       // Standard 50-state tile-grid layout: [row, col]. DC omitted (no House seat).
       var COORDS = {
@@ -1058,27 +1069,42 @@
       };
       var PITCH = 25, SIZE = 22, RAD = 3;
 
-      // Fallback snapshot of the live API (states = projected seats under PR; D 232 / R 203).
-      // Shown only if the fetch below fails; refreshed from the API when reachable.
-      // `current` stays null on purpose — a baked chamber count would go stale
-      // silently, so the "Today" line simply stays hidden without live data.
+      // Fallback snapshot of /data/results_2026.json (as of Nov 6, 2026, 8:31 AM ET).
+      // Shown only if the fetches below fail; it carries its own as-of time, so
+      // the meta line stays honest about its age. States: [code, D, R, % reporting]
+      // under PR of the votes counted (D/R null = no votes counted yet).
       var SNAP = {
-        updated: null,
-        projected: { D: 232, R: 203 },
-        actual: { D: 215, R: 220 },
+        mode: 'results',
+        cycle: 2026,
+        asOf: '2026-11-06T13:31:11Z',
+        certified: false,
+        allCalled: false,
+        seats: 435,
+        projected: { D: 249, R: 186 },
+        pending: 0,
+        actual: { D: 249, R: 156, other: 0, uncalled: 30 },
+        finalProj: { D: 240, R: 195 },
         current: null,
         states: [
-          ['AK',1,0],['AL',2,5],['AR',1,3],['AZ',5,4],['CA',35,17],['CO',5,3],['CT',3,2],['DE',1,0],['FL',14,14],['GA',7,7],
-          ['HI',2,0],['IA',2,2],['ID',1,1],['IL',10,7],['IN',4,5],['KS',2,2],['KY',2,4],['LA',2,4],['MA',9,0],['MD',5,3],
-          ['ME',1,1],['MI',7,6],['MN',4,4],['MO',3,5],['MS',1,3],['MT',1,1],['NC',6,8],['ND',0,1],['NE',1,2],['NH',1,1],
-          ['NJ',7,5],['NM',2,1],['NV',2,2],['NY',18,8],['OH',7,8],['OK',2,3],['OR',3,3],['PA',9,8],['RI',1,1],['SC',3,4],
-          ['SD',0,1],['TN',3,6],['TX',18,20],['UT',1,3],['VA',6,5],['VT',1,0],['WA',6,4],['WI',4,4],['WV',1,1],['WY',0,1]
+          ['AK',0,1,74.0],['AL',3,4,98.9],['AR',2,2,99.3],['AZ',5,4,90.4],['CA',36,16,63.6],['CO',5,3,95.2],['CT',3,2,98.3],['DE',1,0,99.1],
+          ['FL',14,14,99.5],['GA',8,6,99.8],['HI',1,1,99.0],['IA',2,2,98.9],['ID',1,1,98.9],['IL',11,6,91.6],['IN',5,4,99.0],['KS',2,2,98.7],
+          ['KY',3,3,99.5],['LA',3,3,99.6],['MA',7,2,87.4],['MD',5,3,79.2],['ME',1,1,94.7],['MI',7,6,95.1],['MN',5,3,98.8],['MO',4,4,98.7],
+          ['MS',2,2,95.4],['MT',1,1,97.5],['NC',8,6,99.1],['ND',0,1,98.2],['NE',1,2,93.9],['NH',1,1,98.0],['NJ',8,4,94.0],['NM',2,1,98.3],
+          ['NV',2,2,92.1],['NY',16,10,90.9],['OH',8,7,97.8],['OK',2,3,99.8],['OR',4,2,84.4],['PA',10,7,98.8],['RI',1,1,98.0],['SC',3,4,99.1],
+          ['SD',0,1,99.0],['TN',4,5,98.9],['TX',20,18,99.4],['UT',2,2,79.3],['VA',7,4,96.6],['VT',1,0,99.0],['WA',6,4,78.4],['WI',5,3,98.1],
+          ['WV',1,1,98.9],['WY',0,1,96.6]
         ]
       };
 
-      function toObj(s){ return Array.isArray(s) ? { code:s[0], D:+s[1], R:+s[2] } : { code:(s.code||'').toUpperCase(), D:+s.D, R:+s.R }; }
+      function num(v){ return v == null || v === '' || !isFinite(+v) ? null : +v; }
+      function toObj(s){
+        return Array.isArray(s)
+          ? { code:s[0], D:num(s[1]), R:num(s[2]), pct:num(s[3]) }
+          : { code:(s.code||'').toUpperCase(), D:num(s.D), R:num(s.R), pct:num(s.pct) };
+      }
       function rgb(c){ return 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')'; }
       function lerp(a, b, t){ return Math.round(a + (b - a) * t); }
+      function setText(sel, txt){ var el = document.querySelector(sel); if (el) el.textContent = txt; }
 
       // Diverging red -> warm neutral -> blue on the D share of a state's seats.
       function colorArr(t){
@@ -1098,15 +1124,59 @@
         return 'updated ' + Math.round(s / 86400) + 'd ago';
       }
 
-      // `seats` is the chamber size when the API reports one, so any seats held by
-      // neither party leave the track's neutral background showing through.
-      function setBar(key, D, R, seats){
+      // Election timestamps read in Eastern time, as on proportionalhouse.org
+      // (fmtAsOf in src/lib/results.ts, easternDate in src/lib/election.ts).
+      function eastern(iso, opts){
+        var ms = Date.parse(iso || ''); if (!isFinite(ms)) return '';
+        opts.timeZone = 'America/New_York';
+        try { return new Date(ms).toLocaleString('en-US', opts); } catch (e) { return ''; }
+      }
+      function fmtAsOf(iso){ var s = eastern(iso, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }); return s ? s + ' ET' : ''; }
+      function easternDate(iso){ return eastern(iso, { month:'short', day:'numeric', year:'numeric' }); }
+
+      // Every string whose meaning changes with the election phase.
+      function copyFor(data){
+        var y = data.cycle || 2026;
+        if (data.mode === 'results') {
+          var asOf = data.certified ? '' : fmtAsOf(data.asOf);
+          return {
+            meta: y + ' results · ' + (data.certified ? 'certified' : 'provisional') + (asOf ? ' · as of ' + asOf : ''),
+            link: 'full results →',
+            cap1: 'Under PR · ' + y + ' votes' + (data.certified ? '' : ' counted'),
+            cap2: (data.allCalled ? 'As elected' : 'As elected so far') + ' (' + y + ')',
+            aria: 'Map of U.S. states shaded by their House delegation under proportional representation of the ' + y +
+              ' votes' + (data.certified ? '' : ' counted so far') + ', from red (more Republican) to blue (more Democratic). Gray states have no votes counted yet.'
+          };
+        }
+        if (data.mode === 'final') {
+          var on = easternDate(data.updated);
+          return {
+            meta: 'final projection' + (on ? ' · ' + on : ''),
+            link: 'full model →',
+            cap1: 'Final ' + y + ' projection under PR',
+            cap2: 'House as elected (' + (y - 2) + ')',
+            aria: 'Map of U.S. states shaded by their final ' + y + ' projected House delegation under proportional representation, from red (more Republican) to blue (more Democratic).'
+          };
+        }
+        return {
+          meta: relTime(data.updated),
+          link: 'full model →',
+          cap1: 'Projected under PR',
+          cap2: 'House as elected (' + (y - 2) + ')',
+          aria: 'Map of U.S. states shaded by their projected House delegation under proportional representation, from red (more Republican) to blue (more Democratic).'
+        };
+      }
+
+      // `seats` is the chamber size when known, so seats held by neither party
+      // (uncalled, other, not yet reporting) leave the track's neutral
+      // background showing through — in the middle, since .bar-r is pushed right.
+      function setBar(key, D, R, seats, extra){
         var total = seats || D + R || 1;
         var dp = Math.round(D / total * 100), rp = Math.round(R / total * 100);
         var val = document.querySelector('[data-val="' + key + '"]');
-        if (val) val.innerHTML = '<b class="d">D ' + D + '</b> <span class="pct">(' + dp + '%)</span> <span class="mid">·</span> <b class="r">R ' + R + '</b> <span class="pct">(' + rp + '%)</span>';
-        var d = document.querySelector('[data-w="' + key + '-d"]'); if (d) d.style.width = dp + '%';
-        var r = document.querySelector('[data-w="' + key + '-r"]'); if (r) r.style.width = rp + '%';
+        if (val) val.innerHTML = '<b class="d">D ' + D + '</b> <span class="pct">(' + dp + '%)</span> <span class="mid">·</span> <b class="r">R ' + R + '</b> <span class="pct">(' + rp + '%)</span>' + (extra || '');
+        var d = document.querySelector('[data-w="' + key + '-d"]'); if (d) d.style.width = (D / total * 100).toFixed(2) + '%';
+        var r = document.querySelector('[data-w="' + key + '-r"]'); if (r) r.style.width = (R / total * 100).toFixed(2) + '%';
       }
 
       // Today's chamber, from the API's current_composition. Wording matches the
@@ -1124,7 +1194,27 @@
         el.hidden = false;
       }
 
-      function renderMap(states){
+      function signed(n){ return (n >= 0 ? '+' : '−') + Math.abs(n); }
+
+      // The headline difference waits until every race is called and every
+      // state has votes in, as on proportionalhouse.org; until then, say what
+      // is still outstanding.
+      function setDiff(data){
+        var de = document.querySelector('[data-diff]'); if (!de) return;
+        var unc = data.actual.uncalled || 0, pend = data.pending || 0;
+        if (data.mode === 'results' && (!data.allCalled || pend > 0)) {
+          var parts = [];
+          if (unc > 0) parts.push(unc + (unc === 1 ? ' race' : ' races') + ' not yet called');
+          if (pend > 0) parts.push(pend + (pend === 1 ? ' seat' : ' seats') + ' in states not yet reporting');
+          if (data.finalProj) parts.push('final projection was <b class="d">D ' + data.finalProj.D + '</b> · <b class="r">R ' + data.finalProj.R + '</b>');
+          de.innerHTML = parts.join(' · ') || 'Votes are still being counted';
+          return;
+        }
+        de.innerHTML = 'Difference under PR: <b class="d">' + signed(data.projected.D - data.actual.D) + ' D</b> / <b class="r">' +
+          signed(data.projected.R - data.actual.R) + ' R</b>';
+      }
+
+      function renderMap(states, results){
         var svg = document.querySelector('.usmap'); if (!svg) return;
         while (svg.firstChild) svg.removeChild(svg.firstChild);
         var by = {}; states.forEach(function (s) { by[s.code] = s; });
@@ -1132,13 +1222,24 @@
         Object.keys(COORDS).forEach(function (code) {
           var pos = COORDS[code], s = by[code];
           var x = pos[1] * PITCH, y = pos[0] * PITCH;
-          var D = s ? s.D : 0, R = s ? s.R : 0, tot = D + R;
-          var col = tot ? colorArr(D / tot) : null;
+          var D = s ? s.D : null, R = s ? s.R : null;
+          var has = D != null && R != null && D + R > 0;
+          var col = has ? colorArr(D / (D + R)) : null;
           var g = document.createElementNS(NS, 'g');
           g.setAttribute('class', 'tile');
           g.style.animationDelay = (i * 9) + 'ms';
           var title = document.createElementNS(NS, 'title');
-          title.textContent = code + ' — D ' + D + ' · R ' + R;
+          var tip = code;
+          if (D == null || R == null) tip += results ? ' — not yet reporting' : '';
+          else {
+            tip += ' — D ' + D + ' · R ' + R;
+            if (results) {
+              tip += ' under PR';
+              var p = s.pct;
+              if (p != null && p < 100) tip += ' · ' + (p > 99 ? '>99' : Math.round(p)) + '% reporting';
+            }
+          }
+          title.textContent = tip;
           var rect = document.createElementNS(NS, 'rect');
           rect.setAttribute('x', x); rect.setAttribute('y', y);
           rect.setAttribute('width', SIZE); rect.setAttribute('height', SIZE);
@@ -1155,26 +1256,33 @@
       }
 
       function render(data){
+        var c = copyFor(data);
+        setText('[data-cap="proj"]', c.cap1);
+        setText('[data-cap="act"]', c.cap2);
+        setText('[data-updated]', c.meta);
+        setText('[data-ph-link]', c.link);
+        var svg = document.querySelector('.usmap'); if (svg) svg.setAttribute('aria-label', c.aria);
+
         setBar('proj', data.projected.D, data.projected.R, data.seats);
-        setBar('act', data.actual.D, data.actual.R, data.seats);
-        setToday(data.current);
-        var diff = data.projected.D - data.actual.D;
-        var de = document.querySelector('[data-diff]');
-        if (de) {
-          var dTxt = (diff >= 0 ? '+' : '−') + Math.abs(diff) + ' D';
-          var rTxt = (diff >= 0 ? '−' : '+') + Math.abs(diff) + ' R';
-          de.innerHTML = 'Difference under PR: <b class="d">' + dTxt + '</b> / <b class="r">' + rTxt + '</b>';
-        }
-        var up = document.querySelector('[data-updated]');
-        if (up) up.textContent = relTime(data.updated);
-        renderMap(data.states.map(toObj));
+        var extra = '', a = data.actual;
+        if (a.other > 0) extra += ' <span class="mid">·</span> <span class="pct">' + a.other + ' other</span>';
+        if (a.uncalled > 0) extra += ' <span class="mid">·</span> <span class="pct">' + a.uncalled + ' uncalled</span>';
+        setBar('act', a.D, a.R, data.seats, extra);
+        // The sitting House is the outgoing one once results are in; showing it
+        // beside the new results would read as a third count of the same thing.
+        setToday(data.mode === 'results' ? null : data.current);
+        setDiff(data);
+        renderMap(data.states.map(toObj), data.mode === 'results');
       }
 
       // Map the stable public v1 API shape onto what render() expects. The map
       // colors states by their projected-under-PR delegation. See apiShape.ts in
       // the-proportional-house repo for the documented schema.
       function fromV1(d){
+        var phase = d.phase || 'projection';
         return {
+          mode: phase === 'projection' ? 'projection' : 'final',
+          cycle: (d.election && Number(d.election.cycle)) || null,
           updated: d.generated_at,
           seats: Number(d.national.total_seats) || 0,
           projected: { D: d.national.projected.D, R: d.national.projected.R },
@@ -1184,18 +1292,58 @@
         };
       }
 
-      function load(){
-        if (!window.fetch || !window.AbortController) return;
+      // Results file (results_<cycle>.json, built by the site's
+      // data-pipeline/build_results.py) onto the same render shape.
+      function fromResults(r, v1){
+        var m = r.meta, n = r.national, pr = n.under_pr, el = n.as_elected;
+        var fp = r.vs_final_projection && r.vs_final_projection.final_projected_pr;
+        return {
+          mode: 'results',
+          cycle: Number(m.cycle) || v1.cycle,
+          asOf: m.as_of || m.generated_at,
+          certified: !!m.all_certified,
+          allCalled: !!m.all_called,
+          seats: Number(n.seats) || v1.seats,
+          projected: { D: pr.d_seats, R: pr.r_seats },
+          pending: Number(pr.pending_seats) || 0,
+          actual: { D: el.d_seats, R: el.r_seats, other: Number(el.other_seats) || 0, uncalled: Number(el.uncalled_seats) || 0 },
+          finalProj: fp ? { D: fp.d_seats, R: fp.r_seats } : v1.projected,
+          current: null,
+          states: r.states.map(function (s) {
+            return { code: s.code, D: s.under_pr ? s.under_pr.d_seats : null, R: s.under_pr ? s.under_pr.r_seats : null, pct: s.reporting_pct };
+          })
+        };
+      }
+
+      function validV1(d){ return d && d.national && d.national.projected && d.national.actual && Array.isArray(d.states); }
+      function hasResults(r){
+        return r && r.meta && r.national && r.national.under_pr && r.national.as_elected && Array.isArray(r.states) &&
+          r.states.some(function (s) { return s && s.under_pr; });
+      }
+
+      function get(url){
         var ctrl = new AbortController();
         var to = setTimeout(function () { ctrl.abort(); }, 6000);
-        fetch('https://proportionalhouse.org/api/v1/projection.json', { cache: 'no-store', signal: ctrl.signal })
-          .then(function (r) { clearTimeout(to); if (!r.ok) throw 0; return r.text(); })
-          .then(function (txt) {
-            var d; try { d = JSON.parse(txt); } catch (e) { throw 0; } // SPA HTML fallback won't parse
-            if (!d || !d.national || !d.national.projected || !d.national.actual || !Array.isArray(d.states)) throw 0;
-            render(fromV1(d));
+        return fetch(url, { cache: 'no-store', signal: ctrl.signal })
+          .then(function (r) { clearTimeout(to); if (!r.ok) throw 0; return r.text(); },
+                function (e) { clearTimeout(to); throw e; })
+          .then(function (txt) { try { return JSON.parse(txt); } catch (e) { throw 0; } }); // SPA HTML fallback won't parse
+      }
+
+      function load(){
+        if (!window.fetch || !window.AbortController) return;
+        get(BASE + '/api/v1/projection.json')
+          .then(function (d) {
+            if (!validV1(d)) throw 0;
+            var v1 = fromV1(d);
+            if (v1.mode === 'projection' || !v1.cycle) { render(v1); return; }
+            // Election under way: prefer counted results; until any state has
+            // votes in (or if the file can't be read), show the frozen projection.
+            return get(BASE + '/data/results_' + v1.cycle + '.json')
+              .then(function (r) { render(hasResults(r) ? fromResults(r, v1) : v1); },
+                    function () { render(v1); });
           })
-          .catch(function () { clearTimeout(to); }); // keep baked snapshot already on screen
+          .catch(function () {}); // keep baked snapshot already on screen
       }
 
       render(SNAP);
