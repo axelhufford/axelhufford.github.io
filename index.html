@@ -593,6 +593,7 @@
       transform-origin: left center;
       animation: bar-grow 640ms cubic-bezier(0.34, 1.1, 0.5, 1) both;
     }
+    .gb-still .gb-bar, .gb-still .gb-gap { animation: none; }
     .gb-bar.r { background: var(--gb-r); }
     .gb-bar.d { background: var(--gb-d); }
     .gb-bar.n { background: var(--gb-none); color: var(--ink); }
@@ -1305,18 +1306,23 @@
   </script>
 
   <script>
-    // Good Behaviour seat timeline: the nine current seats since 1990, in
-    // seniority order and named for today's justice, as on goodbehaviour.org.
-    // Data is baked from that repo's data/build/scotus.json (as of ASOF);
-    // refresh it when the Court changes. Sitting justices' bars run to today.
+    // Good Behaviour seat timeline: the current seats since 1990, in seniority
+    // order and named for today's justice, as on goodbehaviour.org. Renders a
+    // baked copy immediately, then reads goodbehaviour.org's /api/v1/court.json
+    // (rebuilt on every deploy there, so its asOf advances weekly with the
+    // site's data refresh). If the Court in the feed matches the baked copy,
+    // only the as-of date changes; if it differs (a retirement, a new justice),
+    // the chart redraws from the feed. Sitting justices' bars run to today.
     (function () {
       var SITE = 'https://goodbehaviour.org';
+      var FEED = SITE + '/api/v1/court.json';
       var ASOF = '2026-11-08';
       var FROM = '1990-01-01';
 
       // Segments, oldest first.
       //   tenure:  ['t', slug, name, surname, role, start, end|null, party, president, endReason]
       //   vacancy: ['v', start, end|null]
+      // Baked from data/build/scotus.json in the Good Behaviour repo, as of ASOF.
       var COURT = [
         { seat: 1, name: 'John Roberts', chief: true, segs: [
           ['t','william-rehnquist','William H. Rehnquist','Rehnquist','chief','1986-09-26','2005-09-03','republican','Reagan','died'],
@@ -1375,6 +1381,7 @@
       var chart = document.querySelector('[data-gb-chart]');
       var note = document.querySelector('[data-gb-note]');
       if (!chart) return;
+      var court = COURT, asOf = ASOF;
 
       var DAY = 864e5;
       function ms(iso){ var p = iso.split('-'); return Date.UTC(+p[0], +p[1] - 1, +p[2]); }
@@ -1413,7 +1420,7 @@
       // Default line, worded like the "The Court on" panel on goodbehaviour.org.
       function summary(){
         var sitting = [];
-        COURT.forEach(function (row) {
+        court.forEach(function (row) {
           row.segs.forEach(function (s) { if (s[0] === 't' && !s[6]) sitting.push(s); });
         });
         var R = 0, D = 0;
@@ -1421,72 +1428,82 @@
         var ys = sitting.map(function (s) { return years(ms(s[5]), TODAY); }).sort(function (a, b) { return a - b; });
         var mid = Math.floor(ys.length / 2);
         var med = ys.length ? (ys.length % 2 ? ys[mid] : (ys[mid - 1] + ys[mid]) / 2) : 0;
-        return sitting.length + ' of ' + COURT.length + ' seats filled · <span class="r">' + R +
+        return sitting.length + ' of ' + court.length + ' seats filled · <span class="r">' + R +
           '</span> appointed by Republican presidents, <span class="d">' + D + '</span> by Democratic · median service ' +
           med.toFixed(1) + ' years';
       }
 
       var ticks = [];
       for (var y = Y0; y <= new Date(TODAY).getUTCFullYear(); y += 10) ticks.push(y);
+      var base = '';
 
-      var html = '';
-      COURT.forEach(function (row, ri) {
-        var inner = '';
+      // `still` skips the grow-in animation, for a redraw after the feed loads.
+      function draw(still){
+        var html = '';
+        court.forEach(function (row, ri) {
+          var inner = '';
+          ticks.forEach(function (y) {
+            if (y > Y0) inner += '<span class="gb-grid" style="left:' + pos(Date.UTC(y, 0, 1)).toFixed(3) + '%"></span>';
+          });
+          row.segs.forEach(function (s, si) {
+            var a = ms(s[0] === 'v' ? s[1] : s[5]);
+            var b = s[0] === 'v' ? (s[2] ? ms(s[2]) : TODAY) : end(s);
+            if (b <= T0) return;
+            var l = pos(a), w = pos(b) - l;
+            var delay = Math.round(l / 100 * 520 + ri * 18);
+            var id = ri + ':' + si;
+            if (s[0] === 'v') {
+              var days = Math.round((b - a) / DAY);
+              inner += '<span class="gb-gap' + (w > 1.5 ? ' wide' : '') + '" data-gb="' + id + '" role="img" aria-label="Seat vacant ' +
+                days + ' days, ' + fmt(s[1]) + ' to ' + (s[2] ? fmt(s[2]) : 'today') + '" style="--l:' + l.toFixed(3) + '%;--w:' +
+                w.toFixed(3) + '%;animation-delay:' + (delay + 260) + 'ms"></span>';
+              return;
+            }
+            var label = s[2] + ', ' + roleOf(s) + ', ' + s[5].slice(0, 4) + '–' + (s[6] ? s[6].slice(0, 4) : 'present') + ', appointed by ' + s[8];
+            inner += '<a class="gb-bar ' + cls(s[7]) + (a < T0 ? ' clip' : '') + '" data-gb="' + id + '" href="' + SITE + '/justice/' +
+              esc(s[1]) + '" target="_blank" rel="noopener noreferrer" aria-label="' + esc(label) + '" style="left:' + l.toFixed(3) +
+              '%;width:' + w.toFixed(3) + '%;animation-delay:' + delay + 'ms">' +
+              (s[6] ? '<span>' + esc(s[3]) + '</span>' : '') + '</a>';
+          });
+          // Today's justice, named at the right end of the row (surname only on
+          // phones). The bar itself is the keyboard/screen-reader link, so this
+          // duplicate is hidden from both.
+          var ci = -1;
+          row.segs.forEach(function (s, si) { if (s[0] === 't' && !s[6]) ci = si; });
+          var cur = row.segs[ci];
+          var chief = row.chief ? '<span class="gb-chief"><span class="full">Chief</span><span class="short">CJ</span></span>' : '';
+          html += '<div class="gb-track">' + inner + '</div>' + (cur
+            ? '<a class="gb-label" data-gb="' + ri + ':' + ci + '" href="' + SITE + '/justice/' + esc(cur[1]) +
+              '" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><span class="full">' + esc(row.name) +
+              '</span><span class="short">' + esc(cur[3]) + '</span>' + chief + '</a>'
+            : '<span class="gb-label"' + (row.segs.length && row.segs[row.segs.length - 1][0] === 'v' ? ' data-gb="' + ri + ':' +
+              (row.segs.length - 1) + '"' : '') + '>' + esc(row.name) + '</span>');
+        });
+
+        var ax = '';
         ticks.forEach(function (y) {
-          if (y > Y0) inner += '<span class="gb-grid" style="left:' + pos(Date.UTC(y, 0, 1)).toFixed(3) + '%"></span>';
+          var p = pos(Date.UTC(y, 0, 1));
+          if (y === Y0 || p < 92) ax += '<span' + (y === Y0 ? ' class="first"' : '') + ' style="left:' + p.toFixed(3) + '%">' + y + '</span>';
         });
-        row.segs.forEach(function (s, si) {
-          var a = ms(s[0] === 'v' ? s[1] : s[5]);
-          var b = s[0] === 'v' ? (s[2] ? ms(s[2]) : TODAY) : end(s);
-          if (b <= T0) return;
-          var l = pos(a), w = pos(b) - l;
-          var delay = Math.round(l / 100 * 520 + ri * 18);
-          var id = ri + ':' + si;
-          if (s[0] === 'v') {
-            var days = Math.round((b - a) / DAY);
-            inner += '<span class="gb-gap' + (w > 1.5 ? ' wide' : '') + '" data-gb="' + id + '" role="img" aria-label="Seat vacant ' +
-              days + ' days, ' + fmt(s[1]) + ' to ' + (s[2] ? fmt(s[2]) : 'today') + '" style="--l:' + l.toFixed(3) + '%;--w:' +
-              w.toFixed(3) + '%;animation-delay:' + (delay + 260) + 'ms"></span>';
-            return;
-          }
-          var label = s[2] + ', ' + roleOf(s) + ', ' + s[5].slice(0, 4) + '–' + (s[6] ? s[6].slice(0, 4) : 'present') + ', appointed by ' + s[8];
-          inner += '<a class="gb-bar ' + cls(s[7]) + (a < T0 ? ' clip' : '') + '" data-gb="' + id + '" href="' + SITE + '/justice/' +
-            esc(s[1]) + '" target="_blank" rel="noopener noreferrer" aria-label="' + esc(label) + '" style="left:' + l.toFixed(3) +
-            '%;width:' + w.toFixed(3) + '%;animation-delay:' + delay + 'ms">' +
-            (s[6] ? '<span>' + esc(s[3]) + '</span>' : '') + '</a>';
-        });
-        // Today's justice, named at the right end of the row (surname only on
-        // phones). The bar itself is the keyboard/screen-reader link, so this
-        // duplicate is hidden from both.
-        var ci = -1;
-        row.segs.forEach(function (s, si) { if (s[0] === 't' && !s[6]) ci = si; });
-        var cur = row.segs[ci];
-        var chief = row.chief ? '<span class="gb-chief"><span class="full">Chief</span><span class="short">CJ</span></span>' : '';
-        html += '<div class="gb-track">' + inner + '</div>' + (cur
-          ? '<a class="gb-label" data-gb="' + ri + ':' + ci + '" href="' + SITE + '/justice/' + esc(cur[1]) +
-            '" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><span class="full">' + esc(row.name) +
-            '</span><span class="short">' + esc(cur[3]) + '</span>' + chief + '</a>'
-          : '<span class="gb-label">' + esc(row.name) + '</span>');
-      });
+        chart.classList.toggle('gb-still', !!still);
+        chart.innerHTML = html + '<div class="gb-axis" aria-hidden="true">' + ax + '<span class="last" style="left:100%">today</span></div>';
+        setAsOf();
+        base = summary();
+        if (note) note.innerHTML = base;
+        fit();
+      }
 
-      var ax = '';
-      ticks.forEach(function (y) {
-        var p = pos(Date.UTC(y, 0, 1));
-        if (y === Y0 || p < 92) ax += '<span' + (y === Y0 ? ' class="first"' : '') + ' style="left:' + p.toFixed(3) + '%">' + y + '</span>';
-      });
-      chart.innerHTML = html + '<div class="gb-axis" aria-hidden="true">' + ax + '<span class="last" style="left:100%">today</span></div>';
-
-      var meta = document.querySelector('[data-gb-asof]');
-      if (meta) meta.textContent = 'as of ' + fmt(ASOF);
-
-      var base = summary();
-      if (note) note.innerHTML = base;
+      function setAsOf(){
+        var meta = document.querySelector('[data-gb-asof]');
+        if (meta) meta.textContent = 'as of ' + fmt(asOf);
+      }
 
       function show(el){
         if (!note) return;
         var k = el && el.getAttribute('data-gb');
         if (!k) { note.innerHTML = base; return; }
-        var p = k.split(':'), segs = COURT[+p[0]].segs, i = +p[1];
+        var p = k.split(':'), segs = court[+p[0]] && court[+p[0]].segs, i = +p[1];
+        if (!segs || !segs[i]) { note.innerHTML = base; return; }
         note.innerHTML = segs[i][0] === 'v' ? vacancyNote(segs, i) : tenureNote(segs[i]);
       }
       chart.addEventListener('mouseover', function (e) { show(e.target.closest('[data-gb]')); });
@@ -1511,12 +1528,69 @@
           if (marks[j].getBoundingClientRect().right > edge) marks[j].style.visibility = 'hidden';
         }
       }
-      fit();
       var raf = 0;
       window.addEventListener('resize', function () {
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(fit);
       });
+
+      // "John G. Roberts, Jr." -> "John Roberts": drop middle initials and suffixes.
+      function displayName(n){
+        return String(n).replace(/,?\s+(Jr|Sr|II|III|IV)\.?$/, '').split(/\s+/)
+          .filter(function (w) { return !/^[A-Z]\.$/.test(w); }).join(' ');
+      }
+
+      // Feed seats onto the tuple form above. Anything unexpected returns
+      // null, which leaves the baked copy on screen.
+      var ISO = /^\d{4}-\d{2}-\d{2}$/;
+      function fromFeed(f){
+        if (!f || f.version !== 1 || !Array.isArray(f.seats) || !f.seats.length || !ISO.test(f.asOf)) return null;
+        var rows = [];
+        for (var i = 0; i < f.seats.length; i++) {
+          var st = f.seats[i], segs = [], holder = null;
+          if (!st || !Array.isArray(st.segments)) return null;
+          for (var j = 0; j < st.segments.length; j++) {
+            var g = st.segments[j];
+            if (!g || !ISO.test(g.start) || (g.end !== null && !ISO.test(g.end))) return null;
+            if (g.type === 'vacancy') { segs.push(['v', g.start, g.end]); continue; }
+            if (g.type !== 'tenure' || !g.person || !g.name) return null;
+            var t = ['t', String(g.person), String(g.name), String(g.surname || g.name), g.role === 'chief' ? 'chief' : 'associate',
+              g.start, g.end, String(g.party || ''), String(g.president || ''), String(g.endReason || '')];
+            if (!g.end) holder = t;
+            segs.push(t);
+          }
+          rows.push({ seat: st.n, name: holder ? displayName(holder[2]) : 'Vacant', chief: !!st.chief, segs: segs });
+        }
+        return { court: rows, asOf: f.asOf };
+      }
+
+      // What the chart shows: seats, names, and every segment in the window.
+      function shape(rows){
+        return JSON.stringify(rows.map(function (r) {
+          return [r.seat, r.name, r.chief, r.segs.filter(function (s) {
+            var e = s[0] === 'v' ? s[2] : s[6];
+            return e === null || e >= FROM;
+          })];
+        }));
+      }
+
+      function load(){
+        if (!window.fetch || !window.AbortController) return;
+        var ctrl = new AbortController();
+        var to = setTimeout(function () { ctrl.abort(); }, 6000);
+        fetch(FEED, { cache: 'no-store', signal: ctrl.signal })
+          .then(function (r) { clearTimeout(to); if (!r.ok) throw 0; return r.json(); })
+          .then(function (f) {
+            var got = fromFeed(f); if (!got) return;
+            var changed = shape(got.court) !== shape(court);
+            court = got.court; asOf = got.asOf;
+            if (changed) draw(true); else setAsOf();
+          })
+          .catch(function () { clearTimeout(to); }); // keep the baked copy on screen
+      }
+
+      draw(false);
+      load();
     })();
   </script>
 
