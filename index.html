@@ -529,21 +529,26 @@
     }
     .gb-live .movi-live-meta a:hover { color: var(--gb-accent); }
     .gb-live .movi-live-title { text-wrap: balance; }
-    .gb-chart { display: grid; gap: 6px; }
-    .gb-row {
+    /* One grid for every seat, so all tracks share a time axis. Today's
+       justice is named on the right, at the "today" end of their bar; the
+       name column is as wide as the longest name. */
+    .gb-chart {
       display: grid;
-      grid-template-columns: 158px minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) max-content;
       align-items: center;
-      gap: 0 14px;
+      gap: 6px 12px;
     }
     .gb-label {
       font-size: 0.8rem;
       font-weight: 500;
       line-height: 1.2;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 180ms var(--ease);
     }
+    .gb-label:hover { color: var(--gb-accent); }
+    .gb-label .short { display: none; }
     .gb-chief {
       font-family: var(--mono);
       font-size: 0.56rem;
@@ -624,8 +629,9 @@
     .gb-gap:hover { outline: 1.5px solid var(--gb-accent); outline-offset: -1.5px; }
     .gb-axis {
       position: relative;
+      grid-column: 1;
       height: 14px;
-      margin: 9px 0 0 172px;
+      margin-top: 3px;
       font-family: var(--mono);
       font-size: 0.58rem;
       letter-spacing: 0.06em;
@@ -928,12 +934,12 @@
       .row-main { grid-column: 2; }
       .row-domain { grid-column: 2; grid-row: 2; justify-self: start; }
       .gb-live { padding: 18px 16px 20px; }
-      .gb-chart { gap: 9px; }
-      .gb-row { grid-template-columns: minmax(0, 1fr); row-gap: 4px; }
-      .gb-label { font-size: 0.74rem; }
-      .gb-track { height: 17px; }
-      .gb-grid { top: 0; bottom: 0; }
-      .gb-axis { margin-left: 0; }
+      .gb-chart { gap: 7px 9px; }
+      .gb-label { font-size: 0.72rem; }
+      .gb-label .full { display: none; }
+      .gb-label .short { display: inline; }
+      .gb-chief { margin-left: 5px; }
+      .gb-track { height: 18px; }
       .gb-note { flex-basis: 100%; min-height: 3em; }
       .ph-live { padding: 18px 16px 20px; }
       .ph-live-body { grid-template-columns: 1fr; gap: 18px; }
@@ -1018,18 +1024,17 @@
         <span class="row-num" aria-hidden="true">01</span>
         <span class="row-main">
           <span class="row-name">Good Behaviour</span>
-          <span class="row-desc">Every Supreme Court seat since 1789, justice by justice—who held it, who appointed them, and how long it sat vacant.</span>
+          <span class="row-desc">Every seat on the Supreme Court and the federal courts of appeals, judge by judge—who held it, who appointed them, and how long it sat vacant.</span>
         </span>
         <span class="row-domain">goodbehaviour.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
       <section class="gb-live reveal reveal-3" aria-labelledby="gb-live-title">
         <div class="movi-live-head">
-          <span class="movi-live-title" id="gb-live-title">The Court since 1990, seat by seat</span>
+          <span class="movi-live-title" id="gb-live-title">The Supreme Court since 1990, seat by seat</span>
           <span class="movi-live-meta"><span data-gb-asof>as of Nov 8, 2026</span> &middot; <a href="https://goodbehaviour.org" target="_blank" rel="noopener noreferrer">full timeline &rarr;</a></span>
         </div>
         <div class="gb-chart" data-gb-chart></div>
-        <div class="gb-axis" data-gb-axis aria-hidden="true"></div>
         <div class="gb-foot">
           <div class="gb-note" data-gb-note aria-live="polite">9 of 9 seats filled &middot; <span class="r">6</span> appointed by Republican presidents, <span class="d">3</span> by Democratic &middot; median service 16.3 years</div>
           <div class="gb-legend" aria-hidden="true">
@@ -1363,7 +1368,6 @@
         elevated: 'elevated to Chief Justice', rejected: 'rejected by the Senate', removed: 'removed' };
 
       var chart = document.querySelector('[data-gb-chart]');
-      var axis = document.querySelector('[data-gb-axis]');
       var note = document.querySelector('[data-gb-note]');
       if (!chart) return;
 
@@ -1446,19 +1450,26 @@
             '%;width:' + w.toFixed(3) + '%;animation-delay:' + delay + 'ms">' +
             (s[6] ? '<span>' + esc(s[3]) + '</span>' : '') + '</a>';
         });
-        html += '<div class="gb-row"><div class="gb-label">' + esc(row.name) + (row.chief ? '<span class="gb-chief">Chief</span>' : '') +
-          '</div><div class="gb-track">' + inner + '</div></div>';
+        // Today's justice, named at the right end of the row (surname only on
+        // phones). The bar itself is the keyboard/screen-reader link, so this
+        // duplicate is hidden from both.
+        var ci = -1;
+        row.segs.forEach(function (s, si) { if (s[0] === 't' && !s[6]) ci = si; });
+        var cur = row.segs[ci];
+        var chief = row.chief ? '<span class="gb-chief"><span class="full">Chief</span><span class="short">CJ</span></span>' : '';
+        html += '<div class="gb-track">' + inner + '</div>' + (cur
+          ? '<a class="gb-label" data-gb="' + ri + ':' + ci + '" href="' + SITE + '/justice/' + esc(cur[1]) +
+            '" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><span class="full">' + esc(row.name) +
+            '</span><span class="short">' + esc(cur[3]) + '</span>' + chief + '</a>'
+          : '<span class="gb-label">' + esc(row.name) + '</span>');
       });
-      chart.innerHTML = html;
 
-      if (axis) {
-        var ax = '';
-        ticks.forEach(function (y) {
-          var p = pos(Date.UTC(y, 0, 1));
-          if (y === Y0 || p < 92) ax += '<span' + (y === Y0 ? ' class="first"' : '') + ' style="left:' + p.toFixed(3) + '%">' + y + '</span>';
-        });
-        axis.innerHTML = ax + '<span class="last" style="left:100%">today</span>';
-      }
+      var ax = '';
+      ticks.forEach(function (y) {
+        var p = pos(Date.UTC(y, 0, 1));
+        if (y === Y0 || p < 92) ax += '<span' + (y === Y0 ? ' class="first"' : '') + ' style="left:' + p.toFixed(3) + '%">' + y + '</span>';
+      });
+      chart.innerHTML = html + '<div class="gb-axis" aria-hidden="true">' + ax + '<span class="last" style="left:100%">today</span></div>';
 
       var meta = document.querySelector('[data-gb-asof]');
       if (meta) meta.textContent = 'as of ' + fmt(ASOF);
@@ -1478,12 +1489,21 @@
       chart.addEventListener('focusin', function (e) { show(e.target.closest('[data-gb]')); });
       chart.addEventListener('focusout', function () { show(null); });
 
-      // Hide a predecessor's name when its bar is too narrow to hold it.
+      // Hide a predecessor's name when its bar is too narrow to hold it, and
+      // any decade tick that would run into the "today" label.
       function fit(){
         var spans = chart.querySelectorAll('.gb-bar > span');
         for (var i = 0; i < spans.length; i++) {
           var bar = spans[i].parentNode;
           bar.classList.toggle('nofit', spans[i].offsetWidth > bar.clientWidth);
+        }
+        var today = chart.querySelector('.gb-axis .last');
+        var marks = chart.querySelectorAll('.gb-axis span:not(.last)');
+        if (!today) return;
+        var edge = today.getBoundingClientRect().left - 8;
+        for (var j = 0; j < marks.length; j++) {
+          marks[j].style.visibility = '';
+          if (marks[j].getBoundingClientRect().right > edge) marks[j].style.visibility = 'hidden';
         }
       }
       fit();
