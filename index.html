@@ -152,6 +152,7 @@
     }
     .row:first-child { border-top: 1px solid var(--rule); }
 
+    .row-gb   { --accent: #7A2E26; --tint: rgba(122, 46, 38, 0.07); }
     .row-ph   { --accent: #4A5E8F; --tint: rgba(124, 142, 200, 0.10); }
     .row-movi { --accent: #C73B3B; --tint: rgba(255, 77, 77, 0.07); }
     .row-4q   { --accent: #B45309; --tint: rgba(249, 115, 22, 0.08); }
@@ -246,6 +247,25 @@
     .sprocket-top { top: 2px; }
     .sprocket-bot { bottom: 2px; }
 
+    /* Good Behaviour: the site's favicon (seat rows, one hatched vacancy).
+       Muted at rest; on hover the bars take party colors and draw left to right. */
+    .logo-gb svg { width: 52px; height: 52px; display: block; }
+    .gb-lb {
+      fill: #857E70;
+      transform-box: fill-box;
+      transform-origin: left center;
+      transition: fill 480ms var(--ease);
+    }
+    .gb-logo-hatch line {
+      stroke: #A6A192;
+      stroke-width: 1.4;
+      transition: stroke 480ms var(--ease);
+    }
+    @keyframes gb-draw {
+      0%   { transform: scaleX(0); }
+      100% { transform: scaleX(1); }
+    }
+
     /* The Proportional House */
     .logo-ph svg { width: 52px; height: 52px; display: block; }
     .ph-bar {
@@ -274,6 +294,13 @@
       .row:hover .row-name { color: var(--accent); font-style: italic; }
       .row:hover .row-domain { color: var(--accent); }
       .row:hover .arrow { transform: translateX(4px); }
+      .row-gb:hover .gb-lb { animation: gb-draw 560ms cubic-bezier(0.34, 1.1, 0.5, 1) both; }
+      .row-gb:hover .gb-lb-1 { fill: #AE3C33; animation-delay: 0.00s; transition-delay: 0.00s; }
+      .row-gb:hover .gb-lb-3 { fill: #2D5CA3; animation-delay: 0.06s; transition-delay: 0.06s; }
+      .row-gb:hover .gb-lb-5 { fill: #AEA594; animation-delay: 0.12s; transition-delay: 0.12s; }
+      .row-gb:hover .gb-lb-4 { fill: #AE3C33; animation-delay: 0.20s; transition-delay: 0.20s; }
+      .row-gb:hover .gb-lb-2 { fill: #2D5CA3; animation-delay: 0.32s; transition-delay: 0.32s; }
+      .row-gb:hover .gb-logo-hatch line { stroke: #7A2E26; }
       .row-ph:hover .ph-bar { animation: ph-rise 600ms cubic-bezier(0.34, 1.3, 0.5, 1) both; }
       .row-ph:hover .ph-bar-1 { fill: #c46060; animation-delay: 0.00s; transition-delay: 0.00s; }
       .row-ph:hover .ph-bar-2 { fill: #b25e7e; animation-delay: 0.05s; transition-delay: 0.05s; }
@@ -295,6 +322,13 @@
     .row:focus-visible .row-name { color: var(--accent); font-style: italic; }
     .row:focus-visible .row-domain { color: var(--accent); }
     .row:focus-visible .arrow { transform: translateX(4px); }
+    .row-gb:focus-visible .gb-lb { animation: gb-draw 560ms cubic-bezier(0.34, 1.1, 0.5, 1) both; }
+    .row-gb:focus-visible .gb-lb-1 { fill: #AE3C33; animation-delay: 0.00s; transition-delay: 0.00s; }
+    .row-gb:focus-visible .gb-lb-3 { fill: #2D5CA3; animation-delay: 0.06s; transition-delay: 0.06s; }
+    .row-gb:focus-visible .gb-lb-5 { fill: #AEA594; animation-delay: 0.12s; transition-delay: 0.12s; }
+    .row-gb:focus-visible .gb-lb-4 { fill: #AE3C33; animation-delay: 0.20s; transition-delay: 0.20s; }
+    .row-gb:focus-visible .gb-lb-2 { fill: #2D5CA3; animation-delay: 0.32s; transition-delay: 0.32s; }
+    .row-gb:focus-visible .gb-logo-hatch line { stroke: #7A2E26; }
     .row-ph:focus-visible .ph-bar { animation: ph-rise 600ms cubic-bezier(0.34, 1.3, 0.5, 1) both; }
     .row-ph:focus-visible .ph-bar-1 { fill: #c46060; animation-delay: 0.00s; transition-delay: 0.00s; }
     .row-ph:focus-visible .ph-bar-2 { fill: #b25e7e; animation-delay: 0.05s; transition-delay: 0.05s; }
@@ -321,6 +355,8 @@
     .reveal-7 { animation-delay: 480ms; }
     .reveal-8 { animation-delay: 550ms; }
     .reveal-9 { animation-delay: 620ms; }
+    .reveal-10 { animation-delay: 690ms; }
+    .reveal-11 { animation-delay: 760ms; }
     @keyframes reveal {
       to { opacity: 1; transform: none; }
     }
@@ -475,6 +511,171 @@
     }
     .ph-today .d { color: var(--dem); }
     .ph-today .r { color: var(--rep); }
+
+    /* Good Behaviour seat timeline module. Colors are goodbehaviour.org's own
+       (light theme): muted party hues, oxblood accent, hatched vacancies. */
+    .gb-live {
+      --gb-r: #AE3C33;
+      --gb-d: #2D5CA3;
+      --gb-none: #AEA594;
+      --gb-accent: #7A2E26;
+      --gb-hatch: rgba(29, 27, 24, 0.42);
+      margin: 6px 0 2px;
+      padding: 20px 20px 22px;
+      background: rgba(122, 46, 38, 0.04);
+      border: 1px solid var(--rule);
+      border-left: 2px solid var(--gb-accent);
+      border-radius: 3px;
+    }
+    .gb-live .movi-live-meta a:hover { color: var(--gb-accent); }
+    .gb-live .movi-live-title { text-wrap: balance; }
+    .gb-chart { display: grid; gap: 6px; }
+    .gb-row {
+      display: grid;
+      grid-template-columns: 158px minmax(0, 1fr);
+      align-items: center;
+      gap: 0 14px;
+    }
+    .gb-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .gb-chief {
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gb-accent);
+      margin-left: 7px;
+    }
+    .gb-track {
+      position: relative;
+      height: 20px;
+      border-radius: 2px;
+      background: rgba(226, 224, 215, 0.6);
+    }
+    .gb-grid {
+      position: absolute;
+      top: -3px;
+      bottom: -3px;
+      width: 1px;
+      background: rgba(28, 26, 21, 0.07);
+      pointer-events: none;
+    }
+    .gb-bar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 2px;
+      border-right: 1px solid var(--paper);
+      color: #FFFDF8;
+      text-decoration: none;
+      outline: none;
+      transform-origin: left center;
+      animation: bar-grow 640ms cubic-bezier(0.34, 1.1, 0.5, 1) both;
+    }
+    .gb-bar.r { background: var(--gb-r); }
+    .gb-bar.d { background: var(--gb-d); }
+    .gb-bar.n { background: var(--gb-none); color: var(--ink); }
+    /* Tenure began before the window: square, faded left edge. */
+    .gb-bar.clip {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.3), #000 18px);
+      mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.3), #000 18px);
+    }
+    .gb-bar span {
+      flex: none;
+      padding: 0 7px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+    .gb-bar.clip span { padding-left: 12px; }
+    .gb-bar.nofit span { visibility: hidden; }
+    .gb-bar:hover,
+    .gb-bar:focus-visible { z-index: 3; box-shadow: 0 0 0 1.5px var(--ink); }
+    .gb-bar.clip:hover,
+    .gb-bar.clip:focus-visible { box-shadow: inset 0 0 0 1.5px var(--ink); }
+    /* Vacancies: true width, but never thinner than 2px, kept centered. */
+    .gb-gap {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 2;
+      left: calc(var(--l) + (var(--w) - max(var(--w), 2px)) / 2);
+      width: max(var(--w), 2px);
+      background-color: #F4F1EB;
+      background-image: repeating-linear-gradient(45deg, var(--gb-hatch) 0 1px, transparent 1px 4px);
+      animation: tile-in 460ms var(--ease) both;
+    }
+    .gb-gap::before { content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px; }
+    .gb-gap.wide { outline: 1px dashed var(--gb-hatch); outline-offset: -1px; }
+    .gb-gap:hover { outline: 1.5px solid var(--gb-accent); outline-offset: -1.5px; }
+    .gb-axis {
+      position: relative;
+      height: 14px;
+      margin: 9px 0 0 172px;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.06em;
+      color: var(--faint);
+    }
+    .gb-axis span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+    .gb-axis .first { transform: none; }
+    .gb-axis .last { transform: translateX(-100%); }
+    .gb-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid var(--rule);
+    }
+    .gb-note {
+      flex: 1 1 340px;
+      min-height: 3em; /* two lines, so hover notes don't shift the page */
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      line-height: 1.5;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+    .gb-note b { font-weight: 600; color: var(--ink); }
+    .gb-note .r { color: var(--gb-r); font-weight: 600; }
+    .gb-note .d { color: var(--gb-d); font-weight: 600; }
+    .gb-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .gb-legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .gb-legend i { display: inline-block; width: 14px; height: 8px; border-radius: 2px; }
+    .gb-legend .sw-r { background: var(--gb-r); }
+    .gb-legend .sw-d { background: var(--gb-d); }
+    .gb-legend .sw-v {
+      background-color: #F4F1EB;
+      background-image: repeating-linear-gradient(45deg, var(--gb-hatch) 0 1px, transparent 1px 3px);
+      outline: 1px dashed var(--gb-hatch);
+      outline-offset: -1px;
+    }
 
     /* Movi top-5 module */
     .movi-live {
@@ -726,6 +927,14 @@
       .row-logo { grid-row: 1 / 3; align-self: center; }
       .row-main { grid-column: 2; }
       .row-domain { grid-column: 2; grid-row: 2; justify-self: start; }
+      .gb-live { padding: 18px 16px 20px; }
+      .gb-chart { gap: 9px; }
+      .gb-row { grid-template-columns: minmax(0, 1fr); row-gap: 4px; }
+      .gb-label { font-size: 0.74rem; }
+      .gb-track { height: 17px; }
+      .gb-grid { top: 0; bottom: 0; }
+      .gb-axis { margin-left: 0; }
+      .gb-note { flex-basis: 100%; min-height: 3em; }
       .ph-live { padding: 18px 16px 20px; }
       .ph-live-body { grid-template-columns: 1fr; gap: 18px; }
       .usmap { max-width: 260px; }
@@ -752,12 +961,14 @@
       .row-name { font-size: clamp(1.9rem, 3.6vw, 2.9rem); }
       .row-desc { font-size: 1rem; }
       .row-num, .row-domain { font-size: 0.76rem; }
+      .logo-gb svg { width: 60px; height: 60px; }
       .logo-ph svg { width: 62px; height: 62px; }
       .logo-4q svg { width: 56px; height: 56px; }
       .logo-frame { width: 26px; height: 33px; }
       .frame-num { font-size: 13px; }
       .sprocket { width: 7px; }
       .footer { font-size: 0.75rem; }
+      .gb-live { padding: 22px 24px 24px; }
       .ph-live { padding: 22px 24px 24px; }
       .usmap { max-width: 320px; }
       .bar-val { font-size: 1.12rem; }
@@ -788,7 +999,48 @@
     <p class="section-label reveal reveal-2" aria-hidden="true">Projects &mdash; Selected Work</p>
 
     <nav aria-label="Projects">
-      <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer" class="row row-ph reveal reveal-2">
+      <a href="https://goodbehaviour.org" target="_blank" rel="noopener noreferrer" class="row row-gb reveal reveal-2">
+        <span class="row-logo logo-gb" aria-hidden="true">
+          <svg viewBox="0 0 64 64" focusable="false">
+            <defs>
+              <pattern class="gb-logo-hatch" id="gb-logo-hatch" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="4"/>
+              </pattern>
+            </defs>
+            <rect class="gb-lb gb-lb-1" x="4" y="9" width="27" height="13" rx="2"/>
+            <rect x="32" y="9" width="10" height="13" fill="url(#gb-logo-hatch)"/>
+            <rect class="gb-lb gb-lb-2" x="43" y="9" width="17" height="13" rx="2"/>
+            <rect class="gb-lb gb-lb-3" x="4" y="25.5" width="15" height="13" rx="2"/>
+            <rect class="gb-lb gb-lb-4" x="20" y="25.5" width="40" height="13" rx="2"/>
+            <rect class="gb-lb gb-lb-5" x="4" y="42" width="56" height="13" rx="2"/>
+          </svg>
+        </span>
+        <span class="row-num" aria-hidden="true">01</span>
+        <span class="row-main">
+          <span class="row-name">Good Behaviour</span>
+          <span class="row-desc">Every Supreme Court seat since 1789, justice by justice—who held it, who appointed them, and how long it sat vacant.</span>
+        </span>
+        <span class="row-domain">goodbehaviour.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <section class="gb-live reveal reveal-3" aria-labelledby="gb-live-title">
+        <div class="movi-live-head">
+          <span class="movi-live-title" id="gb-live-title">The Court since 1990, seat by seat</span>
+          <span class="movi-live-meta"><span data-gb-asof>as of Nov 8, 2026</span> &middot; <a href="https://goodbehaviour.org" target="_blank" rel="noopener noreferrer">full timeline &rarr;</a></span>
+        </div>
+        <div class="gb-chart" data-gb-chart></div>
+        <div class="gb-axis" data-gb-axis aria-hidden="true"></div>
+        <div class="gb-foot">
+          <div class="gb-note" data-gb-note aria-live="polite">9 of 9 seats filled &middot; <span class="r">6</span> appointed by Republican presidents, <span class="d">3</span> by Democratic &middot; median service 16.3 years</div>
+          <div class="gb-legend" aria-hidden="true">
+            <span><i class="sw-r"></i>Republican</span>
+            <span><i class="sw-d"></i>Democratic</span>
+            <span><i class="sw-v"></i>Vacant</span>
+          </div>
+        </div>
+      </section>
+
+      <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer" class="row row-ph reveal reveal-4">
         <span class="row-logo logo-ph" aria-hidden="true">
           <svg viewBox="0 0 64 64" focusable="false">
             <path d="M 32,4 L 33.1,11 L 30.9,11 Z" fill="#5C6880"/>
@@ -808,7 +1060,7 @@
             <rect x="6" y="61" width="52" height="2" fill="#5C6880"/>
           </svg>
         </span>
-        <span class="row-num" aria-hidden="true">01</span>
+        <span class="row-num" aria-hidden="true">02</span>
         <span class="row-main">
           <span class="row-name">The Proportional House</span>
           <span class="row-desc">Mapping the U.S. House under proportional representation—how the chamber would change if seats matched the popular vote.</span>
@@ -816,7 +1068,7 @@
         <span class="row-domain">proportionalhouse.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <section class="ph-live reveal reveal-3" aria-labelledby="ph-live-title">
+      <section class="ph-live reveal reveal-5" aria-labelledby="ph-live-title">
         <div class="ph-live-head">
           <span class="ph-live-title" id="ph-live-title">U.S. House if seats matched the vote</span>
           <span class="ph-live-meta"><span data-updated>2026 results &middot; provisional</span> &middot; <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer" data-ph-link>full results &rarr;</a></span>
@@ -843,7 +1095,7 @@
         </div>
       </section>
 
-      <a href="https://movirank.com" target="_blank" rel="noopener noreferrer" class="row row-movi reveal reveal-4">
+      <a href="https://movirank.com" target="_blank" rel="noopener noreferrer" class="row row-movi reveal reveal-6">
         <span class="row-logo" aria-hidden="true">
           <span class="logo-strip" data-movi-strip>
             <span class="logo-frame" data-frame="0"><span class="sprocket sprocket-top"></span><span class="frame-num">3</span><span class="sprocket sprocket-bot"></span></span>
@@ -851,7 +1103,7 @@
             <span class="logo-frame" data-frame="2"><span class="sprocket sprocket-top"></span><span class="frame-num">2</span><span class="sprocket sprocket-bot"></span></span>
           </span>
         </span>
-        <span class="row-num" aria-hidden="true">02</span>
+        <span class="row-num" aria-hidden="true">03</span>
         <span class="row-main">
           <span class="row-name">Movi</span>
           <span class="row-desc">Every movie ranked, one matchup at a time. Compare, rank, and discover films with friends.</span>
@@ -859,7 +1111,7 @@
         <span class="row-domain">movirank.com <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <section class="movi-live reveal reveal-5" aria-labelledby="movi-live-title">
+      <section class="movi-live reveal reveal-7" aria-labelledby="movi-live-title">
         <div class="movi-live-head">
           <span class="movi-live-title" id="movi-live-title">My all-time top 5</span>
           <span class="movi-live-meta"><a href="https://movirank.com" target="_blank" rel="noopener noreferrer">ranked on movirank.com &rarr;</a></span>
@@ -892,7 +1144,7 @@
         </div>
       </section>
 
-      <a href="https://4th-quarter-sooty.vercel.app" target="_blank" rel="noopener noreferrer" class="row row-4q reveal reveal-6">
+      <a href="https://4th-quarter-sooty.vercel.app" target="_blank" rel="noopener noreferrer" class="row row-4q reveal reveal-8">
         <span class="row-logo logo-4q" aria-hidden="true">
           <svg viewBox="0 0 200 200" focusable="false">
             <circle cx="100" cy="100" r="60" fill="none" stroke="#f97316" stroke-width="30" />
@@ -900,7 +1152,7 @@
             <line x1="132" y1="132" x2="180" y2="180" stroke="#f97316" stroke-width="28" stroke-linecap="round" />
           </svg>
         </span>
-        <span class="row-num" aria-hidden="true">03</span>
+        <span class="row-num" aria-hidden="true">04</span>
         <span class="row-main">
           <span class="row-name">4th Quarter</span>
           <span class="row-desc">Skip the first three. Catch the fourth. Get notified when your NBA team's game hits the final quarter.</span>
@@ -908,7 +1160,7 @@
         <span class="row-domain">open 4th quarter <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <section class="teams-live reveal reveal-7" aria-labelledby="teams-live-title">
+      <section class="teams-live reveal reveal-9" aria-labelledby="teams-live-title">
         <div class="movi-live-head">
           <span class="movi-live-title" id="teams-live-title">My teams</span>
           <span class="movi-live-meta">36 titles all-time</span>
@@ -964,10 +1216,10 @@
       </section>
     </nav>
 
-    <p class="section-label reveal reveal-8" aria-hidden="true">Legal Writing &mdash; Selected Briefs</p>
+    <p class="section-label reveal reveal-10" aria-hidden="true">Legal Writing &mdash; Selected Briefs</p>
 
     <section class="briefs" aria-label="Selected briefs">
-      <a href="https://www.citizensforethics.org/wp-content/uploads/2026/10/20261020131921054_25-1017-bsac-Electronic-Privacy-Information-Center.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-8">
+      <a href="https://www.citizensforethics.org/wp-content/uploads/2026/10/20261020131921054_25-1017-bsac-Electronic-Privacy-Information-Center.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-10">
         <span class="brief-main">
           <span class="brief-meta">Supreme Court &middot; No. 25-1017 &middot; Oct. 2026</span>
           <span class="brief-case">Republican National Committee v. Mi Familia Vota</span>
@@ -975,7 +1227,7 @@
         </span>
         <span class="row-domain">PDF <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
-      <a href="https://www.supremecourt.gov/DocketPDF/26/26A305/423270/20260908102857397_26A305%20bsac%20Bipartisan%20Current%20and%20Former%20Members%20of%20Congress.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-9">
+      <a href="https://www.supremecourt.gov/DocketPDF/26/26A305/423270/20260908102857397_26A305%20bsac%20Bipartisan%20Current%20and%20Former%20Members%20of%20Congress.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-11">
         <span class="brief-main">
           <span class="brief-meta">Supreme Court &middot; No. 26A305 &middot; Sept. 2026</span>
           <span class="brief-case">United States Postal Service v. California</span>
@@ -985,7 +1237,7 @@
       </a>
     </section>
 
-    <footer class="footer reveal reveal-9">
+    <footer class="footer reveal reveal-11">
       <span>&copy; 2026</span>
       <span class="footer-links">
         <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -1039,6 +1291,207 @@
       });
 
       start();
+    })();
+  </script>
+
+  <script>
+    // Good Behaviour seat timeline: the nine current seats since 1990, in
+    // seniority order and named for today's justice, as on goodbehaviour.org.
+    // Data is baked from that repo's data/build/scotus.json (as of ASOF);
+    // refresh it when the Court changes. Sitting justices' bars run to today.
+    (function () {
+      var SITE = 'https://goodbehaviour.org';
+      var ASOF = '2026-11-08';
+      var FROM = '1990-01-01';
+
+      // Segments, oldest first.
+      //   tenure:  ['t', slug, name, surname, role, start, end|null, party, president, endReason]
+      //   vacancy: ['v', start, end|null]
+      var COURT = [
+        { seat: 1, name: 'John Roberts', chief: true, segs: [
+          ['t','william-rehnquist','William H. Rehnquist','Rehnquist','chief','1986-09-26','2005-09-03','republican','Reagan','died'],
+          ['v','2005-09-03','2005-09-29'],
+          ['t','john-roberts','John G. Roberts, Jr.','Roberts','chief','2005-09-29',null,'republican','G.W. Bush','sitting']
+        ]},
+        { seat: 11, name: 'Clarence Thomas', chief: false, segs: [
+          ['t','thurgood-marshall','Thurgood Marshall','Marshall','associate','1967-10-02','1991-10-01','democratic','L. Johnson','retired'],
+          ['v','1991-10-01','1991-10-23'],
+          ['t','clarence-thomas','Clarence Thomas','Thomas','associate','1991-10-23',null,'republican','G.H.W. Bush','sitting']
+        ]},
+        { seat: 9, name: 'Samuel Alito', chief: false, segs: [
+          ['t','sandra-day-oconnor','Sandra Day O\'Connor','O\'Connor','associate','1981-09-25','2006-01-31','republican','Reagan','retired'],
+          ['t','samuel-alito','Samuel A. Alito, Jr.','Alito','associate','2006-01-31',null,'republican','G.W. Bush','sitting']
+        ]},
+        { seat: 4, name: 'Sonia Sotomayor', chief: false, segs: [
+          ['t','william-brennan','William J. Brennan, Jr.','Brennan','associate','1956-10-16','1990-07-20','republican','Eisenhower','retired'],
+          ['v','1990-07-20','1990-10-09'],
+          ['t','david-souter','David H. Souter','Souter','associate','1990-10-09','2009-06-29','republican','G.H.W. Bush','retired'],
+          ['v','2009-06-29','2009-08-08'],
+          ['t','sonia-sotomayor','Sonia Sotomayor','Sotomayor','associate','2009-08-08',null,'democratic','Obama','sitting']
+        ]},
+        { seat: 5, name: 'Elena Kagan', chief: false, segs: [
+          ['t','john-paul-stevens','John Paul Stevens','Stevens','associate','1975-12-19','2010-06-29','republican','Ford','retired'],
+          ['v','2010-06-29','2010-08-07'],
+          ['t','elena-kagan','Elena Kagan','Kagan','associate','2010-08-07',null,'democratic','Obama','sitting']
+        ]},
+        { seat: 10, name: 'Neil Gorsuch', chief: false, segs: [
+          ['t','antonin-scalia','Antonin Scalia','Scalia','associate','1986-09-26','2016-02-13','republican','Reagan','died'],
+          ['v','2016-02-13','2017-04-10'],
+          ['t','neil-gorsuch','Neil M. Gorsuch','Gorsuch','associate','2017-04-10',null,'republican','Trump','sitting']
+        ]},
+        { seat: 2, name: 'Brett Kavanaugh', chief: false, segs: [
+          ['t','anthony-kennedy','Anthony M. Kennedy','Kennedy','associate','1988-02-18','2018-07-31','republican','Reagan','retired'],
+          ['v','2018-07-31','2018-10-06'],
+          ['t','brett-kavanaugh','Brett M. Kavanaugh','Kavanaugh','associate','2018-10-06',null,'republican','Trump','sitting']
+        ]},
+        { seat: 7, name: 'Amy Coney Barrett', chief: false, segs: [
+          ['t','byron-raymond-white','Byron Raymond White','White','associate','1962-04-16','1993-06-28','democratic','Kennedy','retired'],
+          ['v','1993-06-28','1993-08-10'],
+          ['t','ruth-bader-ginsburg','Ruth Bader Ginsburg','Ginsburg','associate','1993-08-10','2020-09-18','democratic','Clinton','died'],
+          ['v','2020-09-18','2020-10-27'],
+          ['t','amy-coney-barrett','Amy Coney Barrett','Barrett','associate','2020-10-27',null,'republican','Trump','sitting']
+        ]},
+        { seat: 3, name: 'Ketanji Brown Jackson', chief: false, segs: [
+          ['t','harry-blackmun','Harry A. Blackmun','Blackmun','associate','1970-06-09','1994-08-03','republican','Nixon','retired'],
+          ['t','stephen-breyer','Stephen G. Breyer','Breyer','associate','1994-08-03','2022-06-30','democratic','Clinton','retired'],
+          ['t','ketanji-brown-jackson','Ketanji Brown Jackson','Jackson','associate','2022-06-30',null,'democratic','Biden','sitting']
+        ]}
+      ];
+
+      // goodbehaviour.org's wording (END_LABELS in site/src/lib/colors.ts).
+      var ENDED = { died: 'died in office', retired: 'retired', resigned: 'resigned',
+        elevated: 'elevated to Chief Justice', rejected: 'rejected by the Senate', removed: 'removed' };
+
+      var chart = document.querySelector('[data-gb-chart]');
+      var axis = document.querySelector('[data-gb-axis]');
+      var note = document.querySelector('[data-gb-note]');
+      if (!chart) return;
+
+      var DAY = 864e5;
+      function ms(iso){ var p = iso.split('-'); return Date.UTC(+p[0], +p[1] - 1, +p[2]); }
+      var now = new Date();
+      var TODAY = Math.max(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()), ms(ASOF));
+      var T0 = ms(FROM), SPAN = TODAY - T0, Y0 = +FROM.slice(0, 4);
+
+      function pos(t){ return Math.max(0, Math.min(100, (t - T0) / SPAN * 100)); }
+      // Whole days / 365.2425, as yearsBetween() in the site's dates.ts.
+      function years(a, b){ return Math.round((b - a) / DAY) / 365.2425; }
+      function fmt(iso){
+        try { return new Date(ms(iso)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }); }
+        catch (e) { return iso; }
+      }
+      function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+      function cls(party){ return party === 'republican' ? 'r' : party === 'democratic' ? 'd' : 'n'; }
+      function roleOf(s){ return s[4] === 'chief' ? 'Chief Justice' : 'Associate Justice'; }
+      function end(s){ return s[6] ? ms(s[6]) : TODAY; }
+
+      function tenureNote(s){
+        var span = s[6] ? ', ' + s[5].slice(0, 4) + '–' + s[6].slice(0, 4) : ' since ' + s[5].slice(0, 4);
+        var out = '<b>' + esc(s[2]) + '</b> · ' + roleOf(s) + span + ' · ' + years(ms(s[5]), end(s)).toFixed(1) +
+          ' years · appointed by <span class="' + cls(s[7]) + '">' + esc(s[8]) + '</span>';
+        if (ENDED[s[9]]) out += ' · ' + ENDED[s[9]];
+        return out;
+      }
+      function vacancyNote(segs, i){
+        var v = segs[i], days = Math.round(((v[2] ? ms(v[2]) : TODAY) - ms(v[1])) / DAY);
+        var before = segs[i - 1], after = segs[i + 1];
+        var out = 'Seat vacant <b>' + days.toLocaleString('en-US') + ' days</b> · ' + fmt(v[1]) + ' – ' + (v[2] ? fmt(v[2]) : 'today');
+        if (before && after && before[0] === 't' && after[0] === 't') out += ' · ' + esc(before[3]) + ' → ' + esc(after[3]);
+        return out;
+      }
+
+      // Default line, worded like the "The Court on" panel on goodbehaviour.org.
+      function summary(){
+        var sitting = [];
+        COURT.forEach(function (row) {
+          row.segs.forEach(function (s) { if (s[0] === 't' && !s[6]) sitting.push(s); });
+        });
+        var R = 0, D = 0;
+        sitting.forEach(function (s) { if (s[7] === 'republican') R++; else if (s[7] === 'democratic') D++; });
+        var ys = sitting.map(function (s) { return years(ms(s[5]), TODAY); }).sort(function (a, b) { return a - b; });
+        var mid = Math.floor(ys.length / 2);
+        var med = ys.length ? (ys.length % 2 ? ys[mid] : (ys[mid - 1] + ys[mid]) / 2) : 0;
+        return sitting.length + ' of ' + COURT.length + ' seats filled · <span class="r">' + R +
+          '</span> appointed by Republican presidents, <span class="d">' + D + '</span> by Democratic · median service ' +
+          med.toFixed(1) + ' years';
+      }
+
+      var ticks = [];
+      for (var y = Y0; y <= new Date(TODAY).getUTCFullYear(); y += 10) ticks.push(y);
+
+      var html = '';
+      COURT.forEach(function (row, ri) {
+        var inner = '';
+        ticks.forEach(function (y) {
+          if (y > Y0) inner += '<span class="gb-grid" style="left:' + pos(Date.UTC(y, 0, 1)).toFixed(3) + '%"></span>';
+        });
+        row.segs.forEach(function (s, si) {
+          var a = ms(s[0] === 'v' ? s[1] : s[5]);
+          var b = s[0] === 'v' ? (s[2] ? ms(s[2]) : TODAY) : end(s);
+          if (b <= T0) return;
+          var l = pos(a), w = pos(b) - l;
+          var delay = Math.round(l / 100 * 520 + ri * 18);
+          var id = ri + ':' + si;
+          if (s[0] === 'v') {
+            var days = Math.round((b - a) / DAY);
+            inner += '<span class="gb-gap' + (w > 1.5 ? ' wide' : '') + '" data-gb="' + id + '" role="img" aria-label="Seat vacant ' +
+              days + ' days, ' + fmt(s[1]) + ' to ' + (s[2] ? fmt(s[2]) : 'today') + '" style="--l:' + l.toFixed(3) + '%;--w:' +
+              w.toFixed(3) + '%;animation-delay:' + (delay + 260) + 'ms"></span>';
+            return;
+          }
+          var label = s[2] + ', ' + roleOf(s) + ', ' + s[5].slice(0, 4) + '–' + (s[6] ? s[6].slice(0, 4) : 'present') + ', appointed by ' + s[8];
+          inner += '<a class="gb-bar ' + cls(s[7]) + (a < T0 ? ' clip' : '') + '" data-gb="' + id + '" href="' + SITE + '/justice/' +
+            esc(s[1]) + '" target="_blank" rel="noopener noreferrer" aria-label="' + esc(label) + '" style="left:' + l.toFixed(3) +
+            '%;width:' + w.toFixed(3) + '%;animation-delay:' + delay + 'ms">' +
+            (s[6] ? '<span>' + esc(s[3]) + '</span>' : '') + '</a>';
+        });
+        html += '<div class="gb-row"><div class="gb-label">' + esc(row.name) + (row.chief ? '<span class="gb-chief">Chief</span>' : '') +
+          '</div><div class="gb-track">' + inner + '</div></div>';
+      });
+      chart.innerHTML = html;
+
+      if (axis) {
+        var ax = '';
+        ticks.forEach(function (y) {
+          var p = pos(Date.UTC(y, 0, 1));
+          if (y === Y0 || p < 92) ax += '<span' + (y === Y0 ? ' class="first"' : '') + ' style="left:' + p.toFixed(3) + '%">' + y + '</span>';
+        });
+        axis.innerHTML = ax + '<span class="last" style="left:100%">today</span>';
+      }
+
+      var meta = document.querySelector('[data-gb-asof]');
+      if (meta) meta.textContent = 'as of ' + fmt(ASOF);
+
+      var base = summary();
+      if (note) note.innerHTML = base;
+
+      function show(el){
+        if (!note) return;
+        var k = el && el.getAttribute('data-gb');
+        if (!k) { note.innerHTML = base; return; }
+        var p = k.split(':'), segs = COURT[+p[0]].segs, i = +p[1];
+        note.innerHTML = segs[i][0] === 'v' ? vacancyNote(segs, i) : tenureNote(segs[i]);
+      }
+      chart.addEventListener('mouseover', function (e) { show(e.target.closest('[data-gb]')); });
+      chart.addEventListener('mouseleave', function () { show(null); });
+      chart.addEventListener('focusin', function (e) { show(e.target.closest('[data-gb]')); });
+      chart.addEventListener('focusout', function () { show(null); });
+
+      // Hide a predecessor's name when its bar is too narrow to hold it.
+      function fit(){
+        var spans = chart.querySelectorAll('.gb-bar > span');
+        for (var i = 0; i < spans.length; i++) {
+          var bar = spans[i].parentNode;
+          bar.classList.toggle('nofit', spans[i].offsetWidth > bar.clientWidth);
+        }
+      }
+      fit();
+      var raf = 0;
+      window.addEventListener('resize', function () {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(fit);
+      });
     })();
   </script>
 
