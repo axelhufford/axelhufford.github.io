@@ -22,6 +22,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://goodbehaviour.org" crossorigin />
+  <link rel="preconnect" href="https://proportionalhouse.org" crossorigin />
+  <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://image.tmdb.org" />
   <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
@@ -61,7 +65,7 @@
       --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    html { color-scheme: light; background: var(--paper); }
+    html { color-scheme: light; background: var(--paper); scroll-behavior: smooth; }
 
     body {
       font-family: var(--sans);
@@ -128,7 +132,27 @@
       color: var(--green);
       border-color: var(--green);
     }
+    .masthead-jump {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 18px;
+      margin-top: 20px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+    }
+    .masthead-jump a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 0;
+      transition: color 220ms var(--ease);
+    }
+    .masthead-jump a:hover,
+    .masthead-jump a:focus-visible { color: var(--green); }
+    .masthead-jump .arrow { color: var(--green); margin-right: 5px; }
     .section-label {
+      scroll-margin-top: 8px;
       font-family: var(--mono);
       font-size: 0.72rem;
       font-weight: 500;
@@ -322,23 +346,25 @@
     .row:focus-visible .row-name { color: var(--accent); font-style: italic; }
     .row:focus-visible .row-domain { color: var(--accent); }
     .row:focus-visible .arrow { transform: translateX(4px); }
-    .row-gb:focus-visible .gb-lb { animation: gb-draw 560ms cubic-bezier(0.34, 1.1, 0.5, 1) both; }
-    .row-gb:focus-visible .gb-lb-1 { fill: #AE3C33; animation-delay: 0.00s; transition-delay: 0.00s; }
-    .row-gb:focus-visible .gb-lb-3 { fill: #2D5CA3; animation-delay: 0.06s; transition-delay: 0.06s; }
-    .row-gb:focus-visible .gb-lb-5 { fill: #AEA594; animation-delay: 0.12s; transition-delay: 0.12s; }
-    .row-gb:focus-visible .gb-lb-4 { fill: #AE3C33; animation-delay: 0.20s; transition-delay: 0.20s; }
-    .row-gb:focus-visible .gb-lb-2 { fill: #2D5CA3; animation-delay: 0.32s; transition-delay: 0.32s; }
-    .row-gb:focus-visible .gb-logo-hatch line { stroke: #7D4896; }
-    .row-ph:focus-visible .ph-bar { animation: ph-rise 600ms cubic-bezier(0.34, 1.3, 0.5, 1) both; }
-    .row-ph:focus-visible .ph-bar-1 { fill: #c46060; animation-delay: 0.00s; transition-delay: 0.00s; }
-    .row-ph:focus-visible .ph-bar-2 { fill: #b25e7e; animation-delay: 0.05s; transition-delay: 0.05s; }
-    .row-ph:focus-visible .ph-bar-3 { fill: #9d62a0; animation-delay: 0.10s; transition-delay: 0.10s; }
-    .row-ph:focus-visible .ph-bar-4 { fill: #8966b2; animation-delay: 0.15s; transition-delay: 0.15s; }
-    .row-ph:focus-visible .ph-bar-5 { fill: #786bbb; animation-delay: 0.20s; transition-delay: 0.20s; }
-    .row-ph:focus-visible .ph-bar-6 { fill: #6373bb; animation-delay: 0.25s; transition-delay: 0.25s; }
-    .row-ph:focus-visible .ph-bar-7 { fill: #547bb8; animation-delay: 0.30s; transition-delay: 0.30s; }
-    .row-ph:focus-visible .ph-bar-8 { fill: #4683b2; animation-delay: 0.35s; transition-delay: 0.35s; }
-    .row-4q:focus-visible .quarter { animation: fourQ-cycle 2400ms step-end infinite; }
+    /* .live: on touch screens (no hover) a row's logo takes its color and
+       plays its animation while the row is on screen. */
+    .row-gb:focus-visible .gb-lb, .row-gb.live .gb-lb { animation: gb-draw 560ms cubic-bezier(0.34, 1.1, 0.5, 1) both; }
+    .row-gb:focus-visible .gb-lb-1, .row-gb.live .gb-lb-1 { fill: #AE3C33; animation-delay: 0.00s; transition-delay: 0.00s; }
+    .row-gb:focus-visible .gb-lb-3, .row-gb.live .gb-lb-3 { fill: #2D5CA3; animation-delay: 0.06s; transition-delay: 0.06s; }
+    .row-gb:focus-visible .gb-lb-5, .row-gb.live .gb-lb-5 { fill: #AEA594; animation-delay: 0.12s; transition-delay: 0.12s; }
+    .row-gb:focus-visible .gb-lb-4, .row-gb.live .gb-lb-4 { fill: #AE3C33; animation-delay: 0.20s; transition-delay: 0.20s; }
+    .row-gb:focus-visible .gb-lb-2, .row-gb.live .gb-lb-2 { fill: #2D5CA3; animation-delay: 0.32s; transition-delay: 0.32s; }
+    .row-gb:focus-visible .gb-logo-hatch line, .row-gb.live .gb-logo-hatch line { stroke: #7D4896; }
+    .row-ph:focus-visible .ph-bar, .row-ph.live .ph-bar { animation: ph-rise 600ms cubic-bezier(0.34, 1.3, 0.5, 1) both; }
+    .row-ph:focus-visible .ph-bar-1, .row-ph.live .ph-bar-1 { fill: #c46060; animation-delay: 0.00s; transition-delay: 0.00s; }
+    .row-ph:focus-visible .ph-bar-2, .row-ph.live .ph-bar-2 { fill: #b25e7e; animation-delay: 0.05s; transition-delay: 0.05s; }
+    .row-ph:focus-visible .ph-bar-3, .row-ph.live .ph-bar-3 { fill: #9d62a0; animation-delay: 0.10s; transition-delay: 0.10s; }
+    .row-ph:focus-visible .ph-bar-4, .row-ph.live .ph-bar-4 { fill: #8966b2; animation-delay: 0.15s; transition-delay: 0.15s; }
+    .row-ph:focus-visible .ph-bar-5, .row-ph.live .ph-bar-5 { fill: #786bbb; animation-delay: 0.20s; transition-delay: 0.20s; }
+    .row-ph:focus-visible .ph-bar-6, .row-ph.live .ph-bar-6 { fill: #6373bb; animation-delay: 0.25s; transition-delay: 0.25s; }
+    .row-ph:focus-visible .ph-bar-7, .row-ph.live .ph-bar-7 { fill: #547bb8; animation-delay: 0.30s; transition-delay: 0.30s; }
+    .row-ph:focus-visible .ph-bar-8, .row-ph.live .ph-bar-8 { fill: #4683b2; animation-delay: 0.35s; transition-delay: 0.35s; }
+    .row-4q:focus-visible .quarter, .row-4q.live .quarter { animation: fourQ-cycle 2400ms step-end infinite; }
 
     /* entrance stagger */
     .reveal {
@@ -475,7 +501,7 @@
     .bar-val { font-size: 1.02rem; line-height: 1.2; margin-bottom: 7px; }
     .bar-val .d { color: var(--dem); font-weight: 600; }
     .bar-val .r { color: var(--rep); font-weight: 600; }
-    .bar-val .pct { color: var(--muted); font-size: 0.86em; }
+    .bar-val .pct { color: var(--muted); font-size: 0.86em; white-space: nowrap; }
     .bar-val .mid { color: var(--faint); margin: 0 2px; }
     .bar-track {
       display: flex;
@@ -615,9 +641,12 @@
     .gb-bar.clip span { padding-left: 12px; }
     .gb-bar.nofit span { visibility: hidden; }
     .gb-bar:hover,
+    .gb-bar.on,
     .gb-bar:focus-visible { z-index: 3; box-shadow: 0 0 0 1.5px var(--ink); }
     .gb-bar.clip:hover,
+    .gb-bar.clip.on,
     .gb-bar.clip:focus-visible { box-shadow: inset 0 0 0 1.5px var(--ink); }
+    .gb-label.on { color: var(--gb-accent); }
     /* Vacancies: true width, but never thinner than 2px, kept centered. */
     .gb-gap {
       position: absolute;
@@ -632,7 +661,7 @@
     }
     .gb-gap::before { content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px; }
     .gb-gap.wide { outline: 1px dashed var(--gb-hatch); outline-offset: -1px; }
-    .gb-gap:hover { outline: 1.5px solid var(--gb-accent); outline-offset: -1.5px; }
+    .gb-gap:hover, .gb-gap.on { outline: 1.5px solid var(--gb-accent); outline-offset: -1.5px; }
     .gb-axis {
       position: relative;
       grid-column: 1;
@@ -864,6 +893,10 @@
       }
     }
 
+    /* Fold-away modules: the toggle only exists on phones (see the small-
+       screen block), so wider screens always show every module. */
+    .mod-toggle { display: none; }
+
     /* Selected briefs */
     .brief {
       display: grid;
@@ -920,8 +953,37 @@
     .brief:focus-visible .row-domain { color: var(--green); }
     .brief:focus-visible .arrow { transform: translateX(4px); }
 
-    @media (max-width: 600px) {
+    @media (max-width: 720px) {
       .page { padding: 44px 20px; }
+      .masthead-links { gap: 8px; }
+      .masthead-links a { padding: 9px 13px; }
+      .masthead-jump { margin-top: 16px; }
+      .footer a { display: inline-block; padding: 10px 3px; margin: -10px -3px; }
+      .movi-live-meta a, .ph-live-meta a { display: inline-block; padding: 8px 0; margin: -8px 0; }
+      .map-legend, .gb-legend, .gb-axis, .bar-cap { font-size: 0.66rem; }
+      .gb-axis { height: 16px; }
+      .mod-head { position: relative; padding-right: 40px; }
+      .mod-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -11px;
+        right: -10px;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        background: none;
+        color: var(--muted);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .mod-toggle svg { width: 14px; height: 14px; transition: transform 220ms var(--ease); }
+      .mod-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: -6px; border-radius: 8px; }
+      .mod[data-collapsed] .mod-toggle svg { transform: rotate(-90deg); }
+      .mod[data-collapsed] .mod-body { display: none; }
+      .mod[data-collapsed] .mod-head { margin-bottom: 0; }
+      .mod[data-collapsed] { padding-bottom: 18px; }
       .brief {
         grid-template-columns: minmax(0, 1fr);
         row-gap: 10px;
@@ -953,17 +1015,17 @@
       .movi-live { padding: 18px 16px 20px; }
       .movi-grid { gap: 7px; }
       .movi-title { font-size: 0.66rem; }
-      .movi-year { font-size: 0.6rem; }
+      .movi-year { font-size: 0.66rem; }
       .movi-rank { width: 16px; height: 16px; font-size: 0.58rem; top: 4px; left: 4px; }
       .teams-live { padding: 18px 16px 20px; }
       .teams-grid { gap: 8px; }
       .team-logo { padding: 9px; border-radius: 6px; }
       .team-cups { font-size: 0.85rem; margin-top: 7px; gap: 4px; }
       .team-cups svg { width: 21px; height: 21px; }
-      .team-title-name { font-size: 0.6rem; }
+      .team-title-name { font-size: 0.64rem; }
     }
 
-    @media (min-width: 601px) {
+    @media (min-width: 721px) {
       .row {
         grid-template-columns: 104px auto minmax(0, 1fr) auto;
         gap: 0 22px;
@@ -992,6 +1054,7 @@
         transition: none !important;
       }
       .reveal { opacity: 1; transform: none; }
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
@@ -1006,11 +1069,15 @@
         <a href="https://www.linkedin.com/in/axelhufford/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a href="mailto:axel.hufford@gmail.com">Email</a>
       </div>
+      <nav class="masthead-jump" aria-label="On this page">
+        <a href="#projects"><span class="arrow" aria-hidden="true">&darr;</span>Projects</a>
+        <a href="#writing"><span class="arrow" aria-hidden="true">&darr;</span>Legal Writing</a>
+      </nav>
     </header>
 
-    <p class="section-label reveal reveal-2" aria-hidden="true">Projects &mdash; Selected Work</p>
+    <h2 class="section-label reveal reveal-2" id="projects">Projects &mdash; Selected Work</h2>
 
-    <nav aria-label="Projects">
+    <section aria-labelledby="projects">
       <a href="https://goodbehaviour.org" target="_blank" rel="noopener noreferrer" class="row row-gb reveal reveal-2">
         <span class="row-logo logo-gb" aria-hidden="true">
           <svg viewBox="0 0 64 64" focusable="false">
@@ -1035,19 +1102,22 @@
         <span class="row-domain">goodbehaviour.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <section class="gb-live reveal reveal-3" aria-labelledby="gb-live-title">
-        <div class="movi-live-head">
+      <section class="gb-live mod reveal reveal-3" data-mod="gb" aria-labelledby="gb-live-title">
+        <div class="movi-live-head mod-head">
           <span class="movi-live-title" id="gb-live-title">The Supreme Court since 1990, seat by seat</span>
-          <span class="movi-live-meta"><span data-gb-asof>as of Nov 8, 2026</span> &middot; <a href="https://goodbehaviour.org" target="_blank" rel="noopener noreferrer">full timeline &rarr;</a></span>
+          <span class="movi-live-meta"><span data-gb-asof>as of Nov 10, 2026</span> &middot; <a href="https://goodbehaviour.org" target="_blank" rel="noopener noreferrer">full timeline &rarr;</a></span>
+          <button class="mod-toggle" type="button" data-mod-toggle="gb" aria-expanded="true" aria-controls="gb-body" aria-labelledby="gb-live-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
+        <div class="mod-body" id="gb-body">
         <div class="gb-chart" data-gb-chart></div>
         <div class="gb-foot">
-          <div class="gb-note" data-gb-note aria-live="polite">9 of 9 seats filled &middot; <span class="r">6</span> appointed by Republican presidents, <span class="d">3</span> by Democratic &middot; median service 16.3 years</div>
+          <div class="gb-note" data-gb-note>9 of 9 seats filled &middot; <span class="r">6</span> appointed by Republican presidents, <span class="d">3</span> by Democratic &middot; median service 16.3 years</div>
           <div class="gb-legend" aria-hidden="true">
             <span><i class="sw-r"></i>Republican</span>
             <span><i class="sw-d"></i>Democratic</span>
             <span><i class="sw-v"></i>Vacant</span>
           </div>
+        </div>
         </div>
       </section>
 
@@ -1079,12 +1149,13 @@
         <span class="row-domain">proportionalhouse.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <section class="ph-live reveal reveal-5" aria-labelledby="ph-live-title">
-        <div class="ph-live-head">
+      <section class="ph-live mod reveal reveal-5" data-mod="ph" aria-labelledby="ph-live-title">
+        <div class="ph-live-head mod-head">
           <span class="ph-live-title" id="ph-live-title">U.S. House if seats matched the vote</span>
           <span class="ph-live-meta"><span data-updated>2026 results &middot; provisional</span> &middot; <a href="https://proportionalhouse.org" target="_blank" rel="noopener noreferrer" data-ph-link>full results &rarr;</a></span>
+          <button class="mod-toggle" type="button" data-mod-toggle="ph" aria-expanded="true" aria-controls="ph-body" aria-labelledby="ph-live-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
-        <div class="ph-live-body">
+        <div class="ph-live-body mod-body" id="ph-body">
           <div class="ph-map-wrap">
             <svg class="usmap" viewBox="0 0 275 200" role="img" aria-label="Map of U.S. states shaded by their House delegation under proportional representation of the 2026 votes counted so far, from red (more Republican) to blue (more Democratic). Gray states have no votes counted yet."></svg>
             <div class="map-legend" aria-hidden="true"><span>More R</span><span class="scale"></span><span>More D</span></div>
@@ -1122,28 +1193,30 @@
         <span class="row-domain">movirank.com <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <section class="movi-live reveal reveal-7" aria-labelledby="movi-live-title">
-        <div class="movi-live-head">
+      <section class="movi-live mod reveal reveal-7" data-mod="movi" aria-labelledby="movi-live-title">
+        <div class="movi-live-head mod-head">
           <span class="movi-live-title" id="movi-live-title">My all-time top 5</span>
           <span class="movi-live-meta"><a href="https://movirank.com" target="_blank" rel="noopener noreferrer">ranked on movirank.com &rarr;</a></span>
+          <button class="mod-toggle" type="button" data-mod-toggle="movi" aria-expanded="true" aria-controls="movi-body" aria-labelledby="movi-live-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
+        <div class="mod-body" id="movi-body">
         <div class="movi-group">
           <div class="movi-group-label">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>
-            Films <span class="movi-group-meta" data-movi-films-meta>top 5 of 440</span>
+            Films <span class="movi-group-meta" data-movi-films-meta>top 5 of 458</span>
           </div>
           <div class="movi-grid" data-movi-films>
             <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Being_John_Malkovich" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">1</span><img src="https://image.tmdb.org/t/p/w342/xVSvIwRNzwXSs0CLefiiG6A96m4.jpg" alt="Being John Malkovich" loading="lazy"></a><div class="movi-title">Being John Malkovich</div><div class="movi-year">1999</div></div>
-            <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Memento_(film)" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">2</span><img src="https://image.tmdb.org/t/p/w342/fKTPH2WvH8nHTXeBYBVhawtRqtR.jpg" alt="Memento" loading="lazy"></a><div class="movi-title">Memento</div><div class="movi-year">2000</div></div>
-            <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Jojo_Rabbit" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">3</span><img src="https://image.tmdb.org/t/p/w342/7GsM4mtM0worCtIVeiQt28HieeN.jpg" alt="Jojo Rabbit" loading="lazy"></a><div class="movi-title">Jojo Rabbit</div><div class="movi-year">2019</div></div>
-            <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Fantastic_Planet" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">4</span><img src="https://image.tmdb.org/t/p/w342/prq0j1S0K07UjwLZLF6oMGflRUI.jpg" alt="Fantastic Planet" loading="lazy"></a><div class="movi-title">Fantastic Planet</div><div class="movi-year">1973</div></div>
-            <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Margin_Call" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">5</span><img src="https://image.tmdb.org/t/p/w342/qtO57obCJuUBS0en3HLgFgZ19Xk.jpg" alt="Margin Call" loading="lazy"></a><div class="movi-title">Margin Call</div><div class="movi-year">2011</div></div>
+            <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/You_Can_See_Everything" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">2</span><img src="https://image.tmdb.org/t/p/w342/Ap8QwmKfSjYbWC4XIP8w9pdn72O.jpg" alt="You Can See Everything" loading="lazy"></a><div class="movi-title">You Can See Everything</div><div class="movi-year">2026</div></div>
+            <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Memento_(film)" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">3</span><img src="https://image.tmdb.org/t/p/w342/fKTPH2WvH8nHTXeBYBVhawtRqtR.jpg" alt="Memento" loading="lazy"></a><div class="movi-title">Memento</div><div class="movi-year">2000</div></div>
+            <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Jojo_Rabbit" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">4</span><img src="https://image.tmdb.org/t/p/w342/7GsM4mtM0worCtIVeiQt28HieeN.jpg" alt="Jojo Rabbit" loading="lazy"></a><div class="movi-title">Jojo Rabbit</div><div class="movi-year">2019</div></div>
+            <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Fantastic_Planet" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">5</span><img src="https://image.tmdb.org/t/p/w342/prq0j1S0K07UjwLZLF6oMGflRUI.jpg" alt="Fantastic Planet" loading="lazy"></a><div class="movi-title">Fantastic Planet</div><div class="movi-year">1973</div></div>
           </div>
         </div>
         <div class="movi-group">
           <div class="movi-group-label">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M7 3l5 4 5-4"/></svg>
-            Shows <span class="movi-group-meta" data-movi-shows-meta>top 5 of 80</span>
+            Shows <span class="movi-group-meta" data-movi-shows-meta>top 5 of 89</span>
           </div>
           <div class="movi-grid" data-movi-shows>
             <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/Succession_(TV_series)" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">1</span><img src="https://image.tmdb.org/t/p/w342/z0XiwdrCQ9yVIr4O0pxzaAYRxdW.jpg" alt="Succession" loading="lazy"></a><div class="movi-title">Succession</div><div class="movi-year">2018</div></div>
@@ -1152,6 +1225,7 @@
             <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/The_Rehearsal_(TV_series)" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">4</span><img src="https://image.tmdb.org/t/p/w342/mIevNYxovnH4sR22qkUmAgS5vdv.jpg" alt="The Rehearsal" loading="lazy"></a><div class="movi-title">The Rehearsal</div><div class="movi-year">2022</div></div>
             <div class="movi-card"><a class="movi-poster" href="https://en.wikipedia.org/wiki/American_Vandal" target="_blank" rel="noopener noreferrer"><span class="movi-rank" aria-hidden="true">5</span><img src="https://image.tmdb.org/t/p/w342/hMbVY6f4zfUcX0xf2jo3xZFdrMp.jpg" alt="American Vandal" loading="lazy"></a><div class="movi-title">American Vandal</div><div class="movi-year">2017</div></div>
           </div>
+        </div>
         </div>
       </section>
 
@@ -1171,12 +1245,13 @@
         <span class="row-domain">open 4th quarter <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
-      <section class="teams-live reveal reveal-9" aria-labelledby="teams-live-title">
-        <div class="movi-live-head">
+      <section class="teams-live mod reveal reveal-9" data-mod="teams" aria-labelledby="teams-live-title">
+        <div class="movi-live-head mod-head">
           <span class="movi-live-title" id="teams-live-title">My teams</span>
           <span class="movi-live-meta">36 titles all-time</span>
+          <button class="mod-toggle" type="button" data-mod-toggle="teams" aria-expanded="true" aria-controls="teams-body" aria-labelledby="teams-live-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         </div>
-        <div class="teams-grid">
+        <div class="teams-grid mod-body" id="teams-body">
 
           <div class="team-card">
             <a class="team-logo" href="https://en.wikipedia.org/wiki/New_York_Knicks" target="_blank" rel="noopener noreferrer"><img src="https://a.espncdn.com/i/teamlogos/nba/500/ny.png" alt="New York Knicks" loading="lazy"></a>
@@ -1225,11 +1300,11 @@
 
         </div>
       </section>
-    </nav>
+    </section>
 
-    <p class="section-label reveal reveal-10" aria-hidden="true">Legal Writing &mdash; Selected Briefs</p>
+    <h2 class="section-label reveal reveal-10" id="writing">Legal Writing &mdash; Selected Briefs</h2>
 
-    <section class="briefs" aria-label="Selected briefs">
+    <section class="briefs" aria-labelledby="writing">
       <a href="https://www.citizensforethics.org/wp-content/uploads/2026/10/20261020131921054_25-1017-bsac-Electronic-Privacy-Information-Center.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-10">
         <span class="brief-main">
           <span class="brief-meta">Supreme Court &middot; No. 25-1017 &middot; Oct. 2026</span>
@@ -1249,7 +1324,7 @@
     </section>
 
     <footer class="footer reveal reveal-11">
-      <span>&copy; 2026</span>
+      <span>&copy; <span data-year>2026</span></span>
       <span class="footer-links">
         <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
         <span aria-hidden="true">&middot;</span>
@@ -1267,6 +1342,49 @@
       if (document.fonts && document.fonts.load) {
         document.fonts.load("italic 1em 'Instrument Serif'");
       }
+
+      var yr = document.querySelector('[data-year]');
+      if (yr) yr.textContent = new Date().getFullYear();
+
+      // Touch screens have no hover, so a project's logo would stay gray and
+      // still. There, each row's logo takes its color and plays its animation
+      // while the row is on screen (the .live rules in the stylesheet).
+      if (window.matchMedia && window.matchMedia('(hover: none)').matches && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { en.target.classList.toggle('live', en.isIntersecting); });
+        }, { threshold: 0.6 });
+        document.querySelectorAll('.row').forEach(function (r) { io.observe(r); });
+      }
+
+      // Fold-away modules. The toggle is only visible on phones; the two
+      // personal modules start folded there. A visitor's choice is remembered.
+      (function () {
+        var KEY = 'ah-mods', FOLDED = { movi: 1, teams: 1 }, saved = {};
+        try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
+        function apply(mod, btn, folded){
+          if (folded) mod.setAttribute('data-collapsed', ''); else mod.removeAttribute('data-collapsed');
+          btn.setAttribute('aria-expanded', folded ? 'false' : 'true');
+        }
+        document.querySelectorAll('[data-mod-toggle]').forEach(function (btn) {
+          var key = btn.getAttribute('data-mod-toggle');
+          var mod = btn.closest('.mod'); if (!mod) return;
+          apply(mod, btn, key in saved ? !!saved[key] : !!FOLDED[key]);
+          btn.addEventListener('click', function () {
+            var folded = !mod.hasAttribute('data-collapsed');
+            apply(mod, btn, folded);
+            saved[key] = folded ? 1 : 0;
+            try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+            // The seat timeline measures its bars, which it can't while hidden.
+            if (!folded) window.dispatchEvent(new Event('resize'));
+          });
+          // On phones the whole header bar toggles, not just the chevron.
+          var head = btn.closest('.mod-head');
+          if (head) head.addEventListener('click', function (e) {
+            if (e.target.closest('a, button') || getComputedStyle(btn).display === 'none') return;
+            btn.click();
+          });
+        });
+      })();
 
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) return;
@@ -1311,12 +1429,14 @@
     // baked copy immediately, then reads goodbehaviour.org's /api/v1/court.json
     // (rebuilt on every deploy there, so its asOf advances weekly with the
     // site's data refresh). If the Court in the feed matches the baked copy,
-    // only the as-of date changes; if it differs (a retirement, a new justice),
-    // the chart redraws from the feed. Sitting justices' bars run to today.
+    // nothing redraws; if it differs (a retirement, a new justice), the chart
+    // redraws from the feed. Sitting justices' bars run to today, so once the
+    // feed has been read the module is dated today; if it can't be read, the
+    // baked copy keeps its own date.
     (function () {
       var SITE = 'https://goodbehaviour.org';
       var FEED = SITE + '/api/v1/court.json';
-      var ASOF = '2026-11-08';
+      var ASOF = '2026-11-10';
       var FROM = '1990-01-01';
 
       // Segments, oldest first.
@@ -1485,6 +1605,7 @@
           var p = pos(Date.UTC(y, 0, 1));
           if (y === Y0 || p < 92) ax += '<span' + (y === Y0 ? ' class="first"' : '') + ' style="left:' + p.toFixed(3) + '%">' + y + '</span>';
         });
+        picked = null;
         chart.classList.toggle('gb-still', !!still);
         chart.innerHTML = html + '<div class="gb-axis" aria-hidden="true">' + ax + '<span class="last" style="left:100%">today</span></div>';
         setAsOf();
@@ -1506,10 +1627,34 @@
         if (!segs || !segs[i]) { note.innerHTML = base; return; }
         note.innerHTML = segs[i][0] === 'v' ? vacancyNote(segs, i) : tenureNote(segs[i]);
       }
-      chart.addEventListener('mouseover', function (e) { show(e.target.closest('[data-gb]')); });
-      chart.addEventListener('mouseleave', function () { show(null); });
-      chart.addEventListener('focusin', function (e) { show(e.target.closest('[data-gb]')); });
-      chart.addEventListener('focusout', function () { show(null); });
+      // Touch: the first tap on a justice or a vacancy shows its details (and
+      // outlines it), a second tap opens the justice's page, and tapping
+      // anywhere off the chart restores the summary — as on the state map below.
+      var picked = null, lastPointer = 'mouse';
+      function pickedEl(){ return picked ? chart.querySelector('[data-gb="' + picked + '"]') : null; }
+      function pick(k){
+        var on = chart.querySelectorAll('.on');
+        for (var i = 0; i < on.length; i++) on[i].classList.remove('on');
+        picked = k || null;
+        if (picked) {
+          var els = chart.querySelectorAll('[data-gb="' + picked + '"]');
+          for (var j = 0; j < els.length; j++) els[j].classList.add('on');
+        }
+        show(pickedEl());
+      }
+      chart.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; });
+      chart.addEventListener('click', function (e) {
+        if (lastPointer !== 'touch') return;
+        var el = e.target.closest('[data-gb]'); if (!el) return;
+        var k = el.getAttribute('data-gb');
+        if (picked !== k) { e.preventDefault(); pick(k); }
+      });
+      document.addEventListener('click', function (e) { if (picked && !chart.contains(e.target)) pick(null); });
+
+      chart.addEventListener('mouseover', function (e) { show(e.target.closest('[data-gb]') || pickedEl()); });
+      chart.addEventListener('mouseleave', function () { show(pickedEl()); });
+      chart.addEventListener('focusin', function (e) { show(e.target.closest('[data-gb]') || pickedEl()); });
+      chart.addEventListener('focusout', function () { show(pickedEl()); });
 
       // Hide a predecessor's name when its bar is too narrow to hold it, and
       // any decade tick that would run into the "today" label.
@@ -1552,6 +1697,10 @@
           for (var j = 0; j < st.segments.length; j++) {
             var g = st.segments[j];
             if (!g || !ISO.test(g.start) || (g.end !== null && !ISO.test(g.end))) return null;
+            // The feed reaches back before this chart's window. Keep only what
+            // the chart draws, so a bar's index finds the same segment in the
+            // baked copy and in the feed (the hover notes look segments up by index).
+            if (g.end !== null && g.end < FROM) continue;
             if (g.type === 'vacancy') { segs.push(['v', g.start, g.end]); continue; }
             if (g.type !== 'tenure' || !g.person || !g.name) return null;
             var t = ['t', String(g.person), String(g.name), String(g.surname || g.name), g.role === 'chief' ? 'chief' : 'associate',
@@ -1583,7 +1732,8 @@
           .then(function (f) {
             var got = fromFeed(f); if (!got) return;
             var changed = shape(got.court) !== shape(court);
-            court = got.court; asOf = got.asOf;
+            // Read live just now, and drawn to today: date it today.
+            court = got.court; asOf = new Date(TODAY).toISOString().slice(0, 10);
             if (changed) draw(true); else setAsOf();
           })
           .catch(function () { clearTimeout(to); }); // keep the baked copy on screen
@@ -2035,10 +2185,10 @@
       var SNAP = {
         films: [
           { title: 'Being John Malkovich', year: '1999', poster: '/xVSvIwRNzwXSs0CLefiiG6A96m4.jpg' },
+          { title: 'You Can See Everything', year: '2026', poster: '/Ap8QwmKfSjYbWC4XIP8w9pdn72O.jpg' },
           { title: 'Memento', year: '2000', poster: '/fKTPH2WvH8nHTXeBYBVhawtRqtR.jpg' },
           { title: 'Jojo Rabbit', year: '2019', poster: '/7GsM4mtM0worCtIVeiQt28HieeN.jpg' },
-          { title: 'Fantastic Planet', year: '1973', poster: '/prq0j1S0K07UjwLZLF6oMGflRUI.jpg' },
-          { title: 'Margin Call', year: '2011', poster: '/qtO57obCJuUBS0en3HLgFgZ19Xk.jpg' }
+          { title: 'Fantastic Planet', year: '1973', poster: '/prq0j1S0K07UjwLZLF6oMGflRUI.jpg' }
         ],
         shows: [
           { title: 'Succession', year: '2018', poster: '/z0XiwdrCQ9yVIr4O0pxzaAYRxdW.jpg' },
@@ -2057,6 +2207,7 @@
       // when the standard disambiguator matches and on search results otherwise.
       var WIKI = {
         'being john malkovich': 'https://en.wikipedia.org/wiki/Being_John_Malkovich',
+        'you can see everything': 'https://en.wikipedia.org/wiki/You_Can_See_Everything',
         'memento': 'https://en.wikipedia.org/wiki/Memento_(film)',
         'jojo rabbit': 'https://en.wikipedia.org/wiki/Jojo_Rabbit',
         'fantastic planet': 'https://en.wikipedia.org/wiki/Fantastic_Planet',
