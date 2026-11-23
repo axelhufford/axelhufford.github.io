@@ -1,4 +1,6 @@
+# Search engines, AI crawlers and other agents are all welcome.
 User-agent: *
 Allow: /
 
+# A plain-text summary of this site for language models: https://axelhufford.com/llms.txt
 Sitemap: https://axelhufford.com/sitemap.xml

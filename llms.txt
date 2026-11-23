@@ -1,0 +1,37 @@
+# Axel Hufford
+
+> Axel Hufford is an appellate lawyer at Jenner & Block in Washington, D.C. He also builds small websites about courts, elections, movies, and basketball.
+
+This is a plain-text summary of https://axelhufford.com, his personal site, for language models and other automated readers. The site is a single page listing his projects and selected legal writing.
+
+## About
+
+- Practice: Associate in the Appellate and Supreme Court practice at Jenner & Block LLP, Washington, D.C. Constitutional and administrative law, with a focus on election law, the separation of powers, and the First Amendment. Firm bio: https://www.jenner.com/en/people/axel-j-hufford
+- Clerkships: Judge Alison J. Nathan, U.S. Court of Appeals for the Second Circuit; Judge Ronnie Abrams, U.S. District Court for the Southern District of New York
+- Education: J.D., Stanford Law School, 2022; B.A., Dartmouth College, 2016
+- Before law: Fulbright English teacher in Samcheonpo, South Korea; business analyst at Deloitte Consulting
+- Also known as: Axel J. Hufford
+
+## Projects
+
+- [Good Behaviour](https://goodbehaviour.org): A seat-by-seat history of the Supreme Court and the federal courts, from 1789 to today. Public JSON feed of the current Court: https://goodbehaviour.org/api/v1/court.json
+- [The Proportional House](https://proportionalhouse.org): Mapping the U.S. House under proportional representation—how the chamber would change if seats matched the popular vote. Public JSON feed: https://proportionalhouse.org/api/v1/projection.json
+- [Movi](https://movirank.com): Every movie ranked, one matchup at a time. Compare, rank, and discover films with friends.
+- [4th Quarter](https://4th-quarter-sooty.vercel.app): Skip the first three. Catch the fourth. Get notified when your NBA team's game hits the final quarter.
+
+## Legal writing (selected briefs)
+
+- [Brief of the Electronic Privacy Information Center as Amicus Curiae in Support of Respondents](https://www.citizensforethics.org/wp-content/uploads/2026/10/20261020131921054_25-1017-bsac-Electronic-Privacy-Information-Center.pdf): Republican National Committee v. Mi Familia Vota, No. 25-1017, U.S. Supreme Court, Oct. 2026 (PDF)
+- [Brief of Bipartisan Current and Former Members of Congress as Amici Curiae in Support of Respondents](https://www.supremecourt.gov/DocketPDF/26/26A305/423270/20260908102857397_26A305%20bsac%20Bipartisan%20Current%20and%20Former%20Members%20of%20Congress.pdf): United States Postal Service v. California, No. 26A305, U.S. Supreme Court, Sept. 2026 (PDF)
+
+## Contact and profiles
+
+- Email: axel.hufford@gmail.com
+- LinkedIn: https://www.linkedin.com/in/axelhufford/
+- X: https://x.com/AxelHufford
+- Instagram: https://www.instagram.com/axel.hufford
+
+## Optional
+
+- [Homepage](https://axelhufford.com/): The full page, which also has live modules: the Supreme Court seat timeline, the proportional House projection, his top-five films and shows on Movi, and his New York sports teams.
+- [Sitemap](https://axelhufford.com/sitemap.xml)

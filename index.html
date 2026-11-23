@@ -3,22 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Axel Hufford</title>
+  <title>Axel Hufford — Lawyer and builder of small things</title>
   <meta name="description" content="Axel Hufford — lawyer and builder of small things." />
+  <meta name="author" content="Axel Hufford" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <meta name="theme-color" content="#F5F4EF" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Axel Hufford" />
   <meta property="og:title" content="Axel Hufford" />
   <meta property="og:description" content="Lawyer and builder of small things." />
   <meta property="og:url" content="https://axelhufford.com/" />
+  <meta property="og:locale" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@AxelHufford" />
+  <meta name="twitter:creator" content="@AxelHufford" />
+  <meta name="twitter:title" content="Axel Hufford" />
+  <meta name="twitter:description" content="Lawyer and builder of small things." />
   <meta name="twitter:image" content="https://axelhufford.com/og-image.png" />
+  <meta name="twitter:image:alt" content="Axel Hufford" />
   <meta property="og:image" content="https://axelhufford.com/og-image.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="2400" />
   <meta property="og:image:height" content="1260" />
   <meta property="og:image:alt" content="Axel Hufford" />
   <link rel="canonical" href="https://axelhufford.com/" />
+  <link rel="alternate" type="text/markdown" href="/llms.txt" title="Axel Hufford, as plain text for AI agents" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -34,16 +43,111 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Axel Hufford",
-    "url": "https://axelhufford.com",
-    "image": "https://axelhufford.com/apple-touch-icon.png",
-    "jobTitle": "Litigation Associate",
-    "worksFor": { "@type": "Organization", "name": "Jenner & Block" },
-    "sameAs": [
-      "https://www.linkedin.com/in/axelhufford/",
-      "https://x.com/AxelHufford",
-      "https://www.instagram.com/axel.hufford"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://axelhufford.com/#website",
+        "url": "https://axelhufford.com/",
+        "name": "Axel Hufford",
+        "alternateName": "axelhufford.com",
+        "inLanguage": "en-US",
+        "publisher": { "@id": "https://axelhufford.com/#person" }
+      },
+      {
+        "@type": "ProfilePage",
+        "@id": "https://axelhufford.com/#profile",
+        "url": "https://axelhufford.com/",
+        "name": "Axel Hufford — Lawyer and builder of small things",
+        "isPartOf": { "@id": "https://axelhufford.com/#website" },
+        "mainEntity": { "@id": "https://axelhufford.com/#person" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://axelhufford.com/#person",
+        "name": "Axel Hufford",
+        "alternateName": "Axel J. Hufford",
+        "givenName": "Axel",
+        "familyName": "Hufford",
+        "url": "https://axelhufford.com/",
+        "description": "Axel Hufford is an appellate lawyer at Jenner & Block in Washington, D.C. He also builds small websites about courts, elections, movies, and basketball.",
+        "jobTitle": "Associate",
+        "hasOccupation": { "@type": "Occupation", "name": "Lawyer" },
+        "worksFor": {
+          "@type": "LegalService",
+          "name": "Jenner & Block LLP",
+          "url": "https://www.jenner.com/"
+        },
+        "workLocation": { "@type": "Place", "name": "Washington, D.C." },
+        "alumniOf": [
+          { "@type": "CollegeOrUniversity", "name": "Stanford Law School", "sameAs": "https://en.wikipedia.org/wiki/Stanford_Law_School" },
+          { "@type": "CollegeOrUniversity", "name": "Dartmouth College", "sameAs": "https://en.wikipedia.org/wiki/Dartmouth_College" }
+        ],
+        "knowsAbout": [
+          "Appellate litigation",
+          "Supreme Court litigation",
+          "Constitutional law",
+          "Administrative law",
+          "Election law",
+          "Separation of powers",
+          "First Amendment"
+        ],
+        "email": "mailto:axel.hufford@gmail.com",
+        "sameAs": [
+          "https://www.linkedin.com/in/axelhufford/",
+          "https://x.com/AxelHufford",
+          "https://www.instagram.com/axel.hufford",
+          "https://www.jenner.com/en/people/axel-j-hufford",
+          "https://www.lawfaremedia.org/contributors/ahufford"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "name": "Good Behaviour",
+        "url": "https://goodbehaviour.org/",
+        "description": "A seat-by-seat history of the Supreme Court and the federal courts, from 1789 to today.",
+        "creator": { "@id": "https://axelhufford.com/#person" }
+      },
+      {
+        "@type": "WebSite",
+        "name": "The Proportional House",
+        "url": "https://proportionalhouse.org/",
+        "description": "Mapping the U.S. House under proportional representation—how the chamber would change if seats matched the popular vote.",
+        "creator": { "@id": "https://axelhufford.com/#person" }
+      },
+      {
+        "@type": "WebSite",
+        "name": "Movi",
+        "url": "https://movirank.com/",
+        "description": "Every movie ranked, one matchup at a time. Compare, rank, and discover films with friends.",
+        "creator": { "@id": "https://axelhufford.com/#person" }
+      },
+      {
+        "@type": "WebSite",
+        "name": "4th Quarter",
+        "url": "https://4th-quarter-sooty.vercel.app/",
+        "description": "Skip the first three. Catch the fourth. Get notified when your NBA team's game hits the final quarter.",
+        "creator": { "@id": "https://axelhufford.com/#person" }
+      },
+      {
+        "@type": "CreativeWork",
+        "genre": "Amicus curiae brief",
+        "name": "Brief of the Electronic Privacy Information Center as Amicus Curiae in Support of Respondents",
+        "about": "Republican National Committee v. Mi Familia Vota, No. 25-1017 (U.S. Supreme Court)",
+        "datePublished": "2026-10-20",
+        "encodingFormat": "application/pdf",
+        "url": "https://www.citizensforethics.org/wp-content/uploads/2026/10/20261020131921054_25-1017-bsac-Electronic-Privacy-Information-Center.pdf",
+        "contributor": { "@id": "https://axelhufford.com/#person" }
+      },
+      {
+        "@type": "CreativeWork",
+        "genre": "Amicus curiae brief",
+        "name": "Brief of Bipartisan Current and Former Members of Congress as Amici Curiae in Support of Respondents",
+        "about": "United States Postal Service v. California, No. 26A305 (U.S. Supreme Court)",
+        "datePublished": "2026-09-08",
+        "encodingFormat": "application/pdf",
+        "url": "https://www.supremecourt.gov/DocketPDF/26/26A305/423270/20260908102857397_26A305%20bsac%20Bipartisan%20Current%20and%20Former%20Members%20of%20Congress.pdf",
+        "contributor": { "@id": "https://axelhufford.com/#person" }
+      }
     ]
   }
   </script>
@@ -1064,9 +1168,9 @@
       <h1>Axel Hufford<span class="dot">.</span></h1>
       <p class="masthead-bio">Lawyer and builder of small things.</p>
       <div class="masthead-links">
-        <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="https://x.com/AxelHufford" target="_blank" rel="noopener noreferrer">X</a>
-        <a href="https://www.linkedin.com/in/axelhufford/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="me noopener noreferrer">Instagram</a>
+        <a href="https://x.com/AxelHufford" target="_blank" rel="me noopener noreferrer">X</a>
+        <a href="https://www.linkedin.com/in/axelhufford/" target="_blank" rel="me noopener noreferrer">LinkedIn</a>
         <a href="mailto:axel.hufford@gmail.com">Email</a>
       </div>
       <nav class="masthead-jump" aria-label="On this page">
@@ -1095,10 +1199,10 @@
           </svg>
         </span>
         <span class="row-num" aria-hidden="true">01</span>
-        <span class="row-main">
-          <span class="row-name">Good Behaviour</span>
+        <div class="row-main">
+          <h3 class="row-name">Good Behaviour</h3>
           <span class="row-desc">A seat-by-seat history of the Supreme Court and the federal courts, from 1789 to today.</span>
-        </span>
+        </div>
         <span class="row-domain">goodbehaviour.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
@@ -1142,10 +1246,10 @@
           </svg>
         </span>
         <span class="row-num" aria-hidden="true">02</span>
-        <span class="row-main">
-          <span class="row-name">The Proportional House</span>
+        <div class="row-main">
+          <h3 class="row-name">The Proportional House</h3>
           <span class="row-desc">Mapping the U.S. House under proportional representation—how the chamber would change if seats matched the popular vote.</span>
-        </span>
+        </div>
         <span class="row-domain">proportionalhouse.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
@@ -1186,10 +1290,10 @@
           </span>
         </span>
         <span class="row-num" aria-hidden="true">03</span>
-        <span class="row-main">
-          <span class="row-name">Movi</span>
+        <div class="row-main">
+          <h3 class="row-name">Movi</h3>
           <span class="row-desc">Every movie ranked, one matchup at a time. Compare, rank, and discover films with friends.</span>
-        </span>
+        </div>
         <span class="row-domain">movirank.com <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
@@ -1238,10 +1342,10 @@
           </svg>
         </span>
         <span class="row-num" aria-hidden="true">04</span>
-        <span class="row-main">
-          <span class="row-name">4th Quarter</span>
+        <div class="row-main">
+          <h3 class="row-name">4th Quarter</h3>
           <span class="row-desc">Skip the first three. Catch the fourth. Get notified when your NBA team's game hits the final quarter.</span>
-        </span>
+        </div>
         <span class="row-domain">open 4th quarter <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
@@ -1306,25 +1410,25 @@
 
     <section class="briefs" aria-labelledby="writing">
       <a href="https://www.citizensforethics.org/wp-content/uploads/2026/10/20261020131921054_25-1017-bsac-Electronic-Privacy-Information-Center.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-10">
-        <span class="brief-main">
+        <div class="brief-main">
           <span class="brief-meta">Supreme Court &middot; No. 25-1017 &middot; Oct. 2026</span>
-          <span class="brief-case">Republican National Committee v. Mi Familia Vota</span>
+          <h3 class="brief-case">Republican National Committee v. Mi Familia Vota</h3>
           <span class="brief-title">Brief of the Electronic Privacy Information Center as Amicus Curiae in Support of Respondents</span>
-        </span>
+        </div>
         <span class="row-domain">PDF <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
       <a href="https://www.supremecourt.gov/DocketPDF/26/26A305/423270/20260908102857397_26A305%20bsac%20Bipartisan%20Current%20and%20Former%20Members%20of%20Congress.pdf" target="_blank" rel="noopener noreferrer" class="brief reveal reveal-11">
-        <span class="brief-main">
+        <div class="brief-main">
           <span class="brief-meta">Supreme Court &middot; No. 26A305 &middot; Sept. 2026</span>
-          <span class="brief-case">United States Postal Service v. California</span>
+          <h3 class="brief-case">United States Postal Service v. California</h3>
           <span class="brief-title">Brief of Bipartisan Current and Former Members of Congress as Amici Curiae in Support of Respondents</span>
-        </span>
+        </div>
         <span class="row-domain">PDF <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
     </section>
 
     <footer class="footer reveal reveal-11">
-      <span>&copy; <span data-year>2026</span></span>
+      <span>&copy; <span data-year>2026</span> Axel Hufford</span>
       <span class="footer-links">
         <a href="https://www.instagram.com/axel.hufford" target="_blank" rel="noopener noreferrer">Instagram</a>
         <span aria-hidden="true">&middot;</span>
