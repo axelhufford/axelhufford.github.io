@@ -904,6 +904,7 @@
       letter-spacing: 0.04em;
       color: var(--muted);
     }
+    .tpm-foot .tpm-key { display: block; margin-top: 4px; }
     .tpm-foot .hs {
       display: inline-block;
       width: 12px;
@@ -1513,7 +1514,7 @@
             <div class="tpm-head" data-tpm-head>The typical state offered <b>6 of 11</b> options</div>
             <div class="tpm-colcap" aria-hidden="true">Jurisdictions offering it, of 51</div>
             <div class="tpm-opts" data-tpm-opts><div class="tpm-grp" id="tpm-grp-mail">Voting by mail</div><ul aria-labelledby="tpm-grp-mail"><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Vote by mail without an excuse</span><span class="tr"><i style="width:74.5%"></i></span><span class="ct">38</span></li><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Ballots mailed to every voter</span><span class="tr"><i style="width:17.6%"></i></span><span class="ct">9</span></li><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Late-arriving ballots count</span><span class="tr"><i style="width:31.4%"></i></span><span class="ct">16</span></li><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Drop boxes or drop-off sites</span><span class="tr"><i style="width:62.7%"></i></span><span class="ct">32</span></li><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Someone else can return your ballot</span><span class="tr"><i style="width:52.9%"></i></span><span class="ct">27</span></li></ul><div class="tpm-grp" id="tpm-grp-polls">Voting in person</div><ul aria-labelledby="tpm-grp-polls"><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Vote without photo ID</span><span class="tr"><i style="width:80.4%"></i></span><span class="ct">41</span></li><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Student IDs accepted</span><span class="tr"><i style="width:49.0%"></i></span><span class="ct">25</span></li><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Early in-person voting</span><span class="tr"><i style="width:94.1%"></i></span><span class="ct">48</span></li></ul><div class="tpm-grp" id="tpm-grp-registration">Registering</div><ul aria-labelledby="tpm-grp-registration"><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Same-day registration</span><span class="tr"><i style="width:45.1%"></i></span><span class="ct">23</span></li><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Automatic registration</span><span class="tr"><i style="width:47.1%"></i></span><span class="ct">24</span></li><li class="tpm-opt"><span class="mk" aria-hidden="true"></span><span class="lb">Online registration</span><span class="tr"><i style="width:86.3%"></i></span><span class="ct">44</span></li></ul></div>
-            <div class="tpm-foot" data-tpm-foot>4 offered all 11 &middot; 3 offered just 1 &middot; <i class="hs"></i>hatched: a temporary rule</div>
+            <div class="tpm-foot" data-tpm-foot>4 offered all 11 &middot; 3 offered just 1<span class="tpm-key"><i class="hs"></i>hatched: a temporary rule</span></div>
           </div>
         </div>
       </section>
@@ -2042,7 +2043,7 @@
           var line = top === bottom
             ? 'All ' + s.total + ' offered ' + (top === n ? 'all ' + n : top)
             : s.dist[top] + ' offered ' + (top === n ? 'all ' + n : top) + ' · ' + s.dist[bottom] + ' offered ' + say(bottom, n);
-          foot.innerHTML = line + (s.hatched ? ' · <i class="hs"></i>hatched: a temporary rule' : '');
+          foot.innerHTML = line + (s.hatched ? '<span class="tpm-key"><i class="hs"></i>hatched: a temporary rule</span>' : '');
         }
       }
 
