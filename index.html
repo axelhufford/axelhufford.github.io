@@ -1340,6 +1340,7 @@
       .row-logo { grid-row: 1 / 3; align-self: center; }
       .row-main { grid-column: 2; }
       .row-domain { grid-column: 2; grid-row: 2; justify-self: start; }
+      .row-domain:has(.row-alt) { flex-wrap: wrap; white-space: normal; row-gap: 2px; }
       .gb-live { padding: 18px 16px 20px; }
       .gb-chart { gap: 7px 9px; }
       .gb-label { font-size: 0.72rem; }
@@ -1453,7 +1454,7 @@
           <h3 class="row-name">Times, Places and Manner</h3>
           <span class="row-desc">A cited history of voting rules in every state since 2016: mail voting, drop boxes, voter ID, registration and more.</span>
         </div>
-        <span class="row-domain">timesplacesandmanner.org <span class="arrow" aria-hidden="true">&rarr;</span></span>
+        <span class="row-domain">timesplacesandmanner.org <span class="row-alt">(votingrules.org)</span> <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
 
       <section class="tpm-live mod reveal reveal-3" data-mod="tpm" aria-labelledby="tpm-live-title">
