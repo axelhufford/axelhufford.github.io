@@ -14,7 +14,7 @@ This is a plain-text summary of https://axelhufford.com, his personal site, for 
 
 ## Projects
 
-- [Times, Places and Manner](https://timesplacesandmanner.org): A cited history of voting rules in every state since 2016: mail voting, drop boxes, voter ID, registration and more. Public JSON feed of which options each state offered over time: https://timesplacesandmanner.org/api/v1/options.json
+- [Times, Places and Manner](https://timesplacesandmanner.org): A cited history of voting rules in every state since 2016: mail voting, drop boxes, voter ID, registration, and more. Public JSON feed of which options each state offered over time: https://timesplacesandmanner.org/api/v1/options.json
 - [Good Behaviour](https://goodbehaviour.org): A seat-by-seat history of the Supreme Court and the federal courts, from 1789 to today. Public JSON feed of the current Court: https://goodbehaviour.org/api/v1/court.json
 - [The Proportional House](https://proportionalhouse.org): Mapping the U.S. House under proportional representation—how the chamber would change if seats matched the popular vote. Public JSON feed: https://proportionalhouse.org/api/v1/projection.json
 - [Movi](https://movirank.com): Every movie ranked, one matchup at a time. Compare, rank, and discover films with friends.
