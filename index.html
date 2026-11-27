@@ -623,7 +623,7 @@
       align-items: center;
       gap: 9px;
     }
-    .usmap { width: 100%; max-width: 300px; height: auto; display: block; }
+    .usmap { width: 100%; max-width: 300px; height: auto; display: block; touch-action: manipulation; }
     .usmap text {
       font-family: var(--mono);
       font-size: 7.5px;
@@ -731,7 +731,7 @@
       align-items: center;
       gap: 9px;
     }
-    .tpmmap { width: 100%; max-width: 300px; height: auto; display: block; }
+    .tpmmap { width: 100%; max-width: 300px; height: auto; display: block; touch-action: manipulation; }
     .tpmmap text {
       font-family: var(--mono);
       font-size: 7.5px;
@@ -905,6 +905,14 @@
       color: var(--muted);
     }
     .tpm-foot .tpm-key { display: block; margin-top: 4px; }
+    .tpm-foot a {
+      display: inline-block;
+      padding: 6px 0;
+      margin: -6px 0;
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
     .tpm-foot .hs {
       display: inline-block;
       width: 12px;
@@ -2034,9 +2042,15 @@
 
         var foot = q('[data-tpm-foot]');
         if (v) {
-          foot.textContent = v.temp
-            ? '* Set by a temporary rule (an emergency or court order)'
-            : (lastPointer === 'touch' ? 'Tap again' : 'Click') + ' for ' + (NAMES[active] || active) + '’s rules and sources';
+          var temp = v.temp ? '* Set by a temporary rule (an emergency or court order)' : '';
+          if (lastPointer === 'touch') {
+            // On a phone the line is a real link (as is a second tap on the state).
+            foot.innerHTML = (temp ? temp + '<br>' : '') + '<a href="' + SITE + '/state/' + active.toLowerCase() +
+              '" target="_blank" rel="noopener noreferrer"></a>';
+            foot.querySelector('a').textContent = (NAMES[active] || active) + '’s rules and sources →';
+          } else {
+            foot.textContent = temp || 'Click for ' + (NAMES[active] || active) + '’s rules and sources';
+          }
         } else {
           var ks = []; s.dist.forEach(function (c, k) { if (c) ks.push(k); });
           var top = Math.max.apply(null, ks), bottom = Math.min.apply(null, ks);
@@ -2100,10 +2114,17 @@
         var t = tileOf(e); if (t) show(t.getAttribute('data-code'));
       });
       svg.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') show(null); });
+      // A second tap opens the page itself rather than leaving it to the SVG link,
+      // which some phone browsers don't follow.
+      function openTab(url){
+        var w = window.open(url, '_blank');
+        if (w) { try { w.opener = null; } catch (err) {} } else location.href = url;
+      }
       svg.addEventListener('click', function (e) {
         var t = tileOf(e); if (!t || lastPointer !== 'touch') return;
         var code = t.getAttribute('data-code');
-        if (active !== code) { e.preventDefault(); show(code); }
+        e.preventDefault();
+        if (active !== code) show(code); else openTab(t.getAttribute('href'));
       });
       document.addEventListener('click', function (e) { if (active && !root.contains(e.target)) show(null); });
 
@@ -2795,10 +2816,15 @@
           var t = tileOf(e); if (t) showState(t.getAttribute('data-code'));
         });
         svg.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') showState(null); });
+        // A second tap opens the state's page itself rather than leaving it to the
+        // SVG link, which some phone browsers don't follow.
         svg.addEventListener('click', function (e) {
           var t = tileOf(e); if (!t || lastPointer !== 'touch') return;
           var code = t.getAttribute('data-code');
-          if (active !== code) { e.preventDefault(); showState(code); }
+          e.preventDefault();
+          if (active !== code) { showState(code); return; }
+          var w = window.open(t.getAttribute('href'), '_blank');
+          if (w) { try { w.opener = null; } catch (err) {} } else location.href = t.getAttribute('href');
         });
         document.addEventListener('click', function (e) { if (active && !svg.contains(e.target)) showState(null); });
       })();
